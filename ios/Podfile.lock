@@ -235,6 +235,9 @@ PODS:
   - React-jsinspector (0.64.2)
   - react-native-safe-area-context (3.3.2):
     - React-Core
+  - react-native-track-player (2.1.2):
+    - React-Core
+    - SwiftAudioEx (= 0.14.5)
   - React-perflogger (0.64.2)
   - React-RCTActionSheet (0.64.2):
     - React-Core/RCTActionSheetHeaders (= 0.64.2)
@@ -333,6 +336,7 @@ PODS:
   - RNScreens (3.8.0):
     - React-Core
     - React-RCTImage
+  - SwiftAudioEx (0.14.5)
   - Yoga (1.14.0)
 
 DEPENDENCIES:
@@ -368,6 +372,7 @@ DEPENDENCIES:
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
+  - react-native-track-player (from `../node_modules/react-native-track-player`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
   - React-RCTAnimation (from `../node_modules/react-native/Libraries/NativeAnimation`)
@@ -388,6 +393,7 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - boost-for-react-native
+    - SwiftAudioEx
 
 EXTERNAL SOURCES:
   DoubleConversion:
@@ -450,6 +456,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
+  react-native-track-player:
+    :path: "../node_modules/react-native-track-player"
   React-perflogger:
     :path: "../node_modules/react-native/ReactCommon/reactperflogger"
   React-RCTActionSheet:
@@ -486,20 +494,20 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   DoubleConversion: cf9b38bf0b2d048436d9a82ad2abe1404f11e7de
-  EXApplication: 0e15240e4d125b62f1cae48759ffbbd32b9286a6
-  EXConstants: 6d585d93723b18d7a8c283591a335609e3bc153e
-  EXErrorRecovery: ac2622400a32be84604591f70d0efff416e4b9a2
-  EXFileSystem: 99aac7962c11c680681819dd9cbca24e20e5b1e7
-  EXFont: 2e1c6fe726d008a039db80df95f48b4921b7fe59
-  EXJSONUtils: f515cf71710855d7ba5bfc6752af3b9a6f6aad01
-  EXKeepAwake: 8aa32396a5972d26e75e538603aad0f032396503
-  EXManifests: 50e42e01335df4e54109dee7be5a91bfd37347db
+  EXApplication: 4e001850816f38eb4812cb02fe059974daeafe4d
+  EXConstants: 66361ff23b5ea7eae3684ffad0f15955c23b5134
+  EXErrorRecovery: 0e088d138e44f0e4a24655040e7f7c34ede8cc06
+  EXFileSystem: 624eef3e3a853f19cc0c26eaffab1519001d8c35
+  EXFont: 6e8f77d9741f5cd83f710adbf26ebb57a036283b
+  EXJSONUtils: bafb27ed20417c018d942f334d969102e67be7e5
+  EXKeepAwake: ca4071fb63b89a70b13d33f6147cf9b5433c122a
+  EXManifests: 15831e369de4e989f9cfe8c3321303f26745e41d
   Expo: cb542da0f7c8565a58231488066262f079eb1831
-  ExpoModulesCore: eea3472f70e921feb4dd24387662cbe0b67c9f8d
+  ExpoModulesCore: cd1ca21749ef0a8eb795e48c968d392dccb03faf
   EXSplashScreen: 68390ddb65a5def66ce8cf46a1e14a9b33cdac70
-  EXStructuredHeaders: 873e7f329c2f6279c1b1e0229df59c9861560b53
+  EXStructuredHeaders: 7d4a100b8321c6db341e91e730949558d4a48818
   EXUpdates: 964b7932e8fb332403170cb7cd438f48f6d6c64e
-  EXUpdatesInterface: e1c01b4f5ec76bd1d6cc714938f9edf5ef6379b9
+  EXUpdatesInterface: 2413d24feea140d6b30f6c73ec7f7e0281d3594a
   FBLazyVector: e686045572151edef46010a6f819ade377dfeb4b
   FBReactNativeSpec: fd9a36c2b8830891316b9cacfb83bbc5d063912d
   glog: 73c2498ac6884b13ede40eda8228cb1eee9d9d62
@@ -515,6 +523,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 80c46bd381fd06e418e0d4f53672dc1d1945c4c3
   React-jsinspector: cc614ec18a9ca96fd275100c16d74d62ee11f0ae
   react-native-safe-area-context: 584dc04881deb49474363f3be89e4ca0e854c057
+  react-native-track-player: d8b0b1bc35f224b6bb4256d3415306fc1e50e7c9
   React-perflogger: 25373e382fed75ce768a443822f07098a15ab737
   React-RCTActionSheet: af7796ba49ffe4ca92e7277a5d992d37203f7da5
   React-RCTAnimation: 6a2e76ab50c6f25b428d81b76a5a45351c4d77aa
@@ -530,6 +539,7 @@ SPEC CHECKSUMS:
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
   RNReanimated: 64c38d47ffcc29c97fc1d8cfde9e8a73d7be7cc8
   RNScreens: 6e1ea5787989f92b0671049b808aef64fa1ef98c
+  SwiftAudioEx: bfaff9894c885aded7edfb0793e25165d55053d4
   Yoga: 575c581c63e0d35c9a83f4b46d01d63abc1100ac
 
 PODFILE CHECKSUM: 33984a8ca7bbea85b833c1cca7bcd1da51239941
