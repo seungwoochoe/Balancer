@@ -23,7 +23,7 @@ const fakeMusicList = [
   },
   {
     "title": "5",
-    "artist": "Meta",
+    "artist": "Joe Goldberg",
     "weight": 1
   },
 ];
@@ -48,6 +48,10 @@ const fakeuserActionList = [
   {
     "title": "5",
     "action": "skip"
+  },
+  {
+    "title": "4",
+    "action": "like"
   },
   {
     "title": "4",
@@ -91,15 +95,15 @@ const resetWeight = (musicList) => {
   })
 };
 
-const makePlaylist = (musicList) => {
-  let playListSize = 0;
+const createPlaylist = (musicList) => {
+  let playlistSize = 0;
   let weightTotal = 0;
-  const playList = [];
+  const playlist = [];
 
   if (musicList.length < DEFAULT_PLAYLIST_SIZE) {
-    playListSize = musicList.length;
+    playlistSize = musicList.length;
   } else {
-    playListSize = DEFAULT_PLAYLIST_SIZE;
+    playlistSize = DEFAULT_PLAYLIST_SIZE;
   }
 
   musicList.forEach(music => {
@@ -107,7 +111,7 @@ const makePlaylist = (musicList) => {
   })
   console.log("Total weight: ", weightTotal);
 
-  for (let k = 0; k < playListSize; k++) {
+  for (let k = 0; k < playlistSize; k++) {
     const randomWeight = Math.random() * weightTotal;
     console.log(randomWeight);
 
@@ -118,14 +122,14 @@ const makePlaylist = (musicList) => {
       index++;
     }
 
-    if (k > 0 && playList[k - 1] === musicList[index - 1]) {
+    if (k > 0 && playlist[k - 1] === musicList[index - 1]) {
       console.log("Duplicate");
       k--;
     } else {
-      playList.push(musicList[index - 1]);      
+      playlist.push(musicList[index - 1]);      
     }
   }
-  console.log(playList);
+  console.log(playlist);
 }
 
 
@@ -141,5 +145,7 @@ const BOOST_WEIGHT_MODIFIER = 0.2;
 const DEFAULT_PLAYLIST_SIZE = 20;
 const ACTION_LIST_SIZE = 50;
 
-// calculateWeight(fakeMusicList, fakeuserActionList);
-makePlaylist(fakeMusicList);
+calculateWeight(fakeMusicList, fakeuserActionList);
+createPlaylist(fakeMusicList);
+
+console.log(fakeMusicList);
