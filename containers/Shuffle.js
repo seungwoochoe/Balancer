@@ -59,25 +59,39 @@ const fakeuserActionList = [
   }
 ];
 
-const loadMusicList = async () => {
-  try {
-    const musicListJsonString = await AsyncStorage.getItem('musicList');
-    return musicList = await JSON.parse(musicListJsonString);
-  } catch (err) {
-    console.log(err);
-  }
-};
+// If there is no or only one music in storage, this function should not be called.
+async function createPlaylist(musicList) {
+  const userActionList = fakeuserActionList;
+  const weightedMusicList = calculateWeight(musicList, userActionList);
+  const playlist = drawMusic(weightedMusicList);
+  console.log("\n🎧 playlist size is 20.\n", playlist);
+}
 
-const loadUserActionList = async () => {
+async function getUserActionList() {
   try {
     const userActionListJsonString = await AsyncStorage.getItem('userActionList');
-    return userActionList = await JSON.parse(userActionListJsonString);
+    return userActionListJsonString != null ? JSON.parse(userActionListJsonString) : [];
   } catch (err) {
     console.log(err);
   }
 };
 
-const calculateWeight = (musicList, userActionList) => {
+function calculateWeight(musicList, userActionList) {
+  const resetMusicList = resetWeights(musicList);
+  return applyUserActionEffects(resetMusicList, userActionList);
+};
+
+function resetWeights(musicList) {
+  musicList.forEach(music => {
+    music.weight = 1;
+  });
+  return musicList;
+};
+
+function applyUserActionEffects(musicList, userActionList) {
+  const SKIP_WEIGHT_MODIFIER = 0.85;
+  const BOOST_WEIGHT_MODIFIER = 0.2;
+
   userActionList.forEach(userAction => {
     let targetMusic = musicList.find(music => music.title === userAction.title);
 
@@ -87,33 +101,18 @@ const calculateWeight = (musicList, userActionList) => {
       targetMusic.weight = targetMusic.weight + BOOST_WEIGHT_MODIFIER;
     }
   });
+  console.log("This is 🎶 list after applying user actions.\n", musicList);
+  return musicList;
 };
 
-const resetWeight = (musicList) => {
-  musicList.forEach(music => {
-    music.weight = 1;
-  })
-};
+function drawMusic(musicList) {
+  const PLAYLIST_SIZE = 20;
 
-const createPlaylist = (musicList) => {
-  let playlistSize = 0;
-  let weightTotal = 0;
+  const totalWeight = getTotalWeight(musicList);
   const playlist = [];
 
-  if (musicList.length < DEFAULT_PLAYLIST_SIZE) {
-    playlistSize = musicList.length;
-  } else {
-    playlistSize = DEFAULT_PLAYLIST_SIZE;
-  }
-
-  musicList.forEach(music => {
-    weightTotal += music.weight;
-  })
-  console.log("Total weight: ", weightTotal);
-
-  for (let k = 0; k < playlistSize; k++) {
-    const randomWeight = Math.random() * weightTotal;
-    console.log(randomWeight);
+  for (let k = 0; k < PLAYLIST_SIZE; k++) {
+    const randomWeight = Math.random() * totalWeight;
 
     let weightSum = 0;
     let index = 0;
@@ -123,29 +122,47 @@ const createPlaylist = (musicList) => {
     }
 
     if (k > 0 && playlist[k - 1] === musicList[index - 1]) {
-      console.log("Duplicate");
       k--;
     } else {
       playlist.push(musicList[index - 1]);      
     }
   }
-  console.log(playlist);
+  return playlist;
+}
+
+function getTotalWeight(musicList) {
+  let totalWeight = 0;
+
+  musicList.forEach(music => {
+    totalWeight += music.weight;
+  });
+  return totalWeight;
 }
 
 
 
 
+async function storeUserActionList(userActionList, newUserAction) {
+  const USER_ACTION_LIST_MAX_SIZE = 50;
+  if (userActionList.length === USER_ACTION_LIST_MAX_SIZE) {
+    userActionList.shift();
+  }
+  userActionList.push(userAction);
 
-// const musicList = loadMusicList();
-// const userActionList = loadUserActionList();
+  try {
+    const userActionListJsonString = JSON.stringify(userActionList);
+    await AsyncStorage.setItem('userActionList', userActionListJsonString);
+  } catch (err) {
+    console.log(err);
+  }
+};
 
-const SKIP_WEIGHT_MODIFIER = 0.85;
-const BOOST_WEIGHT_MODIFIER = 0.2;
 
-const DEFAULT_PLAYLIST_SIZE = 20;
-const ACTION_LIST_SIZE = 50;
+// const musicList = getMusicList();
+// const userActionList = getUserActionList();
 
-calculateWeight(fakeMusicList, fakeuserActionList);
+
+
+// createPlaylist(fakeMusicList);
 createPlaylist(fakeMusicList);
-
-console.log(fakeMusicList);
+// console.log(fakeMusicList);
