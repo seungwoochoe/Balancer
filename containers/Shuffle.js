@@ -73,41 +73,74 @@ const loadUserActionList = async () => {
   }
 };
 
-const updateWeight_skipped = (music) => {
-  music.weight = music.weight*0.9;
-  return music;
-};
+const calculateWeight = (musicList, userActionList) => {
+  userActionList.forEach(userAction => {
+    let targetMusic = musicList.find(music => music.title === userAction.title);
 
-const updateWeight_liked = (music) => {
-  music.weight = music.weight*1.1;
-  return music;
+    if (userAction.action === "skip") {
+      targetMusic.weight = targetMusic.weight*SKIP_WEIGHT_MODIFIER;
+    } else {
+      targetMusic.weight = targetMusic.weight*BOOST_WEIGHT_MODIFIER;
+    }
+  });
+  return musicList;
 };
 
 const resetWeight = (musicList) => {
   musicList.forEach(music => {
     music.weight = 100;
   })
+};
+
+const makePlaylist = (musicList) => {
+  let playListSize = 0;
+  let weightTotal = 0;
+  const playList = [];
+
+  if (musicList.length < DEFAULT_PLAYLIST_SIZE) {
+    playListSize = musicList.length;
+  } else {
+    playListSize = DEFAULT_PLAYLIST_SIZE;
+  }
+
+  musicList.forEach(music => {
+    weightTotal += music.weight;
+  })
+  console.log(weightTotal);
+
+  for (let k = 0; k < playListSize; k++) {
+    const randomWeight = Math.random() * weightTotal;
+    console.log(randomWeight);
+
+    let weightSum = 0;
+    let index = 0;
+    while (weightSum <= randomWeight) {
+      weightSum += musicList[index].weight;
+      index++;
+    }
+
+    if (k > 0 && playList[k - 1] === musicList[index - 1]) {
+      console.log("Duplicate");
+      k--;
+    } else {
+      playList.push(musicList[index - 1]);      
+    }
+  }
+  console.log(playList);
 }
 
-const calculateWeight = (musicList, userActionList) => {
-  userActionList.forEach(element => {
-    let targetMusic = musicList.find(music => music.title === element.title);
 
-    if (element.action === "skip") {
-      targetMusic = updateWeight_skipped(targetMusic);
-    } else {
-      targetMusic = updateWeight_liked(targetMusic);
-    }
-  });
-  return musicList;
-};
 
 
 
 // const musicList = loadMusicList();
-// let userActionList = loaduserActionList();
+// let userActionList = loadUserActionList();
 
-calculateWeight(fakeMusicList, fakeuserActionList);
+const SKIP_WEIGHT_MODIFIER = 0.85;
+const BOOST_WEIGHT_MODIFIER = 1.2;
 
-console.log(fakeuserActionList);
-console.log(fakeMusicList);
+const DEFAULT_PLAYLIST_SIZE = 20;
+const ACTION_LIST_SIZE = 50;
+
+// calculateWeight(fakeMusicList, fakeuserActionList);
+makePlaylist(fakeMusicList);
