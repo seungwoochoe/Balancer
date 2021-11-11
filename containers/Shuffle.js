@@ -4,45 +4,41 @@ const fakeMusicList = [
   {
     "title": "1",
     "artist": "AKMU",
-    "weight": 100
+    "weight": 1
   },
   {
     "title": "2",
     "artist": "LAUV",
-    "weight": 100
+    "weight": 1
   },
   {
     "title": "3",
     "artist": "LAUV",
-    "weight": 100
+    "weight": 1
   },
   {
     "title": "4",
     "artist": "Mark Zuckerberg",
-    "weight": 100
+    "weight": 1
   },
   {
     "title": "5",
     "artist": "Meta",
-    "weight": 100
+    "weight": 1
   },
 ];
 
-let fakeuserActionList = [
+const fakeuserActionList = [
   {
     "title": "3",
     "action": "like"
   },
   {
-    "title": "4",
+    "title": "5",
     "action": "skip"
   },
   {
-    "title": "4",
-    "action": "skip"
-  },
-  {
-    "title": "4",
+    "title": "5",
     "action": "skip"
   },
   {
@@ -51,6 +47,10 @@ let fakeuserActionList = [
   },
   {
     "title": "5",
+    "action": "skip"
+  },
+  {
+    "title": "4",
     "action": "like"
   }
 ];
@@ -78,17 +78,16 @@ const calculateWeight = (musicList, userActionList) => {
     let targetMusic = musicList.find(music => music.title === userAction.title);
 
     if (userAction.action === "skip") {
-      targetMusic.weight = targetMusic.weight*SKIP_WEIGHT_MODIFIER;
+      targetMusic.weight = targetMusic.weight * SKIP_WEIGHT_MODIFIER;
     } else {
-      targetMusic.weight = targetMusic.weight*BOOST_WEIGHT_MODIFIER;
+      targetMusic.weight = targetMusic.weight + BOOST_WEIGHT_MODIFIER;
     }
   });
-  return musicList;
 };
 
 const resetWeight = (musicList) => {
   musicList.forEach(music => {
-    music.weight = 100;
+    music.weight = 1;
   })
 };
 
@@ -106,7 +105,7 @@ const makePlaylist = (musicList) => {
   musicList.forEach(music => {
     weightTotal += music.weight;
   })
-  console.log(weightTotal);
+  console.log("Total weight: ", weightTotal);
 
   for (let k = 0; k < playListSize; k++) {
     const randomWeight = Math.random() * weightTotal;
@@ -134,10 +133,10 @@ const makePlaylist = (musicList) => {
 
 
 // const musicList = loadMusicList();
-// let userActionList = loadUserActionList();
+// const userActionList = loadUserActionList();
 
 const SKIP_WEIGHT_MODIFIER = 0.85;
-const BOOST_WEIGHT_MODIFIER = 1.2;
+const BOOST_WEIGHT_MODIFIER = 0.2;
 
 const DEFAULT_PLAYLIST_SIZE = 20;
 const ACTION_LIST_SIZE = 50;
