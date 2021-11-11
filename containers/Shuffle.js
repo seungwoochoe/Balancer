@@ -141,28 +141,5 @@ function getTotalWeight(musicList) {
 
 
 
-
-async function storeUserActionList(userActionList, newUserAction) {
-  const USER_ACTION_LIST_MAX_SIZE = 50;
-  if (userActionList.length === USER_ACTION_LIST_MAX_SIZE) {
-    userActionList.shift();
-  }
-  userActionList.push(userAction);
-
-  try {
-    const userActionListJsonString = JSON.stringify(userActionList);
-    await AsyncStorage.setItem('userActionList', userActionListJsonString);
-  } catch (err) {
-    console.log(err);
-  }
-};
-
-
-// const musicList = getMusicList();
-// const userActionList = getUserActionList();
-
-
-
-// createPlaylist(fakeMusicList);
 createPlaylist(fakeMusicList);
-// console.log(fakeMusicList);
+
