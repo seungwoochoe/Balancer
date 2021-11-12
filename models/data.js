@@ -16,5 +16,6 @@ const songs = [
         artist: "ZionT",
         image: require("../assets/artwork/ziont.jpeg"),
         id : "3"
-    }
+    },
 ]
+export default songs;
