@@ -37,7 +37,7 @@ async function appendMorePlaylist(musicList, currentPlaylist) {
 // If there is no or only one music in storage, "createPlaylist" function should not be called.
 async function createPlaylist(musicList, playlistSize) {
   // const userActionList = await getUserActionList();
-  const userActionList = [];
+  const userActionList = fakeuserActionList;
   const weightedMusicList = calculateWeight(musicList, userActionList);
   let playlist = drawMusic(weightedMusicList, playlistSize);
   playlist = markIsPlayedToFalse(playlist);
@@ -67,12 +67,14 @@ function resetWeights(musicList) {
 
 function applyUserActionEffects(musicList, userActionList) {
   userActionList.forEach(userAction => {
-    let targetMusic = musicList.find(music => music.title === userAction.title);
+    let targetMusic = musicList.find(music => music.url === userAction.url);
 
-    if (userAction.action === "skip") {
-      targetMusic.weight = targetMusic.weight * SKIP_WEIGHT_MODIFIER;
-    } else {
-      targetMusic.weight = targetMusic.weight + BOOST_WEIGHT_MODIFIER;
+    if (targetMusic != null) {
+      if (userAction.action === "skip") {
+        targetMusic.weight = targetMusic.weight * SKIP_WEIGHT_MODIFIER;
+      } else {
+        targetMusic.weight = targetMusic.weight + BOOST_WEIGHT_MODIFIER;
+      }  
     }
   });
   // console.log("This is 🎶 list after applying user actions.\n", musicList);
@@ -146,65 +148,224 @@ async function storePlaylist(playlist) {
 
 
 const fakeLoadedPlaylist = [
-  { title: "2", artist: "LAUV", weight: 1, isPlayed: "true", isTrigger: "false" },
-  { title: "3", artist: "LAUV", weight: 1, isPlayed: "true", isTrigger: "false" },
-  { title: "2", artist: "LAUV", weight: 1, isPlayed: "true", isTrigger: "false" },
-  { title: "3", artist: "LAUV", weight: 1, isPlayed: "true", isTrigger: "false" },
-  { title: "5", artist: "Goldberg", weight: 1, isPlayed: "true", isTrigger: "false" },
-  { title: "4", artist: "Zuckerberg", weight: 1, isPlayed: "true", isTrigger: "false" },
-  { title: "1", artist: "AKMU", weight: 1, isPlayed: "true", isTrigger: "false" },
-  { title: "2", artist: "LAUV", weight: 1, isPlayed: "false", isTrigger: "false" },
-  { title: "1", artist: "AKMU", weight: 1, isPlayed: "false", isTrigger: "false" },
-  { title: "2", artist: "LAUV", weight: 1, isPlayed: "false", isTrigger: "true" },
-  { title: "3", artist: "LAUV", weight: 1, isPlayed: "false", isTrigger: "false" },
-  { title: "1", artist: "AKMU", weight: 1, isPlayed: "false", isTrigger: "false" },
-  { title: "3", artist: "LAUV", weight: 1, isPlayed: "false", isTrigger: "false" },
-  { title: "5", artist: "Goldberg", weight: 1, isPlayed: "false", isTrigger: "false" },
-  { title: "4", artist: "Zuckerberg", weight: 1, isPlayed: "false", isTrigger: "false" },
-  { title: "1", artist: "AKMU", weight: 1, isPlayed: "false", isTrigger: "false" },
-  { title: "3", artist: "LAUV", weight: 1, isPlayed: "false", isTrigger: "false" },
-  { title: "2", artist: "LAUV", weight: 1, isPlayed: "false", isTrigger: "false" },
-  { title: "4", artist: "Zuckerberg", weight: 1, isPlayed: "false", isTrigger: "false" },
-  { title: "5", artist: "Goldberg", weight: 1, isPlayed: "false", isTrigger: "true" }
+  {
+    url: ".../Documents/4.mp3",
+    duration: 184,
+    title: "4",
+    artist: "Ed Sheeran",
+    artwork: ".../4.jpg",
+    weight: 1,
+    isPlayed: "false",
+    isTrigger: "false"
+  },
+  {
+    url: ".../Documents/2.mp3",
+    duration: 182,
+    title: "2",
+    artist: "Lauv",
+    artwork: ".../2.jpg",
+    weight: 1.4,
+    isPlayed: "false",
+    isTrigger: "false"
+  },
+  {
+    url: ".../Documents/5.mp3",
+    duration: 185,
+    title: "5",
+    artist: "Goldberg",
+    artwork: ".../5.jpg",
+    weight: 0.5220062499999999,
+    isPlayed: "false",
+    isTrigger: "false"
+  },
+  {
+    url: ".../Documents/2.mp3",
+    duration: 182,
+    title: "2",
+    artist: "Lauv",
+    artwork: ".../2.jpg",
+    weight: 1.4,
+    isPlayed: "false",
+    isTrigger: "false"
+  },
+  {
+    url: ".../Documents/1.mp3",
+    duration: 181,
+    title: "1",
+    artist: "AKMU",
+    artwork: ".../1.jpg",
+    weight: 1.2,
+    isPlayed: "false",
+    isTrigger: "false"
+  },
+  {
+    url: ".../Documents/4.mp3",
+    duration: 184,
+    title: "4",
+    artist: "Ed Sheeran",
+    artwork: ".../4.jpg",
+    weight: 1,
+    isPlayed: "false",
+    isTrigger: "false"
+  },
+  {
+    url: ".../Documents/2.mp3",
+    duration: 182,
+    title: "2",
+    artist: "Lauv",
+    artwork: ".../2.jpg",
+    weight: 1.4,
+    isPlayed: "false",
+    isTrigger: "false"
+  },
+  {
+    url: ".../Documents/1.mp3",
+    duration: 181,
+    title: "1",
+    artist: "AKMU",
+    artwork: ".../1.jpg",
+    weight: 1.2,
+    isPlayed: "false",
+    isTrigger: "false"
+  },
+  {
+    url: ".../Documents/2.mp3",
+    duration: 182,
+    title: "2",
+    artist: "Lauv",
+    artwork: ".../2.jpg",
+    weight: 1.4,
+    isPlayed: "false",
+    isTrigger: "false"
+  },
+  {
+    url: ".../Documents/1.mp3",
+    duration: 181,
+    title: "1",
+    artist: "AKMU",
+    artwork: ".../1.jpg",
+    weight: 1.2,
+    isPlayed: "false",
+    isTrigger: "true"
+  },
+  {
+    url: ".../Documents/3.mp3",
+    duration: 183,
+    title: "3",
+    artist: "Lauv",
+    artwork: ".../3.jpg",
+    weight: 1,
+    isPlayed: "false",
+    isTrigger: "false"
+  },
+  {
+    url: ".../Documents/4.mp3",
+    duration: 184,
+    title: "4",
+    artist: "Ed Sheeran",
+    artwork: ".../4.jpg",
+    weight: 1,
+    isPlayed: "false",
+    isTrigger: "false"
+  },
+  {
+    url: ".../Documents/1.mp3",
+    duration: 181,
+    title: "1",
+    artist: "AKMU",
+    artwork: ".../1.jpg",
+    weight: 1.2,
+    isPlayed: "false",
+    isTrigger: "false"
+  },
+  {
+    url: ".../Documents/3.mp3",
+    duration: 183,
+    title: "3",
+    artist: "Lauv",
+    artwork: ".../3.jpg",
+    weight: 1,
+    isPlayed: "false",
+    isTrigger: "false"
+  },
+  {
+    url: ".../Documents/2.mp3",
+    duration: 182,
+    title: "2",
+    artist: "Lauv",
+    artwork: ".../2.jpg",
+    weight: 1.4,
+    isPlayed: "false",
+    isTrigger: "false"
+  },
+  {
+    url: ".../Documents/3.mp3",
+    duration: 183,
+    title: "3",
+    artist: "Lauv",
+    artwork: ".../3.jpg",
+    weight: 1,
+    isPlayed: "false",
+    isTrigger: "false"
+  },
+  {
+    url: ".../Documents/2.mp3",
+    duration: 182,
+    title: "2",
+    artist: "Lauv",
+    artwork: ".../2.jpg",
+    weight: 1.4,
+    isPlayed: "false",
+    isTrigger: "false"
+  },
+  {
+    url: ".../Documents/3.mp3",
+    duration: 183,
+    title: "3",
+    artist: "Lauv",
+    artwork: ".../3.jpg",
+    weight: 1,
+    isPlayed: "false",
+    isTrigger: "false"
+  },
+  {
+    url: ".../Documents/4.mp3",
+    duration: 184,
+    title: "4",
+    artist: "Ed Sheeran",
+    artwork: ".../4.jpg",
+    weight: 1,
+    isPlayed: "false",
+    isTrigger: "false"
+  },
+  {
+    url: ".../Documents/2.mp3",
+    duration: 182,
+    title: "2",
+    artist: "Lauv",
+    artwork: ".../2.jpg",
+    weight: 1.4,
+    isPlayed: "false",
+    isTrigger: "true"
+  }
 ];
 
 const fakeMusicList =  [
-  { title: "1", artist: "AKMU" },
-  { title: "2", artist: "LAUV" },
-  { title: "3", artist: "LAUV" },
-  { title: "4", artist: "Zuckerberg" },
-  { title: "5", artist: "Goldberg" }
+  { url: ".../Documents/1.mp3", duration: 181, title: "1", artist: "AKMU", artwork: ".../1.jpg" },
+  { url: ".../Documents/2.mp3", duration: 182, title: "2", artist: "Lauv", artwork: ".../2.jpg" },
+  { url: ".../Documents/3.mp3", duration: 183, title: "3", artist: "Lauv", artwork: ".../3.jpg" },
+  { url: ".../Documents/4.mp3", duration: 184, title: "4", artist: "Ed Sheeran", artwork: ".../4.jpg" },
+  { url: ".../Documents/5.mp3", duration: 185, title: "5", artist: "Goldberg", artwork: ".../5.jpg" }
 ];
 
 const fakeuserActionList = [
-  {
-    "title": "3",
-    "action": "like"
-  },
-  {
-    "title": "5",
-    "action": "skip"
-  },
-  {
-    "title": "5",
-    "action": "skip"
-  },
-  {
-    "title": "5",
-    "action": "skip"
-  },
-  {
-    "title": "5",
-    "action": "skip"
-  },
-  {
-    "title": "4",
-    "action": "like"
-  },
-  {
-    "title": "4",
-    "action": "like"
-  }
+  { url: ".../Documents/1.mp3", action: "like" },
+  { url: ".../Documents/5.mp3", action: "skip" },
+  { url: ".../Documents/5.mp3", action: "skip" },
+  { url: ".../Documents/5.mp3", action: "skip" },
+  { url: ".../Documents/5.mp3", action: "skip" },
+  { url: ".../Documents/2.mp3", action: "like" },
+  { url: ".../Documents/2.mp3", action: "like" }
 ];
 
 
@@ -213,10 +374,10 @@ async function test() {
   // playlist = await(createPlaylist(fakeMusicList, PLAYLIST_SIZE));
 
   playlist = await getPrunedPlaylistFromStorage();
-  // console.log("pruned playlist\n", playlist);
-
   playlist = await complementPlaylist(fakeMusicList, playlist);
-  playlist = await appendMorePlaylist(fakeMusicList, playlist);
-  console.log("\n\n🎧 Final playlist\n", playlist);
+  // playlist = await appendMorePlaylist(fakeMusicList, playlist);
+  
+  console.log("\n🎧 Playlist");
+  console.log(playlist);
 }
 test();
