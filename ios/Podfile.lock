@@ -235,7 +235,7 @@ PODS:
   - React-jsinspector (0.64.2)
   - react-native-safe-area-context (3.3.2):
     - React-Core
-  - react-native-slider (4.1.10):
+  - react-native-slider (4.1.11):
     - React-Core
   - react-native-track-player (2.1.2):
     - React-Core
@@ -524,7 +524,7 @@ SPEC CHECKSUMS:
   EXUpdates: 916ffc4f03d87fae6b1c5f24ce6302c93e26f9e4
   EXUpdatesInterface: 2413d24feea140d6b30f6c73ec7f7e0281d3594a
   FBLazyVector: e686045572151edef46010a6f819ade377dfeb4b
-  FBReactNativeSpec: fd9a36c2b8830891316b9cacfb83bbc5d063912d
+  FBReactNativeSpec: e6dc1f3e779d24ffbe500c32b5282f74ddb2521b
   glog: 73c2498ac6884b13ede40eda8228cb1eee9d9d62
   RCT-Folly: ec7a233ccc97cc556cf7237f0db1ff65b986f27c
   RCTRequired: 6d3e854f0e7260a648badd0d44fc364bc9da9728
