@@ -9,24 +9,65 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 const MusicListUI = ({navigation}) => {
+    const renderElement = ({item}) => {
+        return (
+            <TouchableOpacity 
+            onPress = {() => navigation.navigate('음악 재생화면')}
+            style = {{
+                width : width,
+                justifyContent : 'space-between',
+                alignItems : 'center',
+                height : 100,
+                flexDirection :'row',
+                borderTopColor : "#FFFFFF",
+                borderBottomColor : '#808080'
+            }}>
+                <View style = {{
+                    padding : 10
+                }}>
+                    <Image
+                        source = {item.image}
+                        style = {{
+                            borderRadius : 5,
+                            width : 80,
+                            height : 80
+                        }}
+                    />
+                </View>
+                <View style = {{
+                    flex : 1,
+                    alignItems : 'flex-start',
+                    
+                }}>
+                    <Text style = {{
+                        fontSize : 15,
+                        fontWeight : '600'
+                    }}>{item.title}</Text>
+                    <Text style = {{
+                        fontSize : 10,
+                        fontWeight : '300'
+                    }}>
+                        {item.artist}
+                    </Text>
+                </View>
+            </TouchableOpacity>
+        );
+    }
     return(
         <SafeAreaView style = {{
             flex : 1,
             justifyContent : 'center',
             alignItems: 'center'
         }}>
-            <TouchableOpacity
-            onPress ={() => navigation.navigate('음악 재생화면')}
- 
-            style = {{
-                backgroundColor:"#AD40AF",
-                padding: 20,
-                width : '90%',
-                borderRadius : 5,
-                flexDirection: 'row',
-            }}>
-                <Text style ={{ color: "#FFFFFF"}}>음악 재생화면으로 가기</Text>
-            </TouchableOpacity>
+           <Animated.FlatList
+                style ={{
+                    marginTop : 40
+                }}
+                data = {songs}
+                renderItem = {renderElement}
+                keyExtractor = {(item) => item.id}
+           >
+           </Animated.FlatList>
         </SafeAreaView>
     );
 }
