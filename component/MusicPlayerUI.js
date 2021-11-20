@@ -147,8 +147,8 @@ const styles = StyleSheet.create({
         width : '80%'
     },
     artworkWrapper :{ //이미지 컨테이너
-        width : 300,
-        height : 300, 
+        width : 200,
+        height : 200, 
     },
     arworkImage:{ // 이미지가 이미지 컨테이너에 어떻게 들어갈지 정하는 것
         width:"100%",
