@@ -67,15 +67,15 @@ const MusicListUI = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: '90%',
+    width: '100%',
     marginTop: '16%',
-    marginLeft: '5%',
     backgroundColor: '#fff'
   },
   titleText: {
     fontSize: rem * 1.9,
     fontWeight: 'bold',
     color: '#222',
+    marginHorizontal: '5%',
   },
   shuffleButton: {
     alignItems: "center",
@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
     padding: '3%',
     marginTop: '4%',
     marginBottom: '3%',
-    marginHorizontal: '23%',
+    marginHorizontal: '18%',
     borderRadius: 10,
   },
   musicItem: {
@@ -92,6 +92,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     borderBottomColor: '#bbb',
     borderBottomWidth: 0.7,
+    marginHorizontal: '5%',
   },
 });
 
