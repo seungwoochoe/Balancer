@@ -19,7 +19,7 @@ const MusicPlayerUI = () => {
 
   useEffect(() => {
     scrollX.addListener(({ value }) => {
-      const index = Math.round(value / width)
+      const index = Math.round(value / (width * 0.9) )
       setSongIndex(index);
     });
     return () => {
@@ -79,13 +79,18 @@ const MusicPlayerUI = () => {
         />
       </View>
 
-
-      <View style={{ flex: 0.75, flexDirection: 'row', alignItems: 'center' }}>
+      <View style={{ flex: .8, width: '80%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
         <View>
           <Text style={styles.title}>{songs[songIndex].title}</Text>
           <Text style={styles.artist}>{songs[songIndex].artist}</Text>
         </View>
+        <View>
+          <TouchableOpacity>
+            <Ionicons name="heart-outline" size={rem * 1.5} color={theme}></Ionicons>
+          </TouchableOpacity>
+        </View>
       </View>
+
 
 
       <View style={{ flex: 0.8 }}>
@@ -132,22 +137,20 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
   },
-  arworkImage: { 
+  arworkImage: {
     width: width * 0.85,
     height: width * 0.85,
     borderRadius: 15,
   },
   title: {
-    fontSize: rem * 1.32,
+    fontSize: rem * 1.35,
     color: '#eee',
     fontWeight: '600',
-    textAlign: 'center'
   },
   artist: {
     fontSize: rem * 1.15,
     color: '#bbb',
     fontWeight: '300',
-    textAlign: 'center',
   },
   progressContainer: {
     width: width * 0.88,
@@ -159,7 +162,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
   MusicControls: {
-    width: '66%',
+    width: '59%',
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: '18%',
