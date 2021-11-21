@@ -25,10 +25,10 @@ const MusicListUI = ({ navigation }) => {
           />
         </View>
         <View style={{ width: width - listHeight, marginLeft: '2%' }}>
-          <Text style={{ fontSize: rem, }}>
+          <Text style={{ fontSize: rem * 0.98, }}>
             {item.title}
           </Text>
-          <Text style={{ fontSize: rem * 0.75, color: '#888', fontWeight: '300', marginTop: '0.5%', }}>
+          <Text style={{ fontSize: rem * 0.75, color: '#888', fontWeight: '300', marginTop: '0.9%', }}>
             {item.artist}
           </Text>
         </View>
@@ -68,9 +68,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: '90%',
-    marginTop: '19.5%',
+    marginTop: '16%',
     marginLeft: '5%',
-    // backgroundColor: 'black'
+    backgroundColor: '#fff'
   },
   titleText: {
     fontSize: rem * 1.9,
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
   },
   shuffleButton: {
     alignItems: "center",
-    backgroundColor: "#e6e6e6",
+    backgroundColor: "#f0f0f0",
     padding: '3%',
     marginTop: '4%',
     marginBottom: '3%',
