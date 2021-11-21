@@ -1,13 +1,13 @@
 import Slider from '@react-native-community/slider';
 import React, { useEffect, useRef, useState } from 'react';
-import { SafeAreaView, View, Text, StyleSheet, Dimensions, Image, FlatList, Animated } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, Image, Animated, ImageBackground } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import songs from '../models/data';
 
 const { width, height } = Dimensions.get("window");
 const rem = width / 20;
-const theme = '#107dac';
+const theme = '#eee';
 
 
 
@@ -57,7 +57,7 @@ const MusicPlayerUI = () => {
 
 
   return (
-    <SafeAreaView style={styles.container}>
+    <ImageBackground source={songs[songIndex].image} blurRadius={(width / height) * 220} style={styles.container}>
       <View style={styles.mainContainer}>
         <View style={{
           width: width,
@@ -93,26 +93,26 @@ const MusicPlayerUI = () => {
             value={20}
             minimumValue={0}
             maximumValue={100}
-            thumbTintColor='#FFD369'
-            minimumTrackTintColor='#FFD369'
-            maximumTrackTintColor='#FF9500'
+            thumbTintColor='#ddd'
+            minimumTrackTintColor='#ddd'
+            maximumTrackTintColor='#9c9c9c'
             onSlidingComplete={() => { }}
           />
         </View>
         <View style={styles.progressLabelContainer}>
-          <Text>0 : 00</Text>
-          <Text>4 : 00</Text>
+          <Text style={{color: '#bbb', fontSize: rem * 0.75}}>0 : 00</Text>
+          <Text style={{color: '#bbb', fontSize: rem * 0.75}}>4 : 00</Text>
         </View>
 
         <View style={styles.MusicControls}>
           <TouchableOpacity onPress={skipToPrevious}>
-            <Ionicons name="play-back" size={rem * 2} color={theme} style={{ marginTop: 25 }}></Ionicons>
+            <Ionicons name="play-back" size={rem * 1.8} color={theme} style={{ marginTop: 25 }}></Ionicons>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => { }}>
             <Ionicons name="pause-outline" size={rem * 2} color={theme}></Ionicons>
           </TouchableOpacity>
           <TouchableOpacity onPress={skipToNext}>
-            <Ionicons name="play-forward" size={rem * 2} color={theme} o style={{ marginTop: 25 }}></Ionicons>
+            <Ionicons name="play-forward" size={rem * 1.8} color={theme} o style={{ marginTop: 25 }}></Ionicons>
           </TouchableOpacity>
         </View>
       </View>
@@ -132,15 +132,13 @@ const MusicPlayerUI = () => {
           </TouchableOpacity>
         </View>
       </View>
-    </SafeAreaView>
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
   container: { // 전체 컨테이너, 앱 배경 등의 색깔 조절
     flex: 1,
-    margin: '6%',
-    // backgroundColor: 'black',
   },
   mainContainer: { //메인 컨테이너
     flex: 1,
@@ -159,8 +157,8 @@ const styles = StyleSheet.create({
     width: '80%'
   },
   artworkWrapper: { //이미지 컨테이너
-    width: width * 0.8,
-    height: width * 0.8,
+    width: width * 0.84,
+    height: width * 0.84,
   },
   arworkImage: { // 이미지가 이미지 컨테이너에 어떻게 들어갈지 정하는 것
     width: "100%",
@@ -168,14 +166,17 @@ const styles = StyleSheet.create({
     borderRadius: 15,
   },
   title: {
-    marginTop: 30,
-    fontSize: rem * 1.35,
+    marginTop: rem * 1.5,
+    fontSize: rem * 1.32,
+    color: '#eee',
     fontWeight: '600',
     textAlign: 'center'
   },
   artist: {//노래 가수 이름
-    fontSize: rem,
-    fontWeight: '100',
+    marginTop: rem * 0.2,
+    fontSize: rem * 1.1,
+    color: '#ddd',
+    fontWeight: '200',
     textAlign: 'center',
   },
   progressContainer: {
