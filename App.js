@@ -14,7 +14,7 @@ const Stack = createNativeStackNavigator();
 
 const App = () => {
 
-  let playlist = Shuffle.getPrunedPlaylistFromStorage();
+  // let playlist = Shuffle.getPrunedPlaylistFromStorage();
   // playlist = Shuffle.appendMorePlaylist(musicList, playlist);
 
 
