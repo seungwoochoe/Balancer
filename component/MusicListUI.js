@@ -1,75 +1,109 @@
-import Slider from '@react-native-community/slider';
-import React, {useEffect, useRef, useState} from'react';
-import {SafeAreaView,View,Text,StyleSheet, Dimensions, Image, FlatList, Animated} from'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { SafeAreaView, View, Text, StyleSheet, Dimensions, Image, FlatList, Animated } from 'react-native';
 import { BorderlessButton, TouchableOpacity } from 'react-native-gesture-handler';
-import Ionicons from 'react-native-vector-icons/Ionicons'; // 아이콘 라이브러리
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import songs from '../models/data';
-const {width, height} = Dimensions.get("window");
+const { width, height } = Dimensions.get("window");
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-const MusicListUI = ({navigation}) => {
-    const renderElement = ({item}) => {
-        return (
-            <TouchableOpacity 
-            onPress = {() => navigation.navigate('음악 재생화면')}
-            style = {{
-                width : width,
-                justifyContent : 'space-between',
-                alignItems : 'center',
-                height : 100,
-                flexDirection :'row',
-                borderTopColor : "#FFFFFF",
-                borderBottomColor : '#808080'
-            }}>
-                <View style = {{
-                    padding : 10
-                }}>
-                    <Image
-                        source = {item.image}
-                        style = {{
-                            borderRadius : 5,
-                            width : 80,
-                            height : 80
-                        }}
-                    />
-                </View>
-                <View style = {{
-                    flex : 1,
-                    alignItems : 'flex-start',
-                    
-                }}>
-                    <Text style = {{
-                        fontSize : 15,
-                        fontWeight : '600'
-                    }}>{item.title}</Text>
-                    <Text style = {{
-                        fontSize : 10,
-                        fontWeight : '300'
-                    }}>
-                        {item.artist}
-                    </Text>
-                </View>
-            </TouchableOpacity>
-        );
-    }
-    return(
-        <SafeAreaView style = {{
-            flex : 1,
-            justifyContent : 'center',
-            alignItems: 'center'
-        }}>
-           <Animated.FlatList
-                style ={{
-                    marginTop : 40
-                }}
-                data = {songs}
-                renderItem = {renderElement}
-                keyExtractor = {(item) => item.id}
-           >
-           </Animated.FlatList>
-        </SafeAreaView>
+const rem = width / 20;
+const theme = '#107dac';
+const listHeight = width * 0.16;
+
+const MusicListUI = ({ navigation }) => {
+
+  const renderElement = ({ item }) => {
+    return (
+      <TouchableOpacity
+        onPress={() => navigation.navigate('음악 재생화면')}
+        style={styles.musicItem}>
+        <View style={{ width: listHeight }}>
+          <Image
+            source={item.image}
+            style={{ width: '87%', height: '87%', borderRadius: 4, }}
+          />
+        </View>
+        <View style={{ width: width - listHeight, marginLeft: '2%' }}>
+          <Text style={{ fontSize: rem * 0.98, }}>
+            {item.title}
+          </Text>
+          <Text style={{ fontSize: rem * 0.75, color: '#888', fontWeight: '300', marginTop: '0.9%', }}>
+            {item.artist}
+          </Text>
+        </View>
+      </TouchableOpacity>
     );
+  }
+
+  const renderShuffleButon = () => {
+    return (
+      <TouchableOpacity
+        style={styles.shuffleButton}
+        onPress={() => { }}
+      >
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Ionicons name="logo-electron" size={rem * 1.7} color={theme}></Ionicons>
+          <Text style={{ fontSize: rem * 1.2, color: theme, fontWeight: '600', justifyContent: 'center' }}> Shuffle </Text>
+        </View>
+      </TouchableOpacity>
+    )
+  }
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+        <Text style={styles.titleText}>Songs</Text>
+        <TouchableOpacity
+          onPress={() => {navigation.navigate('About')}}
+          style={{padding: '5%'}}
+        >
+          <Ionicons name="information-circle-outline" size={rem * 1.4} color={'#888'}></Ionicons>
+
+        </TouchableOpacity>
+
+      </View>
+      <Animated.FlatList
+        style={{ marginTop: '3%' }}
+        data={songs}
+        ListHeaderComponent={renderShuffleButon}
+        renderItem={renderElement}
+        keyExtractor={(item) => item.id}
+      />
+    </SafeAreaView>
+  );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    width: '100%',
+    marginTop: '16%',
+    backgroundColor: '#fff'
+  },
+  titleText: {
+    fontSize: rem * 1.9,
+    fontWeight: 'bold',
+    color: '#222',
+    marginHorizontal: '5%',
+  },
+  shuffleButton: {
+    alignItems: "center",
+    backgroundColor: "#f0f0f0",
+    padding: '3%',
+    marginTop: '4%',
+    marginBottom: '3%',
+    marginHorizontal: '18%',
+    borderRadius: 10,
+  },
+  musicItem: {
+    alignItems: 'center',
+    height: listHeight,
+    flexDirection: 'row',
+    borderBottomColor: '#bbb',
+    borderBottomWidth: 0.7,
+    marginHorizontal: '5%',
+  },
+});
 
 export default MusicListUI;
