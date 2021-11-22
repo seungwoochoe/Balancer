@@ -52,7 +52,17 @@ const MusicListUI = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.titleText}>Songs</Text>
+      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+        <Text style={styles.titleText}>Songs</Text>
+        <TouchableOpacity
+          onPress={() => {navigation.navigate('About')}}
+          style={{padding: '5%'}}
+        >
+          <Ionicons name="information-circle-outline" size={rem * 1.4} color={'#888'}></Ionicons>
+
+        </TouchableOpacity>
+
+      </View>
       <Animated.FlatList
         style={{ marginTop: '3%' }}
         data={songs}
