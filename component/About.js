@@ -53,7 +53,7 @@ const About = () => {
 				"Work" shall mean the work of authorship, whether in Source or
 				Object form, made available under the License, as indicated by a
 				copyright notice that is included in or attached to the work
-				(an example is provided in the Appendix below).
+				(an example is provided in the Appendix below).{'\n'}
 
 				"Derivative Works" shall mean any work, whether in Source or Object
 				form, that is based on (or derived from) the Work and for which the
@@ -193,7 +193,22 @@ const About = () => {
 
 				END OF TERMS AND CONDITIONS{'\n'}{'\n'}
 
-				Source code is available on {'\n'}https://github.com/SeungwooChoe/Balancer{'\n'}
+				Copyright 2021 https://github.com/seungwoochoe/Balancer/graphs/contributors{'\n'}{'\n'}
+
+				Licensed under the Apache License, Version 2.0 (the "License");
+				you may not use this file except in compliance with the License.
+				You may obtain a copy of the License at{'\n'}{'\n'}
+
+				http://www.apache.org/licenses/LICENSE-2.0{'\n'}{'\n'}
+
+				Unless required by applicable law or agreed to in writing, software
+				distributed under the License is distributed on an "AS IS" BASIS,
+				WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+				See the License for the specific language governing permissions and
+				limitations under the License.{'\n'}{'\n'}
+
+
+				The source code is available on https://github.com/SeungwooChoe/Balancer{'\n'}{'\n'}
 
 			</Text>
 
