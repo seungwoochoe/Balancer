@@ -13,6 +13,7 @@ const blurRadius = (width / height) * 220;
 
 
 const MusicPlayerUI = () => {
+  
   const [songIndex, setSongIndex] = useState(0);
   const scrollX = useRef(new Animated.Value(0)).current;
   const songSlider = useRef(null);
@@ -44,6 +45,7 @@ const MusicPlayerUI = () => {
       <Animated.View style={{
         width: width * 0.9,
         alignItems: 'center',
+
       }}>
         <Image
           source={item.image}
@@ -58,7 +60,7 @@ const MusicPlayerUI = () => {
   return (
     <ImageBackground source={songs[songIndex].image} blurRadius={blurRadius} style={styles.container}>
 
-      <View style={{ flex: 3500 / height, flexDirection: 'row', width: '90%', marginBottom: '6%', alignItems: 'flex-end' }}>
+      <View style={styles.artworkWrapper}>
         <Animated.FlatList
           ref={songSlider}
           data={songs}
@@ -90,8 +92,6 @@ const MusicPlayerUI = () => {
           </TouchableOpacity>
         </View>
       </View>
-
-
 
       <View style={{ flex: 0.8 }}>
         <View style={{ justifyContent: 'center' }}>
@@ -136,6 +136,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
+  },
+  artworkWrapper: {
+    flex: 3500 / height,
+    flexDirection: 'row',
+    paddingHorizontal: '5%',
+    paddingBottom: '6%',
+    alignItems: 'flex-end',
+    shadowColor: 'black',
+    shadowRadius: width * 0.075,
+    shadowOpacity: 0.24,
   },
   arworkImage: {
     width: width * 0.85,
