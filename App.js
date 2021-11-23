@@ -1,6 +1,4 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, Button, View } from 'react-native';
 import MusicPlayerUI from './component/MusicPlayerUI';
 import MusicListUI from './component/MusicListUI';
 import About from './component/About'
@@ -23,11 +21,10 @@ const App = () => {
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen component={MusicListUI} name='음악 리스트' options={{ headerShown: false }} />
         <Stack.Screen component={MusicPlayerUI} name='음악 재생화면' options={{ headerTitle: '' }} />
-        <Stack.Screen component={About} name='About' options={{ headerTitle: 'About' }} />
+        <Stack.Screen component={About} name='About'/>
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
-
 
 export default App;
