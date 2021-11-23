@@ -1,11 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { SafeAreaView, View, Text, StyleSheet, Dimensions, Image, FlatList, Animated } from 'react-native';
-import { BorderlessButton, TouchableOpacity } from 'react-native-gesture-handler';
+import { SafeAreaView, View, Text, StyleSheet, Dimensions, Image, Animated } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import songs from '../models/data';
 const { width, height } = Dimensions.get("window");
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 const rem = width / 20;
 const theme = '#107dac';
@@ -43,7 +41,7 @@ const MusicListUI = ({ navigation }) => {
         onPress={() => { }}
       >
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <Ionicons name="logo-electron" size={rem * 1.7} color={theme}></Ionicons>
+          <Ionicons name="shuffle" size={rem * 1.7} color={theme}></Ionicons>
           <Text style={{ fontSize: rem * 1.2, color: theme, fontWeight: '600', justifyContent: 'center' }}> Shuffle </Text>
         </View>
       </TouchableOpacity>
@@ -56,7 +54,7 @@ const MusicListUI = ({ navigation }) => {
         <Text style={styles.titleText}>Songs</Text>
         <TouchableOpacity
           onPress={() => {navigation.navigate('About')}}
-          style={{padding: '5%'}}
+          style={{padding: '4%'}}
         >
           <Ionicons name="information-circle-outline" size={rem * 1.4} color={'#888'}></Ionicons>
 

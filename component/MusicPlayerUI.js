@@ -19,7 +19,7 @@ const MusicPlayerUI = () => {
 
   useEffect(() => {
     scrollX.addListener(({ value }) => {
-      const index = Math.round(value / (width * 0.9) )
+      const index = Math.round(value / (width * 0.9))
       setSongIndex(index);
     });
     return () => {
@@ -79,7 +79,7 @@ const MusicPlayerUI = () => {
         />
       </View>
 
-      <View style={{ flex: .8, width: '80%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
+      <View style={{ flex: .8, width: '80%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
         <View>
           <Text style={styles.title}>{songs[songIndex].title}</Text>
           <Text style={styles.artist}>{songs[songIndex].artist}</Text>
@@ -115,13 +115,13 @@ const MusicPlayerUI = () => {
 
       <View style={{ flex: 2, flexDirection: 'row' }}>
         <View style={styles.MusicControls}>
-          <TouchableOpacity onPress={skipToPrevious}>
+          <TouchableOpacity onPress={skipToPrevious} style={{ padding: '10%' }}>
             <Ionicons name="play-back" size={rem * 2} color={theme}></Ionicons>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => { }} >
+          <TouchableOpacity onPress={() => { }} style={{ padding: '10%' }} >
             <Ionicons name="pause" size={rem * 2.8} color={theme}></Ionicons>
           </TouchableOpacity>
-          <TouchableOpacity onPress={skipToNext}>
+          <TouchableOpacity onPress={skipToNext} style={{ padding: '10%' }}>
             <Ionicons name="play-forward" size={rem * 2} color={theme}></Ionicons>
           </TouchableOpacity>
         </View>
@@ -162,7 +162,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
   MusicControls: {
-    width: '59%',
+    width: '62%',
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: '18%',
