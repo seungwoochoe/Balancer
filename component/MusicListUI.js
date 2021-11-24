@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { SafeAreaView, View, Text, StyleSheet, Dimensions, Image, Animated } from 'react-native';
+import { SafeAreaView, View, Text, StyleSheet, Dimensions, Image, Animated, StatusBar } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import songs from '../models/data';
@@ -22,7 +22,7 @@ const MusicListUI = ({ navigation }) => {
             style={{ width: '87%', height: '87%', borderRadius: 4, }}
           />
         </View>
-        <View style={{ width: width - listHeight * 2 - width * 0.05, marginLeft: '2%'}}>
+        <View style={{ width: width - listHeight * 2 - width * 0.05, marginLeft: '2%' }}>
           <Text style={{ fontSize: rem * 0.98, }} numberOfLines={1}>
             {item.title}
           </Text>
@@ -50,11 +50,12 @@ const MusicListUI = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <StatusBar barStyle="dark-content" animated="true" />
       <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
         <Text style={styles.titleText}>Songs</Text>
         <TouchableOpacity
-          onPress={() => {navigation.navigate('About')}}
-          style={{padding: '4%'}}
+          onPress={() => { navigation.navigate('About') }}
+          style={{ padding: '4%' }}
         >
           <Ionicons name="information-circle-outline" size={rem * 1.4} color={'#999'}></Ionicons>
 

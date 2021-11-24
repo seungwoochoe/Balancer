@@ -1,6 +1,6 @@
 import Slider from '@react-native-community/slider';
 import React, { useEffect, useRef, useState } from 'react';
-import { View, Text, StyleSheet, Dimensions, Image, Animated, ImageBackground } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, Image, Animated, ImageBackground, StatusBar } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import songs from '../models/data';
@@ -72,6 +72,7 @@ const MusicPlayerUI = () => {
 
   return (
     <ImageBackground source={songs[songIndex].image} blurRadius={blurRadius} style={{ flex: 1, transform: [{ rotate: '180deg' }] }}>
+      <StatusBar barStyle="light-content" animated="true"/>
       <View style={{ flex: 1, transform: [{ rotate: '180deg' }], alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.15)' }}>
         <View style={styles.artworkWrapper}>
           <Animated.FlatList
