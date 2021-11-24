@@ -106,7 +106,7 @@ const MusicPlayerUI = () => {
           </View>
         </View>
 
-        <View style={{ flex: 0.8 }}>
+        <View style={{ flex: 0.8, flexDirection: 'row' }}>
           <View style={{ justifyContent: 'center' }}>
             <Slider
               style={styles.progressContainer}
@@ -172,13 +172,13 @@ const styles = StyleSheet.create({
     fontWeight: '300',
   },
   progressContainer: {
-    width: width * 0.88,
+    width: width * 0.84,
     alignItems: 'center',
   },
   progressLabelContainer: {
-    width: width * 0.88,
+    width: width * 0.84,
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   MusicControls: {
     width: '62%',
