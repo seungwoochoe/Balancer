@@ -22,11 +22,11 @@ const MusicListUI = ({ navigation }) => {
             style={{ width: '87%', height: '87%', borderRadius: 4, }}
           />
         </View>
-        <View style={{ width: width - listHeight, marginLeft: '2%' }}>
-          <Text style={{ fontSize: rem * 0.98, }}>
+        <View style={{ width: width - listHeight * 2 - width * 0.05, marginLeft: '2%'}}>
+          <Text style={{ fontSize: rem * 0.98, }} numberOfLines={1}>
             {item.title}
           </Text>
-          <Text style={{ fontSize: rem * 0.75, color: '#888', fontWeight: '300', marginTop: '0.9%', }}>
+          <Text style={{ fontSize: rem * 0.75, color: '#888', fontWeight: '300', marginTop: '0.9%', }} numberOfLines={1}>
             {item.artist}
           </Text>
         </View>
@@ -56,7 +56,7 @@ const MusicListUI = ({ navigation }) => {
           onPress={() => {navigation.navigate('About')}}
           style={{padding: '4%'}}
         >
-          <Ionicons name="information-circle-outline" size={rem * 1.4} color={'#888'}></Ionicons>
+          <Ionicons name="information-circle-outline" size={rem * 1.4} color={'#999'}></Ionicons>
 
         </TouchableOpacity>
 
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
   shuffleButton: {
     alignItems: "center",
     backgroundColor: "#f0f0f0",
-    padding: '3%',
+    padding: '2.5%',
     marginTop: '4%',
     marginBottom: '3%',
     marginHorizontal: '18%',
