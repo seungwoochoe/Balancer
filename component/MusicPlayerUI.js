@@ -8,18 +8,17 @@ import songs from '../models/data';
 const { width, height } = Dimensions.get("window");
 const rem = width / 20;
 const theme = '#eee';
-const blurRadius = Math.pow((width / height), 2.05) * 480;
-
-
 
 const MusicPlayerUI = () => {
   const [songIndex, setSongIndex] = useState(0);
   const scrollX = useRef(new Animated.Value(0)).current;
   const songSlider = useRef(null);
+  const blurRadius = 188000 / height;
+  // const blurRadius = 90000 / height;
 
   useEffect(() => {
     scrollX.addListener(({ value }) => {
-      const index = Math.round(value / (width * 0.9))
+      const index = Math.round(value / (width * 0.9));
       setSongIndex(index);
     });
     return () => {
@@ -44,7 +43,6 @@ const MusicPlayerUI = () => {
       <Animated.View style={{
         width: width * 0.9,
         alignItems: 'center',
-
       }}>
         <Image
           source={item.image}
@@ -72,8 +70,8 @@ const MusicPlayerUI = () => {
 
   return (
     <ImageBackground source={songs[songIndex].image} blurRadius={blurRadius} style={{ flex: 1, transform: [{ rotate: '180deg' }] }}>
-      <StatusBar barStyle="light-content" animated="true"/>
-      <View style={{ flex: 1, transform: [{ rotate: '180deg' }], alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.15)' }}>
+      <StatusBar barStyle="light-content" animated="true" />
+      <View style={{ flex: 1, transform: [{ rotate: '180deg' }], alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.3)' }}>
         <View style={styles.artworkWrapper}>
           <Animated.FlatList
             ref={songSlider}
