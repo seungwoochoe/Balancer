@@ -23,7 +23,7 @@ const MusicListUI = ({ navigation }) => {
           />
         </View>
         <View style={{ width: width - listHeight * 2 - width * 0.05, marginLeft: '2%' }}>
-          <Text style={{ fontSize: rem * 0.98, }} numberOfLines={1}>
+          <Text style={{ fontSize: rem * 0.93, }} numberOfLines={1}>
             {item.title}
           </Text>
           <Text style={{ fontSize: rem * 0.75, color: '#888', fontWeight: '300', marginTop: '0.9%', }} numberOfLines={1}>

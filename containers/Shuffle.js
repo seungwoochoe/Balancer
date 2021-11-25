@@ -369,15 +369,15 @@ const fakeuserActionList = [
 ];
 
 
-async function test() {
-  let playlist = [];
-  // playlist = await(createPlaylist(fakeMusicList, PLAYLIST_SIZE));
+// async function test() {
+//   let playlist = [];
+//   // playlist = await(createPlaylist(fakeMusicList, PLAYLIST_SIZE));
 
-  playlist = await getPrunedPlaylistFromStorage();
-  playlist = await complementPlaylist(fakeMusicList, playlist);
-  // playlist = await appendMorePlaylist(fakeMusicList, playlist);
+//   playlist = await getPrunedPlaylistFromStorage();
+//   playlist = await complementPlaylist(fakeMusicList, playlist);
+//   // playlist = await appendMorePlaylist(fakeMusicList, playlist);
   
-  console.log("\n🎧 Playlist");
-  console.log(playlist);
-}
-test();
+//   console.log("\n🎧 Playlist");
+//   console.log(playlist);
+// }
+// test();
