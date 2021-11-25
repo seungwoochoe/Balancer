@@ -1,5 +1,5 @@
 import React, { Component, useEffect, useRef, useState } from 'react';
-import { SafeAreaView, View, Text, StyleSheet, Dimensions, Image, Animated, StatusBar } from 'react-native';
+import { SafeAreaView, View, Text, StyleSheet, Dimensions, Image, Animated, StatusBar, Platform } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { BlurView } from 'expo-blur';
@@ -11,6 +11,12 @@ const theme = '#107dac';
 const buttonTheme = '#333';
 const listHeight = width * 0.16;
 const bottomBarHeight = height / 8.2;
+let blurIntensity;
+if (Platform.OS === 'ios') {
+  blurIntensity = 96;
+} else {
+  blurIntensity = 200;
+}
 
 const MusicListUI = ({ navigation }) => {
 
@@ -31,7 +37,7 @@ const MusicListUI = ({ navigation }) => {
   const RenderSong = ({ item }) => {
     return (
       <TouchableOpacity
-        onPress={() => navigation.navigate('음악 재생화면')}
+        onPress={() => navigation.navigate('MusicPlayerUI')}
         style={styles.music}>
         <View style={{ width: listHeight }}>
           <Image
@@ -54,7 +60,7 @@ const MusicListUI = ({ navigation }) => {
   const RenderSongForBottomBar = ({ item }) => {
     return (
       <TouchableOpacity
-        onPress={() => navigation.navigate('음악 재생화면')}
+        onPress={() => navigation.navigate('MusicPlayerUI')}
         style={styles.bottomMusic}>
         <View style={{
           width: listHeight,
@@ -105,7 +111,7 @@ const MusicListUI = ({ navigation }) => {
         />
       </View>
 
-      <BlurView intensity={96} tint={'light'} style={styles.bottomBarContainer}>
+      <BlurView intensity={blurIntensity} tint={'light'} style={styles.bottomBarContainer}>
         <View style={{ flex: 13, alignItems: 'center', height: '100%', paddingTop: height * 0.0125 }}>
           <RenderSongForBottomBar item={songs[3]} />
         </View>

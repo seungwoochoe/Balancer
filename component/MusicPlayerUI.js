@@ -18,11 +18,8 @@ const MusicPlayerUI = () => {
   if (fileExtension === "jpeg") {
     blurRadius = 120000 / height;
   } else {
-    blurRadius = 270;
+    blurRadius = 275;
   }
-
-  // caching X
-  // const blurRadius = 90000 / height;
 
   useEffect(() => {
     scrollX.addListener(({ value }) => {

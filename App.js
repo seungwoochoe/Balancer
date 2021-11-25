@@ -8,9 +8,9 @@ import { Asset } from 'expo-asset';
 import data from './models/data';
 import * as Shuffle from './containers/Shuffle.js';
 
-const Stack = createNativeStackNavigator();
 
 
+const RootStack = createNativeStackNavigator();
 
 const App = () => {
   data.forEach((element) => {
@@ -23,11 +23,11 @@ const App = () => {
 
   return (
     <NavigationContainer theme={{ colors: { background: '#fff' } }}>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen component={MusicListUI} name='음악 리스트' />
-        <Stack.Screen component={MusicPlayerUI} name='음악 재생화면' />
-        <Stack.Screen component={About} name='About' />
-      </Stack.Navigator>
+      <RootStack.Navigator screenOptions={{ headerShown: false, presentation: 'card', gestureEnabled: true }}>
+        <RootStack.Screen name="MusicListUI" component={MusicListUI} />
+        <RootStack.Screen name="MusicPlayerUI" component={MusicPlayerUI} />
+        <RootStack.Screen name="About" component={About} />
+      </RootStack.Navigator>
     </NavigationContainer>
   );
 }
