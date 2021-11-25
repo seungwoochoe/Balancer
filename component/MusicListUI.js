@@ -10,7 +10,7 @@ const rem = width / 20;
 const theme = '#107dac';
 const buttonTheme = '#333';
 const listHeight = width * 0.16;
-const bottomBarHeight = height / 8.5;
+const bottomBarHeight = height / 8.2;
 
 const MusicListUI = ({ navigation }) => {
 
@@ -40,7 +40,7 @@ const MusicListUI = ({ navigation }) => {
           />
         </View>
         <View style={{ width: width - listHeight * 2 - width * 0.05, marginLeft: '2%' }}>
-          <Text style={{ fontSize: rem * 0.93, }} numberOfLines={1}>
+          <Text style={{ fontSize: rem * 0.92, }} numberOfLines={1}>
             {item.title}
           </Text>
           <Text style={{ fontSize: rem * 0.75, color: '#888', fontWeight: '300', marginTop: '0.9%', }} numberOfLines={1}>
@@ -56,14 +56,19 @@ const MusicListUI = ({ navigation }) => {
       <TouchableOpacity
         onPress={() => navigation.navigate('음악 재생화면')}
         style={styles.bottomMusic}>
-        <View style={{ width: listHeight }}>
+        <View style={{
+          width: listHeight,
+          shadowColor: 'black',
+          shadowRadius: width * 0.02,
+          shadowOpacity: 0.15,
+        }}>
           <Image
             source={item.image}
             style={{ width: '87%', height: '87%', borderRadius: 4, }}
           />
         </View>
         <View style={{ width: width - listHeight * 2 - width * 0.22, marginLeft: '2%' }}>
-          <Text style={{ fontSize: rem * 0.93, }} numberOfLines={1}>
+          <Text style={{ fontSize: rem * 0.92, }} numberOfLines={1}>
             {item.title}
           </Text>
         </View>
@@ -90,7 +95,7 @@ const MusicListUI = ({ navigation }) => {
 
       <View style={{ flex: 1 }}>
         <Animated.FlatList
-          style={{ marginTop: '3%' }}
+          style={{ paddingTop: '1%' }}
           data={songs}
           ListHeaderComponent={RenderShuffleButon}
           ListFooterComponent={<View style={{ height: bottomBarHeight }}></View>}
@@ -101,8 +106,8 @@ const MusicListUI = ({ navigation }) => {
       </View>
 
       <BlurView intensity={96} tint={'light'} style={styles.bottomBarContainer}>
-        <View style={{ flex: 13, alignItems: 'center', height: '100%', paddingTop: height * 0.01 }}>
-          <RenderSongForBottomBar item={songs[0]} />
+        <View style={{ flex: 13, alignItems: 'center', height: '100%', paddingTop: height * 0.0125 }}>
+          <RenderSongForBottomBar item={songs[3]} />
         </View>
         <View style={{ flex: 6, alignItems: 'center', height: '100%', paddingTop: height * 0.022 }}>
           <View style={{ alignItems: 'center', flexDirection: 'row', }}>
@@ -124,7 +129,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: '100%',
-    backgroundColor: '#fff'
+    backgroundColor: '#fff',
   },
   titleText: {
     fontSize: rem * 1.9,
