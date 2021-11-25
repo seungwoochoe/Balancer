@@ -1,6 +1,6 @@
 import Slider from '@react-native-community/slider';
 import React, { useEffect, useRef, useState } from 'react';
-import { View, Text, StyleSheet, Dimensions, Image, Animated, ImageBackground } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, Image, Animated, ImageBackground, StatusBar } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import songs from '../models/data';
@@ -8,18 +8,22 @@ import songs from '../models/data';
 const { width, height } = Dimensions.get("window");
 const rem = width / 20;
 const theme = '#eee';
-const blurRadius = (width / height) * 220;
-
-
 
 const MusicPlayerUI = () => {
   const [songIndex, setSongIndex] = useState(0);
   const scrollX = useRef(new Animated.Value(0)).current;
   const songSlider = useRef(null);
+  const fileExtension = Image.resolveAssetSource(songs[songIndex].image).uri.split('.').pop();
+  let blurRadius;
+  if (fileExtension === "jpeg") {
+    blurRadius = 120000 / height;
+  } else {
+    blurRadius = 275;
+  }
 
   useEffect(() => {
     scrollX.addListener(({ value }) => {
-      const index = Math.round(value / (width * 0.9) )
+      const index = Math.round(value / (width * 0.9));
       setSongIndex(index);
     });
     return () => {
@@ -53,89 +57,108 @@ const MusicPlayerUI = () => {
     );
   }
 
+  // const fadeAnim = useRef(new Animated.Value(0)).current;
+
+  // const fadeOut = () => {
+  //   // Will change fadeAnim value to 0 in 3 seconds
+  //   Animated.timing(fadeAnim, {
+  //     toValue: 0,
+  //     duration: 3000
+  //   }).start();
+  // };
+
+  // useEffect(() => {
+  //   fadeOut();
+  // }, [...[songs[songIndex]]]);
+
 
 
   return (
-    <ImageBackground source={songs[songIndex].image} blurRadius={blurRadius} style={styles.container}>
-
-      <View style={{ flex: 3500 / height, flexDirection: 'row', width: '90%', marginBottom: '6%', alignItems: 'flex-end' }}>
-        <Animated.FlatList
-          ref={songSlider}
-          data={songs}
-          renderItem={renderSongs}
-          keyExtractor={(item) => item.id}
-          horizontal
-          pagingEnabled
-          showsHorizontalScrollIndicator={false}
-          scrollEventThrottle={16}
-          onScroll={Animated.event(
-            [{
-              nativeEvent: {
-                contentOffset: { x: scrollX }
-              }
-            }],
-            { useNativeDriver: true }
-          )}
-        />
-      </View>
-
-      <View style={{ flex: .8, width: '80%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
-        <View>
-          <Text style={styles.title}>{songs[songIndex].title}</Text>
-          <Text style={styles.artist}>{songs[songIndex].artist}</Text>
-        </View>
-        <View>
-          <TouchableOpacity>
-            <Ionicons name="heart-outline" size={rem * 1.5} color={theme}></Ionicons>
-          </TouchableOpacity>
-        </View>
-      </View>
-
-
-
-      <View style={{ flex: 0.8 }}>
-        <View style={{ justifyContent: 'center' }}>
-          <Slider
-            style={styles.progressContainer}
-            value={18}
-            minimumValue={0}
-            maximumValue={100}
-            thumbTintColor={theme}
-            minimumTrackTintColor={theme}
-            maximumTrackTintColor='#aaa'
-            onSlidingComplete={() => { }}
+    <ImageBackground source={songs[songIndex].image} blurRadius={blurRadius} style={{ flex: 1, transform: [{ rotate: '180deg' }] }}>
+      <StatusBar barStyle="light-content" animated="true" />
+      <View style={{ flex: 1, transform: [{ rotate: '180deg' }], alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.4)' }}>
+        <View style={styles.artworkWrapper}>
+          <Animated.FlatList
+            ref={songSlider}
+            data={songs}
+            renderItem={renderSongs}
+            keyExtractor={(item) => item.id}
+            horizontal
+            pagingEnabled
+            showsHorizontalScrollIndicator={false}
+            scrollEventThrottle={16}
+            onScroll={Animated.event(
+              [{
+                nativeEvent: {
+                  contentOffset: { x: scrollX }
+                }
+              }],
+              { useNativeDriver: true }
+            )}
           />
-          <View style={styles.progressLabelContainer}>
-            <Text style={{ color: '#bbb', fontSize: rem * 0.75 }}>0:00</Text>
-            <Text style={{ color: '#bbb', fontSize: rem * 0.75 }}>4:00</Text>
+        </View>
+
+        <View style={{ flex: .8, width: '80%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+          <View style={{ flex: 7, paddingRight: '7%' }}>
+            <Text style={styles.title} numberOfLines={1}>{songs[songIndex].title}</Text>
+            <Text style={styles.artist} numberOfLines={1}>{songs[songIndex].artist}</Text>
+          </View>
+          <View style={{ flex: 1 }}>
+            <TouchableOpacity>
+              <Ionicons name="heart-outline" size={rem * 1.5} color={theme}></Ionicons>
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        <View style={{ flex: 0.8, flexDirection: 'row' }}>
+          <View style={{ justifyContent: 'center' }}>
+            <Slider
+              style={styles.progressContainer}
+              value={18}
+              minimumValue={0}
+              maximumValue={100}
+              thumbTintColor={theme}
+              minimumTrackTintColor={theme}
+              maximumTrackTintColor='#aaa'
+              onSlidingComplete={() => { }}
+            />
+            <View style={styles.progressLabelContainer}>
+              <Text style={{ color: '#bbb', fontSize: rem * 0.75 }}>0:00</Text>
+              <Text style={{ color: '#bbb', fontSize: rem * 0.75 }}>4:00</Text>
+            </View>
+          </View>
+        </View>
+
+
+        <View style={{ flex: 2, flexDirection: 'row' }}>
+          <View style={styles.MusicControls}>
+            <TouchableOpacity onPress={skipToPrevious} style={{ padding: '10%' }}>
+              <Ionicons name="play-back" size={rem * 2} color={theme}></Ionicons>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => { }} style={{ padding: '10%' }} >
+              <Ionicons name="pause" size={rem * 2.8} color={theme}></Ionicons>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={skipToNext} style={{ padding: '10%' }}>
+              <Ionicons name="play-forward" size={rem * 2} color={theme}></Ionicons>
+            </TouchableOpacity>
           </View>
         </View>
       </View>
-
-
-      <View style={{ flex: 2, flexDirection: 'row' }}>
-        <View style={styles.MusicControls}>
-          <TouchableOpacity onPress={skipToPrevious}>
-            <Ionicons name="play-back" size={rem * 2} color={theme}></Ionicons>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => { }} >
-            <Ionicons name="pause" size={rem * 2.8} color={theme}></Ionicons>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={skipToNext}>
-            <Ionicons name="play-forward" size={rem * 2} color={theme}></Ionicons>
-          </TouchableOpacity>
-        </View>
-      </View>
-
     </ImageBackground>
   );
 };
 
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
+  artworkWrapper: {
+    flex: 3500 / height,
+    flexDirection: 'row',
+    paddingHorizontal: '5%',
+    paddingBottom: '6%',
+    alignItems: 'flex-end',
+    shadowColor: 'black',
+    shadowRadius: width * 0.075,
+    shadowOpacity: 0.24,
   },
   arworkImage: {
     width: width * 0.85,
@@ -143,26 +166,26 @@ const styles = StyleSheet.create({
     borderRadius: 15,
   },
   title: {
-    fontSize: rem * 1.35,
+    fontSize: rem * 1.32,
     color: '#eee',
     fontWeight: '600',
   },
   artist: {
-    fontSize: rem * 1.15,
-    color: '#bbb',
+    fontSize: rem * 1.05,
+    color: '#cfcfcf',
     fontWeight: '300',
   },
   progressContainer: {
-    width: width * 0.88,
+    width: width * 0.84,
     alignItems: 'center',
   },
   progressLabelContainer: {
-    width: width * 0.88,
+    width: width * 0.84,
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   MusicControls: {
-    width: '59%',
+    width: '62%',
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: '18%',
