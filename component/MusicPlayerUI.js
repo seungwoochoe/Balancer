@@ -13,7 +13,15 @@ const MusicPlayerUI = () => {
   const [songIndex, setSongIndex] = useState(0);
   const scrollX = useRef(new Animated.Value(0)).current;
   const songSlider = useRef(null);
-  const blurRadius = 188000 / height;
+  const fileExtension = Image.resolveAssetSource(songs[songIndex].image).uri.split('.').pop();
+  let blurRadius;
+  if (fileExtension === "jpeg") {
+    blurRadius = 120000 / height;
+  } else {
+    blurRadius = 270;
+  }
+
+  // caching X
   // const blurRadius = 90000 / height;
 
   useEffect(() => {
@@ -71,7 +79,7 @@ const MusicPlayerUI = () => {
   return (
     <ImageBackground source={songs[songIndex].image} blurRadius={blurRadius} style={{ flex: 1, transform: [{ rotate: '180deg' }] }}>
       <StatusBar barStyle="light-content" animated="true" />
-      <View style={{ flex: 1, transform: [{ rotate: '180deg' }], alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.3)' }}>
+      <View style={{ flex: 1, transform: [{ rotate: '180deg' }], alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.4)' }}>
         <View style={styles.artworkWrapper}>
           <Animated.FlatList
             ref={songSlider}
@@ -161,13 +169,13 @@ const styles = StyleSheet.create({
     borderRadius: 15,
   },
   title: {
-    fontSize: rem * 1.35,
+    fontSize: rem * 1.32,
     color: '#eee',
     fontWeight: '600',
   },
   artist: {
-    fontSize: rem * 1.1,
-    color: '#ccc',
+    fontSize: rem * 1.05,
+    color: '#cfcfcf',
     fontWeight: '300',
   },
   progressContainer: {
