@@ -9,18 +9,19 @@ import {Audio} from 'expo-av';
 const { width, height } = Dimensions.get("window");
 const rem = width / 20;
 const theme = '#eee';
+const SoundObj = new Audio.Sound();
 
 const MusicPlayerUI = ({route, navigation}) => {
-  const {selected} = route.params;
+  const {selected1, musicUri, selected} = route.params;
+
   const [songIndex, setSongIndex] = useState(selected);
   const scrollX = useRef(new Animated.Value(selected*width*0.9)).current;
   const songSlider = useRef(null);
   const fileExtension = Image.resolveAssetSource(songs[songIndex].image).uri.split('.').pop();
   let blurRadius;
-  const SoundObj = new Audio.Sound();
   const [canstop, SetcanStop] = useState(true);
-
-
+  
+  
   if (fileExtension === "jpeg") {
     blurRadius = 120000 / height;
   } else {
@@ -28,8 +29,11 @@ const MusicPlayerUI = ({route, navigation}) => {
   }
 
   useEffect(async() => {
+    console.log(selected1);
     console.log('Loading Sound');
-    await SoundObj.loadAsync(require('../assets/songs/1.mp3'));
+    console.log(musicUri);
+   //'../assets/songs/2.mp3'
+    await SoundObj.loadAsync(require('../assets/songs/2.mp3'));
     await SoundObj.playAsync();
     scrollX.addListener(({ value }) => {
       const index = Math.round(value / (width * 0.9));
