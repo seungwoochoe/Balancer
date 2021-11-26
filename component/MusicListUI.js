@@ -36,15 +36,10 @@ const MusicListUI = ({ navigation }) => {
     )
   }
 
-  async function loadPlayScreen({comp}){
-    console.log()
-    navigation.navigate('MusicPlayerUI');
-  }
-
   const RenderSong = ({ item }) => {
     return (
       <TouchableOpacity
-        onPress={() => navigation.navigate('MusicPlayerUI')}
+        onPress={() => navigation.navigate('MusicPlayerUI',{selected : item.id-1})}
         style={styles.music}>
         <View style={{ width: listHeight }}>
           <Image

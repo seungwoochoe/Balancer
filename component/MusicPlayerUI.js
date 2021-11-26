@@ -10,15 +10,15 @@ const { width, height } = Dimensions.get("window");
 const rem = width / 20;
 const theme = '#eee';
 
-const MusicPlayerUI = () => {
-  const [songIndex, setSongIndex] = useState(0);
-  const scrollX = useRef(new Animated.Value(0)).current;
+const MusicPlayerUI = ({route, navigation}) => {
+  const {selected} = route.params;
+  const [songIndex, setSongIndex] = useState(selected);
+  const scrollX = useRef(new Animated.Value(selected*width*0.9)).current;
   const songSlider = useRef(null);
   const fileExtension = Image.resolveAssetSource(songs[songIndex].image).uri.split('.').pop();
   let blurRadius;
-
   const SoundObj = new Audio.Sound();
-  let canstop = true;
+  const [canstop, SetcanStop] = useState(true);
 
 
   if (fileExtension === "jpeg") {
@@ -81,15 +81,17 @@ const MusicPlayerUI = () => {
   // }, [...[songs[songIndex]]]);
 
   async function onAudioPress(){
-
-    if(canstop){
+    if(canstop)
+    {
      console.log('Pausing Sound');
      await SoundObj.pauseAsync();
-     canstop = false;
-    }else{
+     SetcanStop(false);
+    }
+    else
+    {
      console.log('Playing Sound');
      await SoundObj.playAsync();
-     canstop = true;
+     SetcanStop(true);
     }
    }
 
@@ -107,6 +109,7 @@ const MusicPlayerUI = () => {
             pagingEnabled
             showsHorizontalScrollIndicator={false}
             scrollEventThrottle={16}
+            contentOffset = {{x : songIndex * width * 0.9}}
             onScroll={Animated.event(
               [{
                 nativeEvent: {
@@ -156,7 +159,7 @@ const MusicPlayerUI = () => {
               <Ionicons name="play-back" size={rem * 2} color={theme}></Ionicons>
             </TouchableOpacity>
             <TouchableOpacity onPress={onAudioPress} style={{ padding: '10%' }} >
-              <Ionicons name="pause" size={rem * 2.8} color={theme}></Ionicons>
+              <Ionicons name={canstop ? "pause" : "play"} size={rem * 2.8} color={theme}></Ionicons>
             </TouchableOpacity>
             <TouchableOpacity onPress={skipToNext} style={{ padding: '10%' }}>
               <Ionicons name="play-forward" size={rem * 2} color={theme}></Ionicons>
