@@ -9,6 +9,7 @@ import {Audio} from 'expo-av';
 const { width, height } = Dimensions.get("window");
 const rem = width / 20;
 const theme = '#eee';
+const SoundObj = new Audio.Sound();
 
 const MusicPlayerUI = ({route, navigation}) => {
   const {selected} = route.params;
@@ -17,8 +18,8 @@ const MusicPlayerUI = ({route, navigation}) => {
   const songSlider = useRef(null);
   const fileExtension = Image.resolveAssetSource(songs[songIndex].image).uri.split('.').pop();
   let blurRadius;
-  const SoundObj = new Audio.Sound();
   const [canstop, SetcanStop] = useState(true);
+  const [firsTime,setV] = useState(true);
 
 
   if (fileExtension === "jpeg") {
@@ -28,10 +29,11 @@ const MusicPlayerUI = ({route, navigation}) => {
   }
 
   useEffect(async() => {
+    console.log(songIndex,scrollX);
     console.log('Loading Sound');
     await SoundObj.loadAsync(require('../assets/songs/1.mp3'));
     await SoundObj.playAsync();
-    scrollX.addListener(({ value }) => {
+    await scrollX.addListener(({ value }) => {
       const index = Math.round(value / (width * 0.9));
       setSongIndex(index);
     });
@@ -81,7 +83,7 @@ const MusicPlayerUI = ({route, navigation}) => {
   // }, [...[songs[songIndex]]]);
 
   async function onAudioPress(){
-    if(canstop)
+    if(canstop==true)
     {
      console.log('Pausing Sound');
      await SoundObj.pauseAsync();
@@ -109,7 +111,7 @@ const MusicPlayerUI = ({route, navigation}) => {
             pagingEnabled
             showsHorizontalScrollIndicator={false}
             scrollEventThrottle={16}
-            contentOffset = {{x : songIndex * width * 0.9}}
+            contentOffset = {{x : selected * width * 0.9}}
             onScroll={Animated.event(
               [{
                 nativeEvent: {
