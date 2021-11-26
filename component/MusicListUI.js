@@ -68,6 +68,7 @@ const MusicListUI = ({ navigation }) => {
     return (
       <TouchableOpacity
         onPress={() => navigation.navigate('MusicPlayerUI')}
+
         style={styles.bottomMusic}>
         <View style={{
           width: listHeight,

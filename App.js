@@ -17,8 +17,10 @@ const App = () => {
     Asset.fromModule(element.image).downloadAsync();
   });
 
+  
   // let playlist = Shuffle.getPrunedPlaylistFromStorage();
   // playlist = Shuffle.appendMorePlaylist(musicList, playlist);
+
 
 
   return (

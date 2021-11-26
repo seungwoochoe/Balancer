@@ -145,7 +145,9 @@ async function storePlaylist(playlist) {
   }
 };
 
-
+ function getPlayList(){
+  return fakeLoadedPlaylist;
+}
 
 const fakeLoadedPlaylist = [
   {
