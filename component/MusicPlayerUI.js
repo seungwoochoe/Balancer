@@ -4,6 +4,7 @@ import { View, Text, StyleSheet, Dimensions, Image, Animated, ImageBackground, S
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import songs from '../models/data';
+import {Audio} from 'expo-av';
 
 const { width, height } = Dimensions.get("window");
 const rem = width / 20;
@@ -56,7 +57,19 @@ const MusicPlayerUI = () => {
       </Animated.View>
     );
   }
+ 
 
+  async function onAudioPress(){
+    console.log('Loading Sound');
+    const { sound } = await Audio.Sound.createAsync(
+       require('../assets/songs/1.mp3')
+    );
+
+
+    console.log('Playing Sound');
+    await sound.playAsync(); 
+  }
+  
   // const fadeAnim = useRef(new Animated.Value(0)).current;
 
   // const fadeOut = () => {
@@ -70,7 +83,6 @@ const MusicPlayerUI = () => {
   // useEffect(() => {
   //   fadeOut();
   // }, [...[songs[songIndex]]]);
-
 
 
   return (
@@ -135,7 +147,7 @@ const MusicPlayerUI = () => {
             <TouchableOpacity onPress={skipToPrevious} style={{ padding: '10%' }}>
               <Ionicons name="play-back" size={rem * 2} color={theme}></Ionicons>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => { }} style={{ padding: '10%' }} >
+            <TouchableOpacity onPress={onAudioPress} style={{ padding: '10%' }} >
               <Ionicons name="pause" size={rem * 2.8} color={theme}></Ionicons>
             </TouchableOpacity>
             <TouchableOpacity onPress={skipToNext} style={{ padding: '10%' }}>
