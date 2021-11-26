@@ -18,7 +18,7 @@ const MusicPlayerUI = () => {
   const scrollX = useRef(new Animated.Value(0)).current;
   const songSlider = useRef(null);
   const fileExtension = Image.resolveAssetSource(songs[songIndex].image).uri.split('.').pop();
-  let canstop = false;
+  const [canstop, Setcanstop] = useState(true);
 
 
   let blurRadius;
@@ -31,6 +31,7 @@ const MusicPlayerUI = () => {
   useEffect(async() => {
     console.log('Loading Sound');
     await SoundObj.loadAsync(require('../assets/songs/1.mp3'));
+    await SoundObj.playAsync();
     scrollX.addListener(({ value }) => {
       const index = Math.round(value / (width * 0.9));
       setSongIndex(index);
@@ -65,31 +66,27 @@ const MusicPlayerUI = () => {
   async function onAudioPress(){
 
     // await Audio.setAudioModeAsync({ playsInSilentModeIOS: true });
-
-
      if(canstop){
       console.log('Pausing Sound');
       await SoundObj.pauseAsync();
-      canstop = false;
+      Setcanstop(false);
      }else{
       console.log('Playing Sound');
       await SoundObj.playAsync();
-      canstop = true;
+      Setcanstop(true);
      }
     }
     
     async function skipToNext () {
-     
-
-  
+      songSlider.current.scrollToOffset({
+        offset: (songIndex + 1) * width * 0.9,
+      });
   }
 
   async function skipToPrevious () {
-
-    console.log('Pausing Sound');
-
-    await SoundObj.pauseAsync();
- 
+    songSlider.current.scrollToOffset({
+      offset: (songIndex - 1) * width * 0.9,
+    });
   }
   
   // const fadeAnim = useRef(new Animated.Value(0)).current;
@@ -170,7 +167,7 @@ const MusicPlayerUI = () => {
               <Ionicons name="play-back" size={rem * 2} color={theme}></Ionicons>
             </TouchableOpacity>
             <TouchableOpacity onPress={onAudioPress} style={{ padding: '10%' }} >
-              <Ionicons name="pause" size={rem * 2.8} color={theme}></Ionicons>
+              <Ionicons name={canstop ? "pause" : "play"} size={rem * 2.8} color={theme}></Ionicons>
             </TouchableOpacity>
             <TouchableOpacity onPress={skipToNext} style={{ padding: '10%' }}>
               <Ionicons name="play-forward" size={rem * 2} color={theme}></Ionicons>
