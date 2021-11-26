@@ -4,6 +4,8 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { BlurView } from 'expo-blur';
 import songs from '../models/data';
+import {Audio} from 'expo-av';
+import { Sound } from 'expo-av/build/Audio';
 const { width, height } = Dimensions.get("window");
 
 const rem = width / 20;
@@ -34,10 +36,15 @@ const MusicListUI = ({ navigation }) => {
     )
   }
 
+  async function loadPlayScreen(item){
+    navigation.navigate('MusicPlayerUI');
+  }
+
   const RenderSong = ({ item }) => {
     return (
       <TouchableOpacity
-        onPress={() => navigation.navigate('MusicPlayerUI')}
+      //  onPress={() => navigation.navigate('MusicPlayerUI')}
+        onPress={loadPlayScreen}
         style={styles.music}>
         <View style={{ width: listHeight }}>
           <Image

@@ -5,16 +5,22 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import songs from '../models/data';
 import {Audio} from 'expo-av';
+import { Sound } from 'expo-av/build/Audio';
 
 const { width, height } = Dimensions.get("window");
 const rem = width / 20;
 const theme = '#eee';
+
+const SoundObj = new Audio.Sound();
 
 const MusicPlayerUI = () => {
   const [songIndex, setSongIndex] = useState(0);
   const scrollX = useRef(new Animated.Value(0)).current;
   const songSlider = useRef(null);
   const fileExtension = Image.resolveAssetSource(songs[songIndex].image).uri.split('.').pop();
+  let canstop = false;
+
+
   let blurRadius;
   if (fileExtension === "jpeg") {
     blurRadius = 120000 / height;
@@ -22,7 +28,9 @@ const MusicPlayerUI = () => {
     blurRadius = 275;
   }
 
-  useEffect(() => {
+  useEffect(async() => {
+    console.log('Loading Sound');
+    await SoundObj.loadAsync(require('../assets/songs/1.mp3'));
     scrollX.addListener(({ value }) => {
       const index = Math.round(value / (width * 0.9));
       setSongIndex(index);
@@ -32,17 +40,9 @@ const MusicPlayerUI = () => {
     }
   }, []);
 
-  const skipToNext = () => {
-    songSlider.current.scrollToOffset({
-      offset: (songIndex + 1) * width * 0.9,
-    });
-  }
+  
 
-  const skipToPrevious = () => {
-    songSlider.current.scrollToOffset({
-      offset: (songIndex - 1) * width * 0.9,
-    });
-  }
+  
 
   const renderSongs = ({ index, item }) => {
     return (
@@ -58,16 +58,38 @@ const MusicPlayerUI = () => {
     );
   }
  
+  
+  
+
 
   async function onAudioPress(){
-    console.log('Loading Sound');
-    const { sound } = await Audio.Sound.createAsync(
-       require('../assets/songs/1.mp3')
-    );
+
+    // await Audio.setAudioModeAsync({ playsInSilentModeIOS: true });
 
 
-    console.log('Playing Sound');
-    await sound.playAsync(); 
+     if(canstop){
+      console.log('Pausing Sound');
+      await SoundObj.pauseAsync();
+      canstop = false;
+     }else{
+      console.log('Playing Sound');
+      await SoundObj.playAsync();
+      canstop = true;
+     }
+    }
+    
+    async function skipToNext () {
+     
+
+  
+  }
+
+  async function skipToPrevious () {
+
+    console.log('Pausing Sound');
+
+    await SoundObj.pauseAsync();
+ 
   }
   
   // const fadeAnim = useRef(new Animated.Value(0)).current;
