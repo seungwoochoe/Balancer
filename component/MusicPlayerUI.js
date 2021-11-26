@@ -5,23 +5,22 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import songs from '../models/data';
 import {Audio} from 'expo-av';
-import { Sound } from 'expo-av/build/Audio';
 
 const { width, height } = Dimensions.get("window");
 const rem = width / 20;
 const theme = '#eee';
-
-const SoundObj = new Audio.Sound();
 
 const MusicPlayerUI = () => {
   const [songIndex, setSongIndex] = useState(0);
   const scrollX = useRef(new Animated.Value(0)).current;
   const songSlider = useRef(null);
   const fileExtension = Image.resolveAssetSource(songs[songIndex].image).uri.split('.').pop();
-  const [canstop, Setcanstop] = useState(true);
-
-
   let blurRadius;
+
+  const SoundObj = new Audio.Sound();
+  let canstop = true;
+
+
   if (fileExtension === "jpeg") {
     blurRadius = 120000 / height;
   } else {
@@ -41,9 +40,17 @@ const MusicPlayerUI = () => {
     }
   }, []);
 
-  
+  const skipToNext = () => {
+    songSlider.current.scrollToOffset({
+      offset: (songIndex + 1) * width * 0.9,
+    });
+  }
 
-  
+  const skipToPrevious = () => {
+    songSlider.current.scrollToOffset({
+      offset: (songIndex - 1) * width * 0.9,
+    });
+  }
 
   const renderSongs = ({ index, item }) => {
     return (
@@ -58,37 +65,7 @@ const MusicPlayerUI = () => {
       </Animated.View>
     );
   }
- 
-  
-  
 
-
-  async function onAudioPress(){
-
-    // await Audio.setAudioModeAsync({ playsInSilentModeIOS: true });
-     if(canstop){
-      console.log('Pausing Sound');
-      await SoundObj.pauseAsync();
-      Setcanstop(false);
-     }else{
-      console.log('Playing Sound');
-      await SoundObj.playAsync();
-      Setcanstop(true);
-     }
-    }
-    
-    async function skipToNext () {
-      songSlider.current.scrollToOffset({
-        offset: (songIndex + 1) * width * 0.9,
-      });
-  }
-
-  async function skipToPrevious () {
-    songSlider.current.scrollToOffset({
-      offset: (songIndex - 1) * width * 0.9,
-    });
-  }
-  
   // const fadeAnim = useRef(new Animated.Value(0)).current;
 
   // const fadeOut = () => {
@@ -103,6 +80,18 @@ const MusicPlayerUI = () => {
   //   fadeOut();
   // }, [...[songs[songIndex]]]);
 
+  async function onAudioPress(){
+
+    if(canstop){
+     console.log('Pausing Sound');
+     await SoundObj.pauseAsync();
+     canstop = false;
+    }else{
+     console.log('Playing Sound');
+     await SoundObj.playAsync();
+     canstop = true;
+    }
+   }
 
   return (
     <ImageBackground source={songs[songIndex].image} blurRadius={blurRadius} style={{ flex: 1, transform: [{ rotate: '180deg' }] }}>
@@ -167,7 +156,7 @@ const MusicPlayerUI = () => {
               <Ionicons name="play-back" size={rem * 2} color={theme}></Ionicons>
             </TouchableOpacity>
             <TouchableOpacity onPress={onAudioPress} style={{ padding: '10%' }} >
-              <Ionicons name={canstop ? "pause" : "play"} size={rem * 2.8} color={theme}></Ionicons>
+              <Ionicons name="pause" size={rem * 2.8} color={theme}></Ionicons>
             </TouchableOpacity>
             <TouchableOpacity onPress={skipToNext} style={{ padding: '10%' }}>
               <Ionicons name="play-forward" size={rem * 2} color={theme}></Ionicons>

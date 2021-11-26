@@ -44,8 +44,7 @@ const MusicListUI = ({ navigation }) => {
   const RenderSong = ({ item }) => {
     return (
       <TouchableOpacity
-      //  onPress={() => navigation.navigate('MusicPlayerUI')}
-        onPress={loadPlayScreen({comp : item})}
+        onPress={() => navigation.navigate('MusicPlayerUI')}
         style={styles.music}>
         <View style={{ width: listHeight }}>
           <Image
