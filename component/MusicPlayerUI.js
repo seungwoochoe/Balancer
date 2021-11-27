@@ -11,6 +11,7 @@ const rem = width / 20;
 const theme = '#eee';
 const SoundObj = new Audio.Sound();
 
+
 const MusicPlayerUI = ({route, navigation}) => {
   const {selected1, musicUri, selected} = route.params;
 
@@ -33,7 +34,7 @@ const MusicPlayerUI = ({route, navigation}) => {
     console.log('Loading Sound');
     console.log(musicUri);
    //'../assets/songs/2.mp3'
-    await SoundObj.loadAsync(require('../assets/songs/2.mp3'));
+    await SoundObj.loadAsync(selected1.uri);
     await SoundObj.playAsync();
     scrollX.addListener(({ value }) => {
       const index = Math.round(value / (width * 0.9));
@@ -151,7 +152,7 @@ const MusicPlayerUI = ({route, navigation}) => {
             />
             <View style={styles.progressLabelContainer}>
               <Text style={{ color: '#bbb', fontSize: rem * 0.75 }}>0:00</Text>
-              <Text style={{ color: '#bbb', fontSize: rem * 0.75 }}>4:00</Text>
+              <Text style={{ color: '#bbb', fontSize: rem * 0.75 }}>{selected1.duration}</Text>
             </View>
           </View>
         </View>
