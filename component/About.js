@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, Text, Dimensions, View } from 'react-native';
+import { ScrollView, Text, Image, Dimensions, View } from 'react-native';
 
 const { width } = Dimensions.get("window");
 const rem = width / 20;
@@ -9,9 +9,14 @@ const About = () => {
     <ScrollView style={{ paddingTop: '7%', marginTop: '13%' }}>
       <View style={{ marginLeft: '5%', marginRight: '6%' }}>
 
-        <Text style={{ fontSize: rem * 2, fontWeight: 'bold' }}>
-          Balancer
+        <View style={{flexDirection: 'row', alignItems: 'flex-start'}}>
+        <Image source={require("../assets/icon-dark.png")} style={{width: width / 7, height: width / 9.2}} />
+        <Text style={{ fontSize: rem * 2, fontWeight: 'bold', marginLeft: width / 40 }}>
+            Blancer
         </Text>
+        
+        </View>
+
 
         <Text style={{ fontSize: rem }}> </Text>
 
@@ -50,9 +55,12 @@ const About = () => {
         </Text>
 
         <Text style={{ fontSize: rem * 0.83 }}>
-          {'\n'}This software uses open source projects.
+        {'\n'}This software uses open source projects.
           You can find the source code and licenses of those projects below.
           We acknowledge and are grateful to the people who contributed to those projects.
+          {'\n\n'}
+          React https://github.com/facebook/react{'\n'}
+          MIT License https://github.com/facebook/react/blob/main/LICENSE
           {'\n\n'}
           React Native https://github.com/facebook/react-native{'\n'}
           MIT License https://github.com/facebook/react-native/blob/main/LICENSE
@@ -60,17 +68,26 @@ const About = () => {
           Expo https://github.com/expo/expo{'\n'}
           MIT License https://github.com/expo/expo/blob/master/LICENSE
           {'\n\n'}
+          React Navigation https://github.com/react-navigation/react-navigation{'\n'}
+          MIT License https://opensource.org/licenses/MIT
+          {'\n\n'}
+          React Native Screens https://github.com/software-mansion/react-native-screens{'\n'}
+          MIT License https://github.com/software-mansion/react-native-screens/blob/master/LICENSE
+          {'\n\n'}
+          React Native Safe Area Context https://github.com/th3rdwave/react-native-safe-area-context{'\n'}
+          MIT License https://github.com/th3rdwave/react-native-safe-area-context/blob/main/LICENSE
+          {'\n\n'}
+          React Native Reanimated https://github.com/software-mansion/react-native-reanimated{'\n'}
+          MIT License https://github.com/software-mansion/react-native-reanimated/blob/master/LICENSE
+          {'\n\n'}
+          React Native Gesture Handler https://github.com/software-mansion/react-native-gesture-handler{'\n'}
+          MIT License https://github.com/software-mansion/react-native-gesture-handler/blob/master/LICENSE
+          {'\n\n'}
           React Native Vector Icons https://github.com/oblador/react-native-vector-icons{'\n'}
           MIT License https://github.com/oblador/react-native-vector-icons/blob/master/LICENSE
           {'\n\n'}
           React Native Slider https://github.com/callstack/react-native-slider{'\n'}
           MIT License https://github.com/callstack/react-native-slider/blob/main/LICENSE.md
-          {'\n\n'}
-          React Navigation https://github.com/react-navigation/react-navigation{'\n'}
-          MIT License https://opensource.org/licenses/MIT
-          {'\n\n'}
-          Async Storage https://github.com/react-native-async-storage/async-storage{'\n'}
-          MIT License https://github.com/react-native-async-storage/async-storage/blob/master/LICENSE
         </Text>
 
         <Text>{'\n\n\n\n'}</Text>
