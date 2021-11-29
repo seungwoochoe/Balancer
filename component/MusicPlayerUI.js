@@ -52,6 +52,7 @@ const MusicPlayerUI = ({route, navigation}) => {
     songNow.image = songs[songIndex+1].artist;
     songNow.id = songs[songIndex+1].id;
     songNow.uri = songs[songIndex+1].uri;
+    songNow.duration = songs[songIndex+1].duration;
 
     await SoundObj.loadAsync(songNow.uri);
     await SoundObj.playAsync();
@@ -69,6 +70,7 @@ const MusicPlayerUI = ({route, navigation}) => {
     songNow.image = songs[songIndex-1].artist;
     songNow.id = songs[songIndex-1].id;
     songNow.uri = songs[songIndex-1].uri;
+    songNow.duration = songs[songIndex-1].duration;
 
     await SoundObj.loadAsync(songNow.uri);
     await SoundObj.playAsync();
@@ -150,7 +152,7 @@ const MusicPlayerUI = ({route, navigation}) => {
 
         <View style={{ flex: .8, width: '80%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
           <View style={{ flex: 7, paddingRight: '7%' }}>
-            <Text style={styles.title} numberOfLines={1}>{songs[songIndex].title}</Text>
+            <Text style={styles.title} numberOfLines={1}>{songNow.title }</Text>
             <Text style={styles.artist} numberOfLines={1}>{songs[songIndex].artist}</Text>
           </View>
           <View style={{ flex: 1 }}>
@@ -174,7 +176,7 @@ const MusicPlayerUI = ({route, navigation}) => {
             />
             <View style={styles.progressLabelContainer}>
               <Text style={{ color: '#bbb', fontSize: rem * 0.75 }}>0:00</Text>
-              <Text style={{ color: '#bbb', fontSize: rem * 0.75 }}>{selected1.duration}</Text>
+              <Text style={{ color: '#bbb', fontSize: rem * 0.75 }}>{songNow.duration}</Text>
             </View>
           </View>
         </View>

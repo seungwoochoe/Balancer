@@ -26,8 +26,8 @@ const MusicListUI = ({ navigation }) => {
     songNow.image = item.artist;
     songNow.id = item.id;
     songNow.uri = item.uri;
-    
     songNow.duration = item.duration;
+    
     
     console.log(songNow);
     console.log('------- MusicNow로 복사중 -----');
@@ -87,7 +87,7 @@ const MusicListUI = ({ navigation }) => {
           shadowOpacity: 0.15,
         }}>
           <Image
-            source={songNow.im}
+            source={songNow.image}
             style={{ width: '87%', height: '87%', borderRadius: 4, }}
           />
         </View>
@@ -131,7 +131,7 @@ const MusicListUI = ({ navigation }) => {
 
       <BlurView intensity={blurIntensity} tint={'light'} style={styles.bottomBarContainer}>
         <View style={{ flex: 13, alignItems: 'center', height: '100%', paddingTop: height * 0.0125 }}>
-          <RenderSongForBottomBar item = {songNow}/>
+          <RenderSongForBottomBar />
         </View>
         <View style={{ flex: 6, alignItems: 'center', height: '100%', paddingTop: height * 0.022 }}>
           <View style={{ alignItems: 'center', flexDirection: 'row', }}>

@@ -4,7 +4,7 @@ const songs = [{
         image: require("../assets/artwork/anysong.jpg"),
         id: "1",
         uri: require('../assets/songs/1.mp3'),
-        duration: 152,
+        duration: 172,
     },
     {
         title: "Lilac",
