@@ -11,6 +11,7 @@ const rem = width / 20;
 const theme = '#eee';
 import { SoundObj } from './MusicNow';
 import songNow from './MusicNow';
+import { set } from 'react-native-reanimated';
 
 
 const MusicPlayerUI = ({route, navigation}) => {
@@ -56,6 +57,7 @@ const MusicPlayerUI = ({route, navigation}) => {
 
     await SoundObj.loadAsync(songNow.uri);
     await SoundObj.playAsync();
+    SetcanStop(true);
 
     songSlider.current.scrollToOffset({
       offset: (songIndex + 1) * width * 0.9,
@@ -74,6 +76,7 @@ const MusicPlayerUI = ({route, navigation}) => {
 
     await SoundObj.loadAsync(songNow.uri);
     await SoundObj.playAsync();
+    SetcanStop(true);
 
     songSlider.current.scrollToOffset({
       offset: (songIndex - 1) * width * 0.9,
