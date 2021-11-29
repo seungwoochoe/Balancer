@@ -133,6 +133,7 @@ const MusicPlayerUI = ({route, navigation}) => {
             keyExtractor={(item) => item.id}
             horizontal
             pagingEnabled
+            scrollEnabled= {false}
             showsHorizontalScrollIndicator={false}
             scrollEventThrottle={16}
             contentOffset = {{x : songIndex * width * 0.9}}
