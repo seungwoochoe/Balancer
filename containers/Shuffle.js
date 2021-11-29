@@ -1,5 +1,3 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
 const PLAYLIST_SIZE = 20;
 
 const SKIP_WEIGHT_MODIFIER = 0.85;

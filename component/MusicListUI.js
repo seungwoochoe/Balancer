@@ -1,13 +1,11 @@
-import React, { Component, useEffect, useRef, useState } from 'react';
+import React from 'react';
 import { SafeAreaView, View, Text, StyleSheet, Dimensions, Image, Animated, StatusBar, Platform } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { BlurView } from 'expo-blur';
 import songs from '../models/data';
-import {Audio} from 'expo-av';
-import { Sound } from 'expo-av/build/Audio';
+import songNow from './MusicNow';
 const { width, height } = Dimensions.get("window");
-
 const rem = width / 20;
 const theme = '#107dac';
 const buttonTheme = '#333';
@@ -19,9 +17,10 @@ if (Platform.OS === 'ios') {
 } else {
   blurIntensity = 200;
 }
-
 const MusicListUI = ({ navigation }) => {
-
+  async function songInput(item){
+    navigation.navigate('MusicPlayerUI',{selected: item.id-1, selected1: item, musicUri: item.uri})
+  }
   const RenderShuffleButon = () => {
     return (
       <TouchableOpacity
@@ -39,7 +38,7 @@ const MusicListUI = ({ navigation }) => {
   const RenderSong = ({ item }) => {
     return (
       <TouchableOpacity
-        onPress={() => navigation.navigate('MusicPlayerUI',{selected: item.id-1, selected1: item, musicUri: item.uri})}
+        onPress={() => songInput(item)}
         style={styles.music}>
         <View style={{ width: listHeight }}>
           <Image
@@ -59,7 +58,7 @@ const MusicListUI = ({ navigation }) => {
     );
   }
 
-  const RenderSongForBottomBar = ({ item }) => {
+  const RenderSongForBottomBar = ({}) => {
     return (
       <TouchableOpacity
         onPress={() => navigation.navigate('MusicPlayerUI')}
@@ -72,13 +71,13 @@ const MusicListUI = ({ navigation }) => {
           shadowOpacity: 0.15,
         }}>
           <Image
-            source={item.image}
+            source={songNow.im}
             style={{ width: '87%', height: '87%', borderRadius: 4, }}
           />
         </View>
         <View style={{ width: width - listHeight * 2 - width * 0.22, marginLeft: '2%' }}>
           <Text style={{ fontSize: rem * 0.92, }} numberOfLines={1}>
-            {item.title}
+            {songNow.title}
           </Text>
         </View>
       </TouchableOpacity>
@@ -116,7 +115,7 @@ const MusicListUI = ({ navigation }) => {
 
       <BlurView intensity={blurIntensity} tint={'light'} style={styles.bottomBarContainer}>
         <View style={{ flex: 13, alignItems: 'center', height: '100%', paddingTop: height * 0.0125 }}>
-          <RenderSongForBottomBar item={songs[3]} />
+          <RenderSongForBottomBar item = {songNow}/>
         </View>
         <View style={{ flex: 6, alignItems: 'center', height: '100%', paddingTop: height * 0.022 }}>
           <View style={{ alignItems: 'center', flexDirection: 'row', }}>

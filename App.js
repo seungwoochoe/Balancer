@@ -8,8 +8,6 @@ import { Asset } from 'expo-asset';
 import data from './models/data';
 import * as Shuffle from './containers/Shuffle.js';
 
-
-
 const RootStack = createNativeStackNavigator();
 
 const App = () => {

@@ -9,7 +9,7 @@ import {Audio} from 'expo-av';
 const { width, height } = Dimensions.get("window");
 const rem = width / 20;
 const theme = '#eee';
-const SoundObj = new Audio.Sound();
+import { SoundObj } from './MusicNow';
 
 
 const MusicPlayerUI = ({route, navigation}) => {
@@ -22,7 +22,6 @@ const MusicPlayerUI = ({route, navigation}) => {
   let blurRadius;
   const [canstop, SetcanStop] = useState(true);
   
-  
   if (fileExtension === "jpeg") {
     blurRadius = 120000 / height;
   } else {
@@ -30,9 +29,6 @@ const MusicPlayerUI = ({route, navigation}) => {
   }
 
   useEffect(async() => {
-    console.log(selected1);
-    console.log('Loading Sound');
-    console.log(musicUri);
    //'../assets/songs/2.mp3'
     await SoundObj.loadAsync(selected1.uri);
     await SoundObj.playAsync();
