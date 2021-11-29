@@ -35,21 +35,44 @@ const MusicPlayerUI = ({route, navigation}) => {
     await SoundObj.loadAsync(songNow.uri);
     await SoundObj.playAsync();
     scrollX.addListener(({ value }) => {
+      
       const index = Math.round(value / (width * 0.9));
       setSongIndex(index);
     });
     return () => {
       scrollX.removeAllListeners();
+      
     }
   }, []);
 
-  const skipToNext = () => {
+  async function skipToNext (){
+    await SoundObj.unloadAsync();
+    songNow.title = songs[songIndex+1].title;
+    songNow.artist = songs[songIndex+1].artist;
+    songNow.image = songs[songIndex+1].artist;
+    songNow.id = songs[songIndex+1].id;
+    songNow.uri = songs[songIndex+1].uri;
+
+    await SoundObj.loadAsync(songNow.uri);
+    await SoundObj.playAsync();
+
     songSlider.current.scrollToOffset({
       offset: (songIndex + 1) * width * 0.9,
     });
   }
 
-  const skipToPrevious = () => {
+  async function skipToPrevious () {
+
+    await SoundObj.unloadAsync();
+    songNow.title = songs[songIndex-1].title;
+    songNow.artist = songs[songIndex-1].artist;
+    songNow.image = songs[songIndex-1].artist;
+    songNow.id = songs[songIndex-1].id;
+    songNow.uri = songs[songIndex-1].uri;
+
+    await SoundObj.loadAsync(songNow.uri);
+    await SoundObj.playAsync();
+
     songSlider.current.scrollToOffset({
       offset: (songIndex - 1) * width * 0.9,
     });
