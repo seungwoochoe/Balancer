@@ -5,6 +5,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { BlurView } from 'expo-blur';
 import songs from '../models/data';
 import songNow from './MusicNow';
+import { SoundObj } from './MusicNow';
 const { width, height } = Dimensions.get("window");
 const rem = width / 20;
 const theme = '#107dac';
@@ -19,6 +20,21 @@ if (Platform.OS === 'ios') {
 }
 const MusicListUI = ({ navigation }) => {
   async function songInput(item){
+    await SoundObj.unloadAsync();
+    songNow.title = item.title;
+    songNow.artist = item.artist;
+    songNow.image = item.artist;
+    songNow.id = item.id;
+    songNow.uri = item.uri;
+    
+    songNow.duration = item.duration;
+    
+    console.log(songNow);
+    console.log('------- MusicNow로 복사중 -----');
+
+    console.log(songNow);
+    console.log('------- MusicNow로 복사 완료 -----');
+    
     navigation.navigate('MusicPlayerUI',{selected: item.id-1, selected1: item, musicUri: item.uri})
   }
   const RenderShuffleButon = () => {

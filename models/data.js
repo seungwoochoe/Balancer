@@ -4,20 +4,23 @@ const songs = [{
         image: require("../assets/artwork/anysong.jpg"),
         id: "1",
         uri: require('../assets/songs/1.mp3'),
+        duration: 152,
     },
     {
         title: "Lilac",
         artist: "IU",
         image: require("../assets/artwork/lilac.jpg"),
         id: "2",
-        uri: '../assets/songs/2.mp3'
+        uri: require('../assets/songs/2.mp3'),
+        duration: 132,
     },
     {
         title: "Complex",
         artist: "ZionT",
         image: require("../assets/artwork/ziont.jpeg"),
         id: "3",
-        uri: '../assets/songs/3.mp3'
+        uri: require('../assets/songs/3.mp3'),
+        duration: 112,
     },
 ]
 export default songs;

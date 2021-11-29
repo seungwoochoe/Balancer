@@ -10,6 +10,7 @@ const { width, height } = Dimensions.get("window");
 const rem = width / 20;
 const theme = '#eee';
 import { SoundObj } from './MusicNow';
+import songNow from './MusicNow';
 
 
 const MusicPlayerUI = ({route, navigation}) => {
@@ -30,7 +31,8 @@ const MusicPlayerUI = ({route, navigation}) => {
 
   useEffect(async() => {
    //'../assets/songs/2.mp3'
-    await SoundObj.loadAsync(selected1.uri);
+   console.log(songNow);
+    await SoundObj.loadAsync(songNow.uri);
     await SoundObj.playAsync();
     scrollX.addListener(({ value }) => {
       const index = Math.round(value / (width * 0.9));
