@@ -92,6 +92,9 @@ const MusicPlayerUI = ({route, navigation}) => {
   async function UD()
   {
     a = await SoundObj.getStatusAsync();
+    if(a.positionMillis == a.durationMillis){
+      skipToNext();
+    }
     progBar();
 
   }
