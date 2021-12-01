@@ -9,7 +9,7 @@ import {Audio} from 'expo-av';
 const { width, height } = Dimensions.get("window");
 const rem = width / 20;
 const theme = '#eee';
-let a, valval;
+let a;
 import { SoundObj } from './MusicNow';
 import songNow from './MusicNow';
 import { set } from 'react-native-reanimated';
@@ -18,7 +18,7 @@ import { _DEFAULT_INITIAL_PLAYBACK_STATUS } from 'expo-av/build/AV';
 
 const MusicPlayerUI = ({route, navigation}) => {
   const {selected1, musicUri, selected} = route.params;
-
+  const [valval, setvalval] = useState(0);
   const [songIndex, setSongIndex] = useState(selected);
   const scrollX = useRef(new Animated.Value(selected*width*0.9)).current;
   const songSlider = useRef(null);
@@ -89,7 +89,7 @@ const MusicPlayerUI = ({route, navigation}) => {
   async function UD()
   {
     a = await SoundObj.getStatusAsync();
-    valval = (a.positionMillis)/(a.durationMillis);
+    setvalval((a.positionMillis)/(a.durationMillis));
   }
   setInterval(UD,1200);
   const renderSongs = ({ index, item }) => {
@@ -136,7 +136,7 @@ const MusicPlayerUI = ({route, navigation}) => {
     a= await SoundObj.getStatusAsync();
     console.log((a.positionMillis));
   //  console.log((a.durationMillis));
-    valval = (a.positionMillis)/(a.durationMillis);
+    setvalval((a.positionMillis)/(a.durationMillis));
 
     if(canstop)
     {
