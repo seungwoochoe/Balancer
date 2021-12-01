@@ -89,18 +89,21 @@ const MusicPlayerUI = ({route, navigation}) => {
   }
 
 
-  async function UD()
-  {
-    a = await SoundObj.getStatusAsync();
-    if(a.positionMillis == a.durationMillis){
-      skipToNext();
-    }
-    progBar();
+  try {
+    SoundObj.setOnPlaybackStatusUpdate(async (status) =>{
+      if (status.didJustFinish === true)
+      {
+        skipToNext();
+      }
+      if (!isPressProgBar && status.isLoaded)
+      {
+        setvalval((status.positionMillis)/(status.durationMillis));
+      }
+    })
+  } catch (error) {}
 
-  }
 
-
-  setTimeout(UD,1200);
+  
   const renderSongs = ({ index, item }) => {
     return (
       <Animated.View style={{
