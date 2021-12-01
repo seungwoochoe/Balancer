@@ -62,6 +62,7 @@ const MusicPlayerUI = ({route, navigation}) => {
 
     await SoundObj.loadAsync(songNow.uri);
     await SoundObj.playAsync();
+    a = await SoundObj.getStatusAsync();
     SetcanStop(true);
 
     songSlider.current.scrollToOffset({
@@ -81,6 +82,7 @@ const MusicPlayerUI = ({route, navigation}) => {
 
     await SoundObj.loadAsync(songNow.uri);
     await SoundObj.playAsync();
+    a = await SoundObj.getStatusAsync();
     SetcanStop(true);
 
     songSlider.current.scrollToOffset({
@@ -122,6 +124,7 @@ const MusicPlayerUI = ({route, navigation}) => {
     console.log('pressing bar');
   }
   async function sliedEnd(value){
+    a = await SoundObj.getStatusAsync();
     isPressProgBar = false;
     console.log('pressing bar ended');
     await SoundObj.setPositionAsync(value*a.durationMillis);
