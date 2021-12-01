@@ -203,7 +203,7 @@ const MusicPlayerUI = ({route, navigation}) => {
             scrollEnabled= {false}
             showsHorizontalScrollIndicator={false}
             scrollEventThrottle={16}
-            contentOffset = {{x : songIndex * width * 0.9}}
+            contentOffset = {{x : selected * width * 0.9}}
             onScroll={Animated.event(
               [{
                 nativeEvent: {
