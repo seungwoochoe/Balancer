@@ -50,7 +50,6 @@ const MusicPlayerUI = ({route, navigation}) => {
       
     }
   }, []);
-
   async function skipToNext (){
     await SoundObj.unloadAsync();
     songNow.title = songs[songIndex+1].title;
@@ -87,7 +86,12 @@ const MusicPlayerUI = ({route, navigation}) => {
       offset: (songIndex - 1) * width * 0.9,
     });
   }
-
+  async function UD()
+  {
+    a = await SoundObj.getStatusAsync();
+    valval = (a.positionMillis)/(a.durationMillis);
+  }
+  setInterval(UD,1200);
   const renderSongs = ({ index, item }) => {
     return (
       <Animated.View style={{
