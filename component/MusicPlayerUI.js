@@ -9,9 +9,11 @@ import {Audio} from 'expo-av';
 const { width, height } = Dimensions.get("window");
 const rem = width / 20;
 const theme = '#eee';
+let a, valval;
 import { SoundObj } from './MusicNow';
 import songNow from './MusicNow';
 import { set } from 'react-native-reanimated';
+import { _DEFAULT_INITIAL_PLAYBACK_STATUS } from 'expo-av/build/AV';
 
 
 const MusicPlayerUI = ({route, navigation}) => {
@@ -34,7 +36,10 @@ const MusicPlayerUI = ({route, navigation}) => {
    //'../assets/songs/2.mp3'
    console.log(songNow);
     await SoundObj.loadAsync(songNow.uri);
+    a= await SoundObj.getStatusAsync();
+    console.log(a);
     await SoundObj.playAsync();
+
     scrollX.addListener(({ value }) => {
       
       const index = Math.round(value / (width * 0.9));
@@ -97,6 +102,16 @@ const MusicPlayerUI = ({route, navigation}) => {
     );
   }
 
+  const endsec = ()=>{
+    
+    if(a){
+      let min = parseInt(parseInt((a.durationMillis)/1000)/60), sec = parseInt((a.durationMillis)/1000)%60;
+      if(sec<10) sec = '0'+sec;
+      return(''+min+':'+sec);
+      
+    }else return 0;
+  }
+
   // const fadeAnim = useRef(new Animated.Value(0)).current;
 
   // const fadeOut = () => {
@@ -111,7 +126,14 @@ const MusicPlayerUI = ({route, navigation}) => {
   //   fadeOut();
   // }, [...[songs[songIndex]]]);
 
+
+
   async function onAudioPress(){
+    a= await SoundObj.getStatusAsync();
+    console.log((a.positionMillis));
+  //  console.log((a.durationMillis));
+    valval = (a.positionMillis)/(a.durationMillis);
+
     if(canstop)
     {
      console.log('Pausing Sound');
@@ -125,6 +147,7 @@ const MusicPlayerUI = ({route, navigation}) => {
      SetcanStop(true);
     }
    }
+
 
   return (
     <ImageBackground source={songs[songIndex].image} blurRadius={blurRadius} style={{ flex: 1, transform: [{ rotate: '180deg' }] }}>
@@ -169,9 +192,9 @@ const MusicPlayerUI = ({route, navigation}) => {
           <View style={{ justifyContent: 'center' }}>
             <Slider
               style={styles.progressContainer}
-              value={18}
+              value={valval}
               minimumValue={0}
-              maximumValue={100}
+              maximumValue={1}
               thumbTintColor={theme}
               minimumTrackTintColor={theme}
               maximumTrackTintColor='#aaa'
@@ -179,7 +202,7 @@ const MusicPlayerUI = ({route, navigation}) => {
             />
             <View style={styles.progressLabelContainer}>
               <Text style={{ color: '#bbb', fontSize: rem * 0.75 }}>0:00</Text>
-              <Text style={{ color: '#bbb', fontSize: rem * 0.75 }}>{songNow.duration}</Text>
+              <Text style={{ color: '#bbb', fontSize: rem * 0.75 }}>{endsec()}</Text>
             </View>
           </View>
         </View>
