@@ -10,6 +10,7 @@ const { width, height } = Dimensions.get("window");
 const rem = width / 20;
 const theme = '#eee';
 let a;
+let isPressProgBar =false;
 import { SoundObj } from './MusicNow';
 import songNow from './MusicNow';
 import { set } from 'react-native-reanimated';
@@ -86,12 +87,17 @@ const MusicPlayerUI = ({route, navigation}) => {
       offset: (songIndex - 1) * width * 0.9,
     });
   }
+
+
   async function UD()
   {
     a = await SoundObj.getStatusAsync();
-    setvalval((a.positionMillis)/(a.durationMillis));
+    progBar();
+
   }
-  setInterval(UD,1200);
+
+
+  setTimeout(UD,1200);
   const renderSongs = ({ index, item }) => {
     return (
       <Animated.View style={{
@@ -104,6 +110,26 @@ const MusicPlayerUI = ({route, navigation}) => {
         />
       </Animated.View>
     );
+  }
+  const slideStart=()=>{
+    isPressProgBar = true;
+    console.log('pressing bar');
+  }
+  async function sliedEnd(value){
+    isPressProgBar = false;
+    console.log('pressing bar ended');
+    await SoundObj.setPositionAsync(value*a.durationMillis);
+  }
+
+
+  const progBar = ()=>{
+    if(a){
+      if(!isPressProgBar){
+
+        setvalval((a.positionMillis)/(a.durationMillis));
+      }
+    }else return 0;
+
   }
 
   const endsec = ()=>{
@@ -202,7 +228,8 @@ const MusicPlayerUI = ({route, navigation}) => {
               thumbTintColor={theme}
               minimumTrackTintColor={theme}
               maximumTrackTintColor='#aaa'
-              onSlidingComplete={() => { }}
+              onSlidingComplete={sliedEnd}
+              onSlidingStart={(value)=>slideStart(value)}
             />
             <View style={styles.progressLabelContainer}>
               <Text style={{ color: '#bbb', fontSize: rem * 0.75 }}>0:00</Text>
