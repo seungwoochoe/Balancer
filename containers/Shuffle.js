@@ -3,14 +3,18 @@ const PLAYLIST_SIZE = 20;
 const SKIP_WEIGHT_MODIFIER = 0.85;
 const BOOST_WEIGHT_MODIFIER = 0.2;
 
-const fakeuserActionList = [
+let fakeuserActionList = [
     { url: "../assets/songs/1.mp3", action: "like" },
     { url: "../assets/songs/5.mp3", action: "skip" },
     { url: "../assets/songs/5.mp3", action: "skip" },
     { url: "../assets/songs/5.mp3", action: "skip" },
     { url: "../assets/songs/5.mp3", action: "skip" },
     { url: "../assets/songs/2.mp3", action: "like" },
-    { url: "../assets/songs/2.mp3", action: "like" }
+    { url: "../assets/songs/2.mp3", action: "like" },
+    { url: "../assets/songs/2.mp3", action: "like" },
+    { url: "../assets/songs/2.mp3", action: "like" },
+    { url: "../assets/songs/2.mp3", action: "like" },
+
 ];
 
 const fakeLoadedPlaylist = [{

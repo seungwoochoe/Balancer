@@ -73,39 +73,10 @@ const MusicListUI = ({ navigation }) => {
       </TouchableOpacity>
     );
   }
-
-  const RenderSongForBottomBar = ({}) => {
-    if(songNow.title ==" "){
-      console.log('nuuul');
-      return(
-        <View></View>
-      );
-    }else{
-      return (
-        <TouchableOpacity
-          onPress={() => navigation.navigate('MusicPlayerUI')}
-  
-          style={styles.bottomMusic}>
-          <View style={{
-            width: listHeight,
-            shadowColor: 'black',
-            shadowRadius: width * 0.02,
-            shadowOpacity: 0.15,
-          }}>
-            <Image
-              source={songNow.image}
-              style={{ width: '87%', height: '87%', borderRadius: 4, }}
-            />
-          </View>
-          <View style={{ width: width - listHeight * 2 - width * 0.22, marginLeft: '2%' }}>
-            <Text style={{ fontSize: rem * 0.92, }} numberOfLines={1}>
-              {songNow.title}
-            </Text>
-          </View>
-        </TouchableOpacity>
-      );
-    }
+  const loglog=()=>{
+    console.log(songNow);
   }
+
 
   return (
     <SafeAreaView style={styles.container}>
@@ -136,9 +107,29 @@ const MusicListUI = ({ navigation }) => {
         />
       </View>
 
-      {/* <BlurView intensity={blurIntensity} tint={'light'} style={styles.bottomBarContainer}>
+      <BlurView intensity={blurIntensity} tint={'light'} style={styles.bottomBarContainer}>
         <View style={{ flex: 13, alignItems: 'center', height: '100%', paddingTop: height * 0.0125 }}>
-          <RenderSongForBottomBar />
+        <TouchableOpacity
+          onPress={loglog}
+  
+          style={styles.bottomMusic}>
+          <View style={{
+            width: listHeight,
+            shadowColor: 'black',
+            shadowRadius: width * 0.02,
+            shadowOpacity: 0.15,
+          }}>
+            <Image
+              source={songNow.image}
+              style={{ width: '87%', height: '87%', borderRadius: 4, }}
+            />
+          </View>
+          <View style={{ width: width - listHeight * 2 - width * 0.22, marginLeft: '2%' }}>
+            <Text style={{ fontSize: rem * 0.92, }} numberOfLines={1}>
+              {songNow.title}
+            </Text>
+          </View>
+        </TouchableOpacity>
         </View>
         <View style={{ flex: 6, alignItems: 'center', height: '100%', paddingTop: height * 0.022 }}>
           <View style={{ alignItems: 'center', flexDirection: 'row', }}>
@@ -150,7 +141,7 @@ const MusicListUI = ({ navigation }) => {
             </TouchableOpacity>
           </View>
         </View>
-      </BlurView> */}
+      </BlurView>
     </SafeAreaView>
 
   );
