@@ -9,7 +9,7 @@ import {Audio} from 'expo-av';
 const { width, height } = Dimensions.get("window");
 const rem = width / 20;
 const theme = '#eee';
-let a;
+let CurrentMusicState;
 let isPressProgBar =false;
 import { SoundObj } from './MusicNow';
 import songNow from './MusicNow';
@@ -37,8 +37,8 @@ const MusicPlayerUI = ({route, navigation}) => {
    //'../assets/songs/2.mp3'
    console.log(songNow);
     await SoundObj.loadAsync(songNow.uri);
-    a= await SoundObj.getStatusAsync();
-    console.log(a);
+    CurrentMusicState= await SoundObj.getStatusAsync();
+    console.log(CurrentMusicState);
     await SoundObj.playAsync();
 
     scrollX.addListener(({ value }) => {
@@ -62,7 +62,7 @@ const MusicPlayerUI = ({route, navigation}) => {
 
     await SoundObj.loadAsync(songNow.uri);
     await SoundObj.playAsync();
-    a = await SoundObj.getStatusAsync();
+    CurrentMusicState = await SoundObj.getStatusAsync();
     SetcanStop(true);
 
     songSlider.current.scrollToOffset({
@@ -82,7 +82,7 @@ const MusicPlayerUI = ({route, navigation}) => {
 
     await SoundObj.loadAsync(songNow.uri);
     await SoundObj.playAsync();
-    a = await SoundObj.getStatusAsync();
+    CurrentMusicState = await SoundObj.getStatusAsync();
     SetcanStop(true);
 
     songSlider.current.scrollToOffset({
@@ -124,18 +124,18 @@ const MusicPlayerUI = ({route, navigation}) => {
     console.log('pressing bar');
   }
   async function sliedEnd(value){
-    a = await SoundObj.getStatusAsync();
+    CurrentMusicState = await SoundObj.getStatusAsync();
     isPressProgBar = false;
     console.log('pressing bar ended');
-    await SoundObj.setPositionAsync(value*a.durationMillis);
+    await SoundObj.setPositionAsync(value*CurrentMusicState.durationMillis);
   }
 
 
   const progBar = ()=>{
-    if(a){
+    if(CurrentMusicState){
       if(!isPressProgBar){
 
-        setvalval((a.positionMillis)/(a.durationMillis));
+        setvalval((CurrentMusicState.positionMillis)/(CurrentMusicState.durationMillis));
       }
     }else return 0;
 
@@ -143,8 +143,8 @@ const MusicPlayerUI = ({route, navigation}) => {
 
   const endsec = ()=>{
     
-    if(a){
-      let min = parseInt(parseInt((a.durationMillis)/1000)/60), sec = parseInt((a.durationMillis)/1000)%60;
+    if(CurrentMusicState){
+      let min = parseInt(parseInt((CurrentMusicState.durationMillis)/1000)/60), sec = parseInt((CurrentMusicState.durationMillis)/1000)%60;
       if(sec<10) sec = '0'+sec;
       return(''+min+':'+sec);
       
@@ -168,10 +168,10 @@ const MusicPlayerUI = ({route, navigation}) => {
 
 
   async function onAudioPress(){
-    a= await SoundObj.getStatusAsync();
-    console.log((a.positionMillis));
-  //  console.log((a.durationMillis));
-    setvalval((a.positionMillis)/(a.durationMillis));
+    CurrentMusicState= await SoundObj.getStatusAsync();
+    console.log((CurrentMusicState.positionMillis));
+  //  console.log((CurrentMusicState.durationMillis));
+    setvalval((CurrentMusicState.positionMillis)/(CurrentMusicState.durationMillis));
 
     if(canstop)
     {
