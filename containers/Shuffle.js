@@ -1,29 +1,29 @@
-const PLAYLIST_SIZE = 20;
+const PLAYLIST_SIZE = 4;
 
 const SKIP_WEIGHT_MODIFIER = 0.85;
 const BOOST_WEIGHT_MODIFIER = 0.2;
 
 
-async function complementPlaylist(musicList, currentPlaylist, userActionList) {
-  let playlistToBeAdded = await createPlaylist(musicList, PLAYLIST_SIZE - currentPlaylist.length, userActionList);
+function complementPlaylist(musicList, currentPlaylist, userActionList) {
+  let playlistToBeAdded = createPlaylist(musicList, PLAYLIST_SIZE - currentPlaylist.length, userActionList);
   while (currentPlaylist[currentPlaylist.length - 1].title === playlistToBeAdded[0].title) {
-    playlistToBeAdded = await createPlaylist(musicList, PLAYLIST_SIZE - currentPlaylist.length, userActionList);
+    playlistToBeAdded = createPlaylist(musicList, PLAYLIST_SIZE - currentPlaylist.length, userActionList);
   }
   const playlist = [...currentPlaylist, ...playlistToBeAdded];
   return markIsTrigger(playlist);
 }
 
-async function appendMorePlaylist(musicList, currentPlaylist) {
-  let playlistToBeAdded = await createPlaylist(musicList, PLAYLIST_SIZE / 2);
+function appendMorePlaylist(musicList, currentPlaylist) {
+  let playlistToBeAdded = createPlaylist(musicList, PLAYLIST_SIZE / 2);
   while (currentPlaylist[currentPlaylist.length - 1].title === playlistToBeAdded[0].title) {
-    playlistToBeAdded = await createPlaylist(musicList, PLAYLIST_SIZE / 2);
+    playlistToBeAdded = createPlaylist(musicList, PLAYLIST_SIZE / 2);
   }
   const playlist = [...currentPlaylist, ...playlistToBeAdded];
   return markIsTrigger(playlist);
 }
 
 // If there is no or only one music in storage, "createPlaylist" function should not be called.
-async function createPlaylist(musicList, playlistSize, userActionList) {
+function createPlaylist(musicList, playlistSize, userActionList) {
   const weightedMusicList = calculateWeight(musicList, userActionList);
   let playlist = drawMusic(weightedMusicList, playlistSize);
   playlist = markIsPlayedToFalse(playlist);
