@@ -13,13 +13,13 @@ function complementPlaylist(musicList, currentPlaylist, userActionList) {
   return markIsTrigger(playlist);
 }
 
-function appendMorePlaylist(musicList, currentPlaylist) {
-  let playlistToBeAdded = createPlaylist(musicList, PLAYLIST_SIZE / 2);
+function appendMorePlaylist(musicList, currentPlaylist, userActionList) {
+  let playlistToBeAdded = createPlaylist(musicList, PLAYLIST_SIZE / 2, userActionList);
   while (currentPlaylist[currentPlaylist.length - 1].title === playlistToBeAdded[0].title) {
-    playlistToBeAdded = createPlaylist(musicList, PLAYLIST_SIZE / 2);
+    playlistToBeAdded = createPlaylist(musicList, PLAYLIST_SIZE / 2, userActionList);
   }
-  const playlist = [...currentPlaylist, ...playlistToBeAdded];
-  return markIsTrigger(playlist);
+  playlistToBeAdded = markIsTrigger(playlistToBeAdded)
+  return playlist = [...currentPlaylist, ...playlistToBeAdded];
 }
 
 // If there is no or only one music in storage, "createPlaylist" function should not be called.
@@ -45,14 +45,14 @@ function resetWeights(musicList) {
 
 function applyUserActionEffects(musicList, userActionList) {
   userActionList.forEach(userAction => {
-    let targetMusic = musicList.find(music => music.uri === userAction.uri);
+    let targetMusic = musicList.find(music => music.title === userAction.title);
 
     if (targetMusic != null) {
       if (userAction.action === "skip") {
         targetMusic.weight = targetMusic.weight * SKIP_WEIGHT_MODIFIER;
       } else {
         targetMusic.weight = targetMusic.weight + BOOST_WEIGHT_MODIFIER;
-      }  
+      }
     }
   });
   return musicList;
@@ -75,7 +75,7 @@ function drawMusic(musicList, number) {
     if (k > 0 && playlist[k - 1].title === musicList[index - 1].title) {
       k--;
     } else {
-      playlist.push({...musicList[index - 1]});      
+      playlist.push({ ...musicList[index - 1] });
     }
   }
   return playlist;
