@@ -8,6 +8,9 @@ import { Asset } from 'expo-asset';
 import data from './models/data';
 import * as Shuffle from './containers/Shuffle.js';
 
+import { LogBox } from 'react-native';
+LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+LogBox.ignoreAllLogs();//Ignore all log notifications
 const RootStack = createNativeStackNavigator();
 
 const App = () => {
