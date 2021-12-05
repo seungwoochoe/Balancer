@@ -9,7 +9,7 @@ import {Audio} from 'expo-av';
 const { width, height } = Dimensions.get("window");
 const rem = width / 20;
 const theme = '#eee';
-let durationmm;
+
 let CurrentMusicState;
 let isPressProgBar =false;
 import { SoundObj } from './MusicNow';
@@ -20,8 +20,6 @@ import { _DEFAULT_INITIAL_PLAYBACK_STATUS } from 'expo-av/build/AV';
 
 const MusicPlayerUI = ({route, navigation}) => {
   const {selected1, musicUri, selected} = route.params;
-  const [nowposition, setnowposition] = useState(0);
-  const [startOnce, isstartOnce] = useState(0);
   const [valval, setvalval] = useState(0);
   const [songIndex, setSongIndex] = useState(selected);
   const scrollX = useRef(new Animated.Value(selected*width*0.9)).current;
@@ -96,24 +94,20 @@ const MusicPlayerUI = ({route, navigation}) => {
 
 
   try {
-    console.log('hello');
     SoundObj.setOnPlaybackStatusUpdate(async (status) =>{
       if (status.didJustFinish === true)
       {
         skipToNext();
-        isstartOnce(0);
+
       }
       if (!isPressProgBar && status.isLoaded)
       {
-        if(startOnce ==0){
-          durationmm = status.durationMillis;
-          isstartOnce(1);
-        }
+
         
         setvalval((status.positionMillis)/(status.durationMillis));
       }
     })
-  } catch (err){
+  } catch (err ){
 
   }
 
@@ -154,9 +148,9 @@ const MusicPlayerUI = ({route, navigation}) => {
   }
 
   const currentPosition = ()=>{
+    if(CurrentMusicState){
     
-    if(valval){
-      let min = parseInt(parseInt((valval*durationmm)/1000)/60), sec = parseInt(parseInt((valval*durationmm)/1000))%60;
+      let min = parseInt(parseInt((valval*CurrentMusicState.durationMillis)/1000)/60), sec = parseInt(parseInt((valval*CurrentMusicState.durationMillis)/1000))%60;
       if(sec<10) sec = '0'+sec;
       return(''+min+':'+sec);
       
