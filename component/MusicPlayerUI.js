@@ -9,6 +9,7 @@ import {Audio} from 'expo-av';
 const { width, height } = Dimensions.get("window");
 const rem = width / 20;
 const theme = '#eee';
+let durationmm;
 let CurrentMusicState;
 let isPressProgBar =false;
 import { SoundObj } from './MusicNow';
@@ -19,6 +20,8 @@ import { _DEFAULT_INITIAL_PLAYBACK_STATUS } from 'expo-av/build/AV';
 
 const MusicPlayerUI = ({route, navigation}) => {
   const {selected1, musicUri, selected} = route.params;
+  const [nowposition, setnowposition] = useState(0);
+  const [startOnce, isstartOnce] = useState(0);
   const [valval, setvalval] = useState(0);
   const [songIndex, setSongIndex] = useState(selected);
   const scrollX = useRef(new Animated.Value(selected*width*0.9)).current;
@@ -52,6 +55,7 @@ const MusicPlayerUI = ({route, navigation}) => {
     }
   }, []);
   async function skipToNext (){
+    isstartOnce(0);
     await SoundObj.unloadAsync();
     songNow.title = songs[songIndex+1].title;
     songNow.artist = songs[songIndex+1].artist;
@@ -71,7 +75,7 @@ const MusicPlayerUI = ({route, navigation}) => {
   }
 
   async function skipToPrevious () {
-
+    isstartOnce(0);
     await SoundObj.unloadAsync();
     songNow.title = songs[songIndex-1].title;
     songNow.artist = songs[songIndex-1].artist;
@@ -92,17 +96,26 @@ const MusicPlayerUI = ({route, navigation}) => {
 
 
   try {
+    console.log('hello');
     SoundObj.setOnPlaybackStatusUpdate(async (status) =>{
       if (status.didJustFinish === true)
       {
         skipToNext();
+        isstartOnce(0);
       }
       if (!isPressProgBar && status.isLoaded)
       {
+        if(startOnce ==0){
+          durationmm = status.durationMillis;
+          isstartOnce(1);
+        }
+        
         setvalval((status.positionMillis)/(status.durationMillis));
       }
     })
-  } catch (error) {}
+  } catch (err){
+
+  }
 
 
   
@@ -130,17 +143,6 @@ const MusicPlayerUI = ({route, navigation}) => {
     await SoundObj.setPositionAsync(value*CurrentMusicState.durationMillis);
   }
 
-
-  const progBar = ()=>{
-    if(CurrentMusicState){
-      if(!isPressProgBar){
-
-        setvalval((CurrentMusicState.positionMillis)/(CurrentMusicState.durationMillis));
-      }
-    }else return 0;
-
-  }
-
   const endsec = ()=>{
     
     if(CurrentMusicState){
@@ -150,6 +152,17 @@ const MusicPlayerUI = ({route, navigation}) => {
       
     }else return 0;
   }
+
+  const currentPosition = ()=>{
+    
+    if(valval){
+      let min = parseInt(parseInt((valval*durationmm)/1000)/60), sec = parseInt(parseInt((valval*durationmm)/1000))%60;
+      if(sec<10) sec = '0'+sec;
+      return(''+min+':'+sec);
+      
+    }else return 0;
+  }
+  
 
   // const fadeAnim = useRef(new Animated.Value(0)).current;
 
@@ -241,7 +254,7 @@ const MusicPlayerUI = ({route, navigation}) => {
               onSlidingStart={(value)=>slideStart(value)}
             />
             <View style={styles.progressLabelContainer}>
-              <Text style={{ color: '#bbb', fontSize: rem * 0.75 }}>0:00</Text>
+              <Text style={{ color: '#bbb', fontSize: rem * 0.75 }}>{currentPosition()}</Text>
               <Text style={{ color: '#bbb', fontSize: rem * 0.75 }}>{endsec()}</Text>
             </View>
           </View>
