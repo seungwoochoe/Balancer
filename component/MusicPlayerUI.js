@@ -187,14 +187,15 @@ const MusicPlayerUI = ({route, navigation}) => {
      console.log('Pausing Sound');
      await SoundObj.pauseAsync();
      SetcanStop(false);
-     songNow.isPlayin = canstop;
+     songNow.isPlayin = false;
+     console.log(songNow.isPlayin);
     }
     else
     {
      console.log('Playing Sound');
      await SoundObj.playAsync();
      SetcanStop(true);
-     songNow.isPlayin = canstop;
+     songNow.isPlayin = true;
     }
    }
 

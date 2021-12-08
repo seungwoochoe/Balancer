@@ -13,7 +13,6 @@ const theme = '#107dac';
 const buttonTheme = '#333';
 const listHeight = width * 0.16;
 const bottomBarHeight = height / 8.2;
-
 let blurIntensity;
 if (Platform.OS === 'ios') {
   blurIntensity = 96;
@@ -21,23 +20,22 @@ if (Platform.OS === 'ios') {
   blurIntensity = 200;
 }
 const MusicListUI = ({ navigation }) => {
-  const [canpause,setCanpause] = useState(songNow.isPlayin);
   const isFocused = useIsFocused();
-
+  const [dumm, setdumm] = useState(0);
   async function onPausePress(){
-    if(canpause)
+    if(songNow.isPlayin)
     {
      console.log('Pausing Sound');
      await SoundObj.pauseAsync();
-     setCanpause(false);
-     songNow.isPlayin = canpause;
+     songNow.isPlayin = false;
+     setdumm(0);
     }
     else
     {
      console.log('Playing Sound');
      await SoundObj.playAsync();
-     setCanpause(true);
-     songNow.isPlayin = canpause;
+     songNow.isPlayin = true;
+     setdumm(1);
     }
    }
 
@@ -156,7 +154,7 @@ const MusicListUI = ({ navigation }) => {
         <View style={{ flex: 6, alignItems: 'center', height: '100%', paddingTop: height * 0.022 }}>
           <View style={{ alignItems: 'center', flexDirection: 'row', }}>
             <TouchableOpacity onPress={onPausePress} style={{ padding: '10%' }} >
-              <Ionicons name={canpause ? "pause" : "play"} size={rem * 1.65} color={buttonTheme}></Ionicons>
+              <Ionicons name={songNow.isPlayin ? "pause" : "play"} size={rem * 1.65} color={buttonTheme}></Ionicons>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => { }} style={{ padding: '10%' }}>
               <Ionicons name="play-forward" size={rem * 1.8} color={buttonTheme}></Ionicons>
