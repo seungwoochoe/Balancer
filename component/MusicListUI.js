@@ -1,4 +1,4 @@
-import React from 'react';
+import React ,{useEffect}from 'react';
 import { SafeAreaView, View, Text, StyleSheet, Dimensions, Image, Animated, StatusBar, Platform } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -6,12 +6,14 @@ import { BlurView } from 'expo-blur';
 import songs from '../models/data';
 import songNow from './MusicNow';
 import { SoundObj } from './MusicNow';
+import { useIsFocused } from '@react-navigation/native';
 const { width, height } = Dimensions.get("window");
 const rem = width / 20;
 const theme = '#107dac';
 const buttonTheme = '#333';
 const listHeight = width * 0.16;
 const bottomBarHeight = height / 8.2;
+
 let blurIntensity;
 if (Platform.OS === 'ios') {
   blurIntensity = 96;
@@ -19,6 +21,7 @@ if (Platform.OS === 'ios') {
   blurIntensity = 200;
 }
 const MusicListUI = ({ navigation }) => {
+  const isFocused = useIsFocused();
   async function songInput(item){
     await SoundObj.unloadAsync();
     songNow.title = item.title;

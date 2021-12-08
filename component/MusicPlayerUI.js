@@ -57,7 +57,7 @@ const MusicPlayerUI = ({route, navigation}) => {
     await SoundObj.unloadAsync();
     songNow.title = songs[songIndex+1].title;
     songNow.artist = songs[songIndex+1].artist;
-    songNow.image = songs[songIndex+1].artist;
+    songNow.image = songs[songIndex+1].image;
     songNow.id = songs[songIndex+1].id;
     songNow.uri = songs[songIndex+1].uri;
     songNow.duration = songs[songIndex+1].duration;
@@ -77,7 +77,7 @@ const MusicPlayerUI = ({route, navigation}) => {
     await SoundObj.unloadAsync();
     songNow.title = songs[songIndex-1].title;
     songNow.artist = songs[songIndex-1].artist;
-    songNow.image = songs[songIndex-1].artist;
+    songNow.image = songs[songIndex-1].image;
     songNow.id = songs[songIndex-1].id;
     songNow.uri = songs[songIndex-1].uri;
     songNow.duration = songs[songIndex-1].duration;
