@@ -53,7 +53,7 @@ const MusicPlayerUI = ({route, navigation}) => {
     }
   }, []);
   async function skipToNext (){
-    isstartOnce(0);
+ 
     await SoundObj.unloadAsync();
     songNow.title = songs[songIndex+1].title;
     songNow.artist = songs[songIndex+1].artist;
@@ -73,7 +73,7 @@ const MusicPlayerUI = ({route, navigation}) => {
   }
 
   async function skipToPrevious () {
-    isstartOnce(0);
+    
     await SoundObj.unloadAsync();
     songNow.title = songs[songIndex-1].title;
     songNow.artist = songs[songIndex-1].artist;
@@ -100,7 +100,7 @@ const MusicPlayerUI = ({route, navigation}) => {
         skipToNext();
 
       }
-      if (!isPressProgBar && status.isLoaded)
+      if (!isPressProgBar && status.isLoaded )
       {
 
         
