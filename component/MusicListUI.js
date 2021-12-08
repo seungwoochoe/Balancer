@@ -40,20 +40,23 @@ const MusicListUI = ({ navigation }) => {
    }
 
   async function songInput(item){
-    await SoundObj.unloadAsync();
-    console.log(songNow);
-    console.log('------- MusicNow로 복사중 -----');
-    songNow.title = item.title;
-    songNow.artist = item.artist;
-    songNow.image = item.image;
-    songNow.id = item.id;
-    songNow.uri = item.uri;
-    songNow.duration = item.duration;
-    songNow.isPlayin =true;
+    if(songNow.id != item.id){
+
+      await SoundObj.unloadAsync();
+      console.log(songNow);
+      console.log('------- MusicNow로 복사중 -----');
+      songNow.title = item.title;
+      songNow.artist = item.artist;
+      songNow.image = item.image;
+      songNow.id = item.id;
+      songNow.uri = item.uri;
+      songNow.duration = item.duration;
+      songNow.isPlayin =true;
+      console.log(songNow);
+      console.log('------- MusicNow로 복사 완료 -----');
+    }
     
 
-    console.log(songNow);
-    console.log('------- MusicNow로 복사 완료 -----');
     
     navigation.navigate('MusicPlayerUI',{selected: item.id-1, selected1: item, musicUri: item.uri})
   }
