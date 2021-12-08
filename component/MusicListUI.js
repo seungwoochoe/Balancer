@@ -26,7 +26,7 @@ const MusicListUI = ({ navigation }) => {
     await SoundObj.unloadAsync();
     songNow.title = item.title;
     songNow.artist = item.artist;
-    songNow.image = item.artist;
+    songNow.image = item.image;
     songNow.id = item.id;
     songNow.uri = item.uri;
     songNow.duration = item.duration;
