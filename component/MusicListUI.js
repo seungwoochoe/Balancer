@@ -43,16 +43,16 @@ const MusicListUI = ({ navigation }) => {
 
   async function songInput(item){
     await SoundObj.unloadAsync();
+    console.log(songNow);
+    console.log('------- MusicNow로 복사중 -----');
     songNow.title = item.title;
     songNow.artist = item.artist;
     songNow.image = item.image;
     songNow.id = item.id;
     songNow.uri = item.uri;
     songNow.duration = item.duration;
+    songNow.isPlayin =true;
     
-    
-    console.log(songNow);
-    console.log('------- MusicNow로 복사중 -----');
 
     console.log(songNow);
     console.log('------- MusicNow로 복사 완료 -----');
