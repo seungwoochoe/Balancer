@@ -10,7 +10,7 @@ let songNow = {
     id: "1",
     uri: require('../assets/songs/1.mp3'),
     duration: 172,
-    isPlayin : true
+    isPlayin: true
 }
 
 export default songNow;
