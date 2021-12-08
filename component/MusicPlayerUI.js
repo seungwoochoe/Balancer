@@ -26,7 +26,7 @@ const MusicPlayerUI = ({route, navigation}) => {
   const songSlider = useRef(null);
   const fileExtension = Image.resolveAssetSource(songs[songIndex].image).uri.split('.').pop();
   let blurRadius;
-  const [canstop, SetcanStop] = useState(true);
+  const [canstop, SetcanStop] = useState(songNow.isPlayin);
   
   if (fileExtension === "jpeg") {
     blurRadius = 120000 / height;
@@ -66,6 +66,7 @@ const MusicPlayerUI = ({route, navigation}) => {
     await SoundObj.playAsync();
     CurrentMusicState = await SoundObj.getStatusAsync();
     SetcanStop(true);
+    songNow.isPlayin = canstop;
 
     songSlider.current.scrollToOffset({
       offset: (songIndex + 1) * width * 0.9,
@@ -86,6 +87,7 @@ const MusicPlayerUI = ({route, navigation}) => {
     await SoundObj.playAsync();
     CurrentMusicState = await SoundObj.getStatusAsync();
     SetcanStop(true);
+    songNow.isPlayin = canstop;
 
     songSlider.current.scrollToOffset({
       offset: (songIndex - 1) * width * 0.9,
@@ -185,12 +187,14 @@ const MusicPlayerUI = ({route, navigation}) => {
      console.log('Pausing Sound');
      await SoundObj.pauseAsync();
      SetcanStop(false);
+     songNow.isPlayin = canstop;
     }
     else
     {
      console.log('Playing Sound');
      await SoundObj.playAsync();
      SetcanStop(true);
+     songNow.isPlayin = canstop;
     }
    }
 

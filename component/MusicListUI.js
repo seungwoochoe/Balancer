@@ -1,4 +1,4 @@
-import React ,{useEffect}from 'react';
+import React ,{ useEffect, useState }from 'react';
 import { SafeAreaView, View, Text, StyleSheet, Dimensions, Image, Animated, StatusBar, Platform } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -21,7 +21,26 @@ if (Platform.OS === 'ios') {
   blurIntensity = 200;
 }
 const MusicListUI = ({ navigation }) => {
+  const [canpause,setCanpause] = useState(songNow.isPlayin);
   const isFocused = useIsFocused();
+
+  async function onPausePress(){
+    if(canpause)
+    {
+     console.log('Pausing Sound');
+     await SoundObj.pauseAsync();
+     setCanpause(false);
+     songNow.isPlayin = canpause;
+    }
+    else
+    {
+     console.log('Playing Sound');
+     await SoundObj.playAsync();
+     setCanpause(true);
+     songNow.isPlayin = canpause;
+    }
+   }
+
   async function songInput(item){
     await SoundObj.unloadAsync();
     songNow.title = item.title;
@@ -136,8 +155,8 @@ const MusicListUI = ({ navigation }) => {
         </View>
         <View style={{ flex: 6, alignItems: 'center', height: '100%', paddingTop: height * 0.022 }}>
           <View style={{ alignItems: 'center', flexDirection: 'row', }}>
-            <TouchableOpacity onPress={() => { }} style={{ padding: '10%' }} >
-              <Ionicons name="play" size={rem * 1.65} color={buttonTheme}></Ionicons>
+            <TouchableOpacity onPress={onPausePress} style={{ padding: '10%' }} >
+              <Ionicons name={canpause ? "pause" : "play"} size={rem * 1.65} color={buttonTheme}></Ionicons>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => { }} style={{ padding: '10%' }}>
               <Ionicons name="play-forward" size={rem * 1.8} color={buttonTheme}></Ionicons>
