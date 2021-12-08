@@ -28,14 +28,14 @@ const MusicListUI = ({ navigation }) => {
      console.log('Pausing Sound');
      await SoundObj.pauseAsync();
      songNow.isPlayin = false;
-     setdumm(0);
+     setdumm(1-dumm);
     }
     else
     {
      console.log('Playing Sound');
      await SoundObj.playAsync();
      songNow.isPlayin = true;
-     setdumm(1);
+     setdumm(1-dumm);
     }
    }
 
