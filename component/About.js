@@ -10,7 +10,7 @@ const About = () => {
       <View style={{ marginLeft: '5%', marginRight: '6%' }}>
 
         <Text style={{ fontSize: rem * 2, fontWeight: 'bold' }}>
-          Balancer
+          Blancer
         </Text>
 
         <Text style={{ fontSize: rem }}> </Text>
@@ -54,23 +54,35 @@ const About = () => {
           You can find the source code and licenses of those projects below.
           We acknowledge and are grateful to the people who contributed to those projects.
           {'\n\n'}
+          React https://github.com/facebook/react{'\n'}
+          MIT License https://github.com/facebook/react/blob/main/LICENSE
+          {'\n\n'}
           React Native https://github.com/facebook/react-native{'\n'}
           MIT License https://github.com/facebook/react-native/blob/main/LICENSE
           {'\n\n'}
           Expo https://github.com/expo/expo{'\n'}
           MIT License https://github.com/expo/expo/blob/master/LICENSE
           {'\n\n'}
+          React Navigation https://github.com/react-navigation/react-navigation{'\n'}
+          MIT License https://opensource.org/licenses/MIT
+          {'\n\n'}
+          React Native Screens https://github.com/software-mansion/react-native-screens{'\n'}
+          MIT License https://github.com/software-mansion/react-native-screens/blob/master/LICENSE
+          {'\n\n'}
+          React Native Safe Area Context https://github.com/th3rdwave/react-native-safe-area-context{'\n'}
+          MIT License https://github.com/th3rdwave/react-native-safe-area-context/blob/main/LICENSE
+          {'\n\n'}
+          React Native Reanimated https://github.com/software-mansion/react-native-reanimated{'\n'}
+          MIT License https://github.com/software-mansion/react-native-reanimated/blob/master/LICENSE
+          {'\n\n'}
+          React Native Gesture Handler https://github.com/software-mansion/react-native-gesture-handler{'\n'}
+          MIT License https://github.com/software-mansion/react-native-gesture-handler/blob/master/LICENSE
+          {'\n\n'}
           React Native Vector Icons https://github.com/oblador/react-native-vector-icons{'\n'}
           MIT License https://github.com/oblador/react-native-vector-icons/blob/master/LICENSE
           {'\n\n'}
           React Native Slider https://github.com/callstack/react-native-slider{'\n'}
           MIT License https://github.com/callstack/react-native-slider/blob/main/LICENSE.md
-          {'\n\n'}
-          React Navigation https://github.com/react-navigation/react-navigation{'\n'}
-          MIT License https://opensource.org/licenses/MIT
-          {'\n\n'}
-          Async Storage https://github.com/react-native-async-storage/async-storage{'\n'}
-          MIT License https://github.com/react-native-async-storage/async-storage/blob/master/LICENSE
         </Text>
 
         <Text>{'\n\n\n\n'}</Text>
