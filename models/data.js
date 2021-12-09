@@ -24,6 +24,7 @@ const songs = [{
         title: "Inspire",
         artist: "Benjamin Tissot",
         image: require("../assets/artworks/pexels-eberhard-grossgasteiger-2437286.jpg"),
+
         id: "4"
     },
     {
