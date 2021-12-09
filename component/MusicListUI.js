@@ -100,7 +100,7 @@ const MusicListUI = ({ navigation }) => {
   }
 
   async function songInput(item) {
-    if (songNow.id != item.id) {
+    if (songNow.title != item.title) {
 
       await SoundObj.unloadAsync();
       console.log(songNow);
