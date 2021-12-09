@@ -1,11 +1,13 @@
-import React, { Component, useEffect, useRef, useState } from 'react';
+import React ,{ useEffect, useState }from 'react';
 import { SafeAreaView, View, Text, StyleSheet, Dimensions, Image, Animated, StatusBar, Platform } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { BlurView } from 'expo-blur';
 import songs from '../models/data';
+import songNow from './MusicNow';
+import { SoundObj } from './MusicNow';
+import { useIsFocused } from '@react-navigation/native';
 const { width, height } = Dimensions.get("window");
-
 const rem = width / 20;
 const theme = '#107dac';
 const buttonTheme = '#333';
@@ -17,9 +19,63 @@ if (Platform.OS === 'ios') {
 } else {
   blurIntensity = 200;
 }
-
 const MusicListUI = ({ navigation }) => {
+  const isFocused = useIsFocused();
+  const [dumm, setdumm] = useState(0);
+  async function onPausePress(){
+    if(songNow.isPlayin)
+    {
+     console.log('Pausing Sound');
+     await SoundObj.pauseAsync();
+     songNow.isPlayin = false;
+     setdumm(1-dumm);
+    }
+    else
+    {
+     console.log('Playing Sound');
+     await SoundObj.playAsync();
+     songNow.isPlayin = true;
+     setdumm(1-dumm);
+    }
+   }
 
+   async function skipToPrevious () {
+    
+    await SoundObj.unloadAsync();
+    songNow.title = songs[songIndex-1].title;
+    songNow.artist = songs[songIndex-1].artist;
+    songNow.image = songs[songIndex-1].image;
+    songNow.id = songs[songIndex-1].id;
+    songNow.uri = songs[songIndex-1].uri;
+    songNow.duration = songs[songIndex-1].duration;
+
+    await SoundObj.loadAsync(songNow.uri);
+    await SoundObj.playAsync();
+    CurrentMusicState = await SoundObj.getStatusAsync();
+
+  }
+
+  async function songInput(item){
+    if(songNow.id != item.id){
+
+      await SoundObj.unloadAsync();
+      console.log(songNow);
+      console.log('------- MusicNow로 복사중 -----');
+      songNow.title = item.title;
+      songNow.artist = item.artist;
+      songNow.image = item.image;
+      songNow.id = item.id;
+      songNow.uri = item.uri;
+      songNow.duration = item.duration;
+      songNow.isPlayin =true;
+      console.log(songNow);
+      console.log('------- MusicNow로 복사 완료 -----');
+    }
+    
+
+    
+    navigation.navigate('MusicPlayerUI',{selected: item.id-1, selected1: item, musicUri: item.uri})
+  }
   const RenderShuffleButon = () => {
     return (
       <TouchableOpacity
@@ -37,7 +93,7 @@ const MusicListUI = ({ navigation }) => {
   const RenderSong = ({ item }) => {
     return (
       <TouchableOpacity
-        onPress={() => navigation.navigate('MusicPlayerUI')}
+        onPress={() => songInput(item)}
         style={styles.music}>
         <View style={{ width: listHeight }}>
           <Image
@@ -56,31 +112,10 @@ const MusicListUI = ({ navigation }) => {
       </TouchableOpacity>
     );
   }
-
-  const RenderSongForBottomBar = ({ item }) => {
-    return (
-      <TouchableOpacity
-        onPress={() => navigation.navigate('MusicPlayerUI')}
-        style={styles.bottomMusic}>
-        <View style={{
-          width: listHeight,
-          shadowColor: 'black',
-          shadowRadius: width * 0.02,
-          shadowOpacity: 0.15,
-        }}>
-          <Image
-            source={item.image}
-            style={{ width: '87%', height: '87%', borderRadius: 4, }}
-          />
-        </View>
-        <View style={{ width: width - listHeight * 2 - width * 0.22, marginLeft: '2%' }}>
-          <Text style={{ fontSize: rem * 0.92, }} numberOfLines={1}>
-            {item.title}
-          </Text>
-        </View>
-      </TouchableOpacity>
-    );
+  const loglog=()=>{
+    console.log(songNow);
   }
+
 
   return (
     <SafeAreaView style={styles.container}>
@@ -113,12 +148,32 @@ const MusicListUI = ({ navigation }) => {
 
       <BlurView intensity={blurIntensity} tint={'light'} style={styles.bottomBarContainer}>
         <View style={{ flex: 13, alignItems: 'center', height: '100%', paddingTop: height * 0.0125 }}>
-          <RenderSongForBottomBar item={songs[3]} />
+        <TouchableOpacity
+          onPress={loglog}
+  
+          style={styles.bottomMusic}>
+          <View style={{
+            width: listHeight,
+            shadowColor: 'black',
+            shadowRadius: width * 0.02,
+            shadowOpacity: 0.15,
+          }}>
+            <Image
+              source={songNow.image}
+              style={{ width: '87%', height: '87%', borderRadius: 4, }}
+            />
+          </View>
+          <View style={{ width: width - listHeight * 2 - width * 0.22, marginLeft: '2%' }}>
+            <Text style={{ fontSize: rem * 0.92, }} numberOfLines={1}>
+              {songNow.title}
+            </Text>
+          </View>
+        </TouchableOpacity>
         </View>
         <View style={{ flex: 6, alignItems: 'center', height: '100%', paddingTop: height * 0.022 }}>
           <View style={{ alignItems: 'center', flexDirection: 'row', }}>
-            <TouchableOpacity onPress={() => { }} style={{ padding: '10%' }} >
-              <Ionicons name="play" size={rem * 1.65} color={buttonTheme}></Ionicons>
+            <TouchableOpacity onPress={onPausePress} style={{ padding: '10%' }} >
+              <Ionicons name={songNow.isPlayin ? "pause" : "play"} size={rem * 1.65} color={buttonTheme}></Ionicons>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => { }} style={{ padding: '10%' }}>
               <Ionicons name="play-forward" size={rem * 1.8} color={buttonTheme}></Ionicons>
