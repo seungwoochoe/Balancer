@@ -169,7 +169,7 @@ const MusicListUI = ({ navigation }) => {
       <StatusBar barStyle="dark-content" animated="true" />
 
       <View style={{ height: width / 4, flexDirection: 'row', paddingTop: '5%', alignItems: 'center', justifyContent: 'space-between' }}>
-        <Text style={styles.titleText}>song2</Text>
+        <Text style={styles.titleText}>songs</Text>
         <TouchableOpacity
           onPress={() => { navigation.navigate('About') }}
           style={{
@@ -184,7 +184,7 @@ const MusicListUI = ({ navigation }) => {
       <View style={{ flex: 1 }}>
         <Animated.FlatList
           style={{ paddingTop: '1%' }}
-          data={song2}
+          data={songs}
           ListHeaderComponent={RenderShuffleButon}
           ListFooterComponent={<View style={{ height: bottomBarHeight }}></View>}
           renderItem={RenderSong}
