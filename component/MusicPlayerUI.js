@@ -5,8 +5,10 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import songs from '../models/data';
 import {Audio} from 'expo-av';
+import {shuffleSongList} from '../models/shuffledata';
+import {shuffleActionList} from '../models/shuffledata';
 import {createPlaylist, complementPlaylist, appendMorePlaylist} from '../containers/Shuffle';
-
+import { song2 } from './MusicListUI';
 const { width, height } = Dimensions.get("window");
 const rem = width / 20;
 const theme = '#eee';
@@ -20,12 +22,13 @@ import { _DEFAULT_INITIAL_PLAYBACK_STATUS } from 'expo-av/build/AV';
 
 
 const MusicPlayerUI = ({route, navigation}) => {
-  const {selected1, musicUri, selected} = route.params;
+  //const {selected1, musicUri, selected} = route.params;
   const [valval, setvalval] = useState(0);
-  const [songIndex, setSongIndex] = useState(selected);
-  const scrollX = useRef(new Animated.Value(selected*width*0.9)).current;
+  //const [songIndex, setSongIndex] = useState(selected);
+  const scrollX = useRef(new Animated.Value(songNow.index*width*0.9)).current;
   const songSlider = useRef(null);
-  const fileExtension = Image.resolveAssetSource(songs[songIndex].image).uri.split('.').pop();
+  console.log(songNow.image);
+  const fileExtension  = Image.resolveAssetSource(songNow.image).uri.split('.').pop();
   let blurRadius;
   const [canstop, SetcanStop] = useState(songNow.isPlayin);
   
@@ -46,7 +49,7 @@ const MusicPlayerUI = ({route, navigation}) => {
     scrollX.addListener(({ value }) => {
       
       const index = Math.round(value / (width * 0.9));
-      setSongIndex(index);
+      //setSongIndex(index);
     });
     return () => {
       scrollX.removeAllListeners();
@@ -56,12 +59,12 @@ const MusicPlayerUI = ({route, navigation}) => {
   async function skipToNext (){
  
     await SoundObj.unloadAsync();
-    songNow.title = songs[songNow.index +1].title;
-    songNow.artist = songs[songNow.index +1].artist;
-    songNow.image = songs[songNow.index +1].image;
-    songNow.id = songs[songNow.index +1].id;
-    songNow.uri = songs[songNow.index +1].uri;
-    songNow.duration = songs[songNow.index +1].duration;
+    songNow.title = song2[songNow.index +1].title;
+    songNow.artist = song2[songNow.index +1].artist;
+    songNow.image = song2[songNow.index +1].image;
+    songNow.id = song2[songNow.index +1].id;
+    songNow.uri = song2[songNow.index +1].uri;
+    songNow.duration = song2[songNow.index +1].duration;
     songNow.index += 1;
 
     await SoundObj.loadAsync(songNow.uri);
@@ -71,19 +74,19 @@ const MusicPlayerUI = ({route, navigation}) => {
     songNow.isPlayin = canstop;
 
     songSlider.current.scrollToOffset({
-      offset: (songIndex + 1) * width * 0.9,
+      offset: (songNow.index + 1) * width * 0.9,
     });
   }
 
   async function skipToPrevious () {
     
     await SoundObj.unloadAsync();
-    songNow.title = songs[songNow.index -1].title;
-    songNow.artist = songs[songNow.index -1].artist;
-    songNow.image = songs[songNow.index -1].image;
-    songNow.id = songs[songNow.index -1].id;
-    songNow.uri = songs[songNow.index -1].uri;
-    songNow.duration = songs[songNow.index -1].duration;
+    songNow.title = song2[songNow.index -1].title;
+    songNow.artist = song2[songNow.index -1].artist;
+    songNow.image = song2[songNow.index -1].image;
+    songNow.id = song2[songNow.index -1].id;
+    songNow.uri = song2[songNow.index -1].uri;
+    songNow.duration = song2[songNow.index -1].duration;
     songNow.index -= 1;
 
     await SoundObj.loadAsync(songNow.uri);
@@ -93,7 +96,7 @@ const MusicPlayerUI = ({route, navigation}) => {
     songNow.isPlayin = canstop;
 
     songSlider.current.scrollToOffset({
-      offset: (songIndex - 1) * width * 0.9,
+      offset: (songNow.index - 1) * width * 0.9,
     });
   }
 
@@ -212,7 +215,7 @@ useEffect(()=>{
         <View style={styles.artworkWrapper}>
           <Animated.FlatList
             ref={songSlider}
-            data={songs}
+            data={song2}
             renderItem={renderSongs}
             keyExtractor={(item) => item.id}
             horizontal
@@ -220,7 +223,7 @@ useEffect(()=>{
             scrollEnabled= {false}
             showsHorizontalScrollIndicator={false}
             scrollEventThrottle={16}
-            contentOffset = {{x : selected * width * 0.9}}
+            contentOffset = {{x : songNow.index * width * 0.9}}
             onScroll={Animated.event(
               [{
                 nativeEvent: {
@@ -235,7 +238,7 @@ useEffect(()=>{
         <View style={{ flex: .8, width: '80%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
           <View style={{ flex: 7, paddingRight: '7%' }}>
             <Text style={styles.title} numberOfLines={1}>{songNow.title }</Text>
-            <Text style={styles.artist} numberOfLines={1}>{songs[songIndex].artist}</Text>
+            <Text style={styles.artist} numberOfLines={1}>{songNow.artist}</Text>
           </View>
           <View style={{ flex: 1 }}>
             <TouchableOpacity>

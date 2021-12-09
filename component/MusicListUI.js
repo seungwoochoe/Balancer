@@ -7,9 +7,10 @@ import songs from '../models/data';
 import songNow from './MusicNow';
 import { SoundObj } from './MusicNow';
 import { useIsFocused } from '@react-navigation/native';
-import shuffleSongList from '../models/shuffledata';
-import shuffleActionList from '../models/shuffledata';
+import {shuffleSongList} from '../models/shuffledata';
+import {shuffleActionList} from '../models/shuffledata';
 import {createPlaylist, complementPlaylist, appendMorePlaylist} from '../containers/Shuffle';
+
 const { width, height } = Dimensions.get("window");
 const rem = width / 20;
 const theme = '#107dac';
@@ -22,6 +23,7 @@ if (Platform.OS === 'ios') {
 } else {
   blurIntensity = 200;
 }
+export let song2 = songs;
 const MusicListUI = ({ navigation }) => {
   const isFocused = useIsFocused();
   const [dumm, setdumm] = useState(0);
@@ -45,12 +47,12 @@ const MusicListUI = ({ navigation }) => {
    async function skipToPrevious () {
     
     await SoundObj.unloadAsync();
-    songNow.title = songs[songIndex-1].title;
-    songNow.artist = songs[songIndex-1].artist;
-    songNow.image = songs[songIndex-1].image;
-    songNow.id = songs[songIndex-1].id;
-    songNow.uri = songs[songIndex-1].uri;
-    songNow.duration = songs[songIndex-1].duration;
+    songNow.title = song2[songIndex-1].title;
+    songNow.artist = song2[songIndex-1].artist;
+    songNow.image = song2[songIndex-1].image;
+    songNow.id = song2[songIndex-1].id;
+    songNow.uri = song2[songIndex-1].uri;
+    songNow.duration = song2[songIndex-1].duration;
     
 
     await SoundObj.loadAsync(songNow.uri);
@@ -60,10 +62,43 @@ const MusicListUI = ({ navigation }) => {
   }
   
   async function shuffleButtonPressed(){
-    shuffleSongList = createPlaylist(songs, 10, shuffleActionList);
-
+    shuffleSongList.length =0;
     console.log(shuffleSongList);
+    console.log('shuffle-------------');
+
+    //console.log(shuffleActionList);
+    const imsi = createPlaylist(song2, 10, shuffleActionList);
+    console.log('--------------------------imsi');
+    console.log(imsi);
+    console.log('--------------------------imsi');
+
+    imsi.forEach(element =>shuffleSongList.push(element));
     
+    console.log(shuffleSongList);
+    song2 = shuffleSongList;
+    //console.log(createPlaylist(song2, 10, shuffleActionList));
+    await shuffledSongInput();
+    
+  }
+  async function shuffledSongInput(){
+    
+
+      await SoundObj.unloadAsync();
+      console.log(songNow);
+      console.log('------- MusicNow로 복사중 -----');
+      songNow.title = shuffleSongList[0].title;
+      songNow.artist = shuffleSongList[0].artist;
+      console.log(shuffleSongList[0].image);
+
+      
+      songNow.image = shuffleSongList[0].image;
+      songNow.uri = shuffleSongList[0].uri;
+      songNow.isPlayin =true;
+      songNow.index = 0;
+      console.log(songNow);
+      console.log('------- MusicNow로 복사 완료 -----');
+    
+    navigation.navigate('MusicPlayerUI',{})
   }
 
   async function songInput(item){
@@ -134,7 +169,7 @@ const MusicListUI = ({ navigation }) => {
       <StatusBar barStyle="dark-content" animated="true" />
 
       <View style={{ height: width / 4, flexDirection: 'row', paddingTop: '5%', alignItems: 'center', justifyContent: 'space-between' }}>
-        <Text style={styles.titleText}>Songs</Text>
+        <Text style={styles.titleText}>song2</Text>
         <TouchableOpacity
           onPress={() => { navigation.navigate('About') }}
           style={{
@@ -149,7 +184,7 @@ const MusicListUI = ({ navigation }) => {
       <View style={{ flex: 1 }}>
         <Animated.FlatList
           style={{ paddingTop: '1%' }}
-          data={songs}
+          data={song2}
           ListHeaderComponent={RenderShuffleButon}
           ListFooterComponent={<View style={{ height: bottomBarHeight }}></View>}
           renderItem={RenderSong}
