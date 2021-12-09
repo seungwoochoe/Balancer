@@ -96,6 +96,7 @@ const MusicPlayerUI = ({route, navigation}) => {
     });
   }
 
+useEffect(()=>{
 
   try {
     SoundObj.setOnPlaybackStatusUpdate(async (status) =>{
@@ -114,6 +115,7 @@ const MusicPlayerUI = ({route, navigation}) => {
   } catch (err ){
 
   }
+}, []);
 
 
   

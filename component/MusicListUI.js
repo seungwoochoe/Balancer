@@ -55,6 +55,10 @@ const MusicListUI = ({ navigation }) => {
     CurrentMusicState = await SoundObj.getStatusAsync();
 
   }
+  
+  async function shuffleButtonPressed(){
+    
+  }
 
   async function songInput(item){
     if(songNow.id != item.id){
@@ -82,7 +86,7 @@ const MusicListUI = ({ navigation }) => {
     return (
       <TouchableOpacity
         style={styles.shuffleButton}
-        onPress={() => { }}
+        onPress={()=>shuffleButtonPressed()}
       >
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <Ionicons name="shuffle" size={rem * 1.7} color={theme}></Ionicons>
