@@ -160,10 +160,6 @@ const MusicListUI = ({ navigation }) => {
       </TouchableOpacity>
     );
   }
-  const loglog=()=>{
-    console.log(songNow);
-  }
-
 
   return (
     <SafeAreaView style={styles.container}>
@@ -197,7 +193,7 @@ const MusicListUI = ({ navigation }) => {
       <BlurView intensity={blurIntensity} tint={'light'} style={styles.bottomBarContainer}>
         <View style={{ flex: 13, alignItems: 'center', height: '100%', paddingTop: height * 0.0125 }}>
         <TouchableOpacity
-          onPress={loglog}
+          onPress={() => {navigation.navigate('MusicPlayerUI')}}
   
           style={styles.bottomMusic}>
           <View style={{
