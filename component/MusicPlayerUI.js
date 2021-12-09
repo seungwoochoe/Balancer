@@ -5,6 +5,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import songs from '../models/data';
 import {Audio} from 'expo-av';
+import {createPlaylist, complementPlaylist, appendMorePlaylist} from '../containers/Shuffle';
 
 const { width, height } = Dimensions.get("window");
 const rem = width / 20;
