@@ -39,6 +39,22 @@ const MusicListUI = ({ navigation }) => {
     }
    }
 
+   async function skipToPrevious () {
+    
+    await SoundObj.unloadAsync();
+    songNow.title = songs[songIndex-1].title;
+    songNow.artist = songs[songIndex-1].artist;
+    songNow.image = songs[songIndex-1].image;
+    songNow.id = songs[songIndex-1].id;
+    songNow.uri = songs[songIndex-1].uri;
+    songNow.duration = songs[songIndex-1].duration;
+
+    await SoundObj.loadAsync(songNow.uri);
+    await SoundObj.playAsync();
+    CurrentMusicState = await SoundObj.getStatusAsync();
+
+  }
+
   async function songInput(item){
     if(songNow.id != item.id){
 
