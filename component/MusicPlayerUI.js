@@ -282,13 +282,13 @@ const MusicPlayerUI = ({ route, navigation }) => {
 
         <View style={{ flex: 2, flexDirection: 'row' }}>
           <View style={styles.MusicControls}>
-            <TouchableOpacity disabled={isBusy} onPress={skipToPrevious} style={{ padding: '10%' }}>
+            <TouchableOpacity disabled={isBusy} onPress={skipToPrevious}>
               <Ionicons name="play-back" size={rem * 2} color={theme}></Ionicons>
             </TouchableOpacity>
-            <TouchableOpacity disabled={isBusy} onPress={onAudioPress} style={{ padding: '10%' }} >
+            <TouchableOpacity disabled={isBusy} onPress={onAudioPress} >
               <Ionicons name={canstop ? "pause" : "play"} size={rem * 2.8} color={theme}></Ionicons>
             </TouchableOpacity>
-            <TouchableOpacity disabled={isBusy} onPress={skipToNext} style={{ padding: '10%' }}>
+            <TouchableOpacity disabled={isBusy} onPress={skipToNext}>
               <Ionicons name="play-forward" size={rem * 2} color={theme}></Ionicons>
             </TouchableOpacity>
           </View>
