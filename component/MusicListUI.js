@@ -62,12 +62,13 @@ const MusicListUI = ({ navigation }) => {
   }
   
   async function shuffleButtonPressed(){
+    await SoundObj.unloadAsync();
     shuffleSongList.length =0;
     console.log(shuffleSongList);
     console.log('shuffle-------------');
 
     //console.log(shuffleActionList);
-    const imsi = createPlaylist(song2, 10, shuffleActionList);
+    let imsi = createPlaylist(songs, 10, shuffleActionList);
     console.log('--------------------------imsi');
     console.log(imsi);
     console.log('--------------------------imsi');
