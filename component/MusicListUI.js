@@ -211,12 +211,12 @@ const MusicListUI = ({ navigation }) => {
             </View>
           </TouchableOpacity>
         </View>
-        <View style={{ flex: 6, alignItems: 'center', height: '100%', paddingTop: height * 0.022 }}>
+        <View style={{ flex: 6, alignItems: 'center', height: '100%', flexDirection: 'row', justifyContent: 'space-between', paddingBottom: Math.pow(height, 3.3) * 0.000000002 }}>
           <View style={{ alignItems: 'center', flexDirection: 'row', }}>
-            <TouchableOpacity onPress={onPausePress} style={{ padding: '10%' }} >
-              <Ionicons name={songNow.isPlayin ? "pause" : "play"} size={rem * 1.65} color={buttonTheme}></Ionicons>
+            <TouchableOpacity onPress={onPausePress} style={{  padding: songNow.isPlayin ? rem * 0.6 : rem * 0.775 }} >
+              <Ionicons name={songNow.isPlayin ? "pause" : "play"} size={songNow.isPlayin ? rem * 2 : rem * 1.65} color={buttonTheme}></Ionicons>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => { }} style={{ padding: '10%' }}>
+            <TouchableOpacity onPress={() => { }} style={{ padding: '7%' }}>
               <Ionicons name="play-forward" size={rem * 1.8} color={buttonTheme}></Ionicons>
             </TouchableOpacity>
           </View>
