@@ -7,6 +7,7 @@ import songs from '../models/data';
 import songNow from './MusicNow';
 import { SoundObj } from './MusicNow';
 import { useIsFocused } from '@react-navigation/native';
+import shuffleSongList from '../models/shuffledata';
 const { width, height } = Dimensions.get("window");
 const rem = width / 20;
 const theme = '#107dac';
@@ -57,7 +58,7 @@ const MusicListUI = ({ navigation }) => {
   }
   
   async function shuffleButtonPressed(){
-    
+    shuffleSongList.length =0;
   }
 
   async function songInput(item){
