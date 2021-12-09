@@ -9,7 +9,8 @@ let songNow = {
     artist: "Benjamin Tissot",
     image: require("../assets/artworks/pexels-min-an-1454789.jpg"),
     id: "6",
-    isPlayin: true
+    isPlayin: true,
+    index: 0
 }
 
 

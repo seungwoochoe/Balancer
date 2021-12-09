@@ -48,6 +48,7 @@ const MusicListUI = ({ navigation }) => {
     songNow.id = songs[songIndex-1].id;
     songNow.uri = songs[songIndex-1].uri;
     songNow.duration = songs[songIndex-1].duration;
+    
 
     await SoundObj.loadAsync(songNow.uri);
     await SoundObj.playAsync();
@@ -68,6 +69,7 @@ const MusicListUI = ({ navigation }) => {
       songNow.uri = item.uri;
       songNow.duration = item.duration;
       songNow.isPlayin =true;
+      songNow.index = item.id -1;
       console.log(songNow);
       console.log('------- MusicNow로 복사 완료 -----');
     }

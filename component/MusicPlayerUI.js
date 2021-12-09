@@ -55,12 +55,13 @@ const MusicPlayerUI = ({route, navigation}) => {
   async function skipToNext (){
  
     await SoundObj.unloadAsync();
-    songNow.title = songs[songIndex+1].title;
-    songNow.artist = songs[songIndex+1].artist;
-    songNow.image = songs[songIndex+1].image;
-    songNow.id = songs[songIndex+1].id;
-    songNow.uri = songs[songIndex+1].uri;
-    songNow.duration = songs[songIndex+1].duration;
+    songNow.title = songs[songNow.index +1].title;
+    songNow.artist = songs[songNow.index +1].artist;
+    songNow.image = songs[songNow.index +1].image;
+    songNow.id = songs[songNow.index +1].id;
+    songNow.uri = songs[songNow.index +1].uri;
+    songNow.duration = songs[songNow.index +1].duration;
+    songNow.index += 1;
 
     await SoundObj.loadAsync(songNow.uri);
     await SoundObj.playAsync();
@@ -76,12 +77,13 @@ const MusicPlayerUI = ({route, navigation}) => {
   async function skipToPrevious () {
     
     await SoundObj.unloadAsync();
-    songNow.title = songs[songIndex-1].title;
-    songNow.artist = songs[songIndex-1].artist;
-    songNow.image = songs[songIndex-1].image;
-    songNow.id = songs[songIndex-1].id;
-    songNow.uri = songs[songIndex-1].uri;
-    songNow.duration = songs[songIndex-1].duration;
+    songNow.title = songs[songNow.index -1].title;
+    songNow.artist = songs[songNow.index -1].artist;
+    songNow.image = songs[songNow.index -1].image;
+    songNow.id = songs[songNow.index -1].id;
+    songNow.uri = songs[songNow.index -1].uri;
+    songNow.duration = songs[songNow.index -1].duration;
+    songNow.index -= 1;
 
     await SoundObj.loadAsync(songNow.uri);
     await SoundObj.playAsync();
