@@ -10,7 +10,7 @@ const About = () => {
       <View style={{ marginLeft: '5%', marginRight: '6%' }}>
 
         <Text style={{ fontSize: rem * 2, fontWeight: 'bold' }}>
-          Blancer
+          Balancer
         </Text>
 
         <Text style={{ fontSize: rem }}> </Text>
