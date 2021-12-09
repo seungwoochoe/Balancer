@@ -27,7 +27,7 @@ const MusicPlayerUI = ({route, navigation}) => {
   //const [songIndex, setSongIndex] = useState(selected);
   const scrollX = useRef(new Animated.Value(songNow.index*width*0.9)).current;
   const songSlider = useRef(null);
-  console.log(songNow.image);
+ // console.log(songNow.image);
   const fileExtension  = Image.resolveAssetSource(songNow.image).uri.split('.').pop();
   let blurRadius;
   const [canstop, SetcanStop] = useState(songNow.isPlayin);
@@ -147,6 +147,17 @@ useEffect(()=>{
     await SoundObj.setPositionAsync(value*CurrentMusicState.durationMillis);
   }
 
+
+  const heartclicked = ()=>{
+    shuffleActionList.push({
+      title:songNow.title,
+      action: "boost"
+    });
+    console.log(shuffleActionList);
+    //title: "A Day To Remember", action: "skip" 
+  }
+
+
   const endsec = ()=>{
     
     if(CurrentMusicState){
@@ -241,7 +252,8 @@ useEffect(()=>{
             <Text style={styles.artist} numberOfLines={1}>{songNow.artist}</Text>
           </View>
           <View style={{ flex: 1 }}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={heartclicked}>
+
               <Ionicons name="heart-outline" size={rem * 1.5} color={theme}></Ionicons>
             </TouchableOpacity>
           </View>
