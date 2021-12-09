@@ -24,6 +24,7 @@ import { _DEFAULT_INITIAL_PLAYBACK_STATUS } from 'expo-av/build/AV';
 const MusicPlayerUI = ({ route, navigation }) => {
   //const {selected1, musicUri, selected} = route.params;
   const [valval, setvalval] = useState(0);
+  const [isBusy, setIsBusy] = useState(false);
   //const [songIndex, setSongIndex] = useState(selected);
   const scrollX = useRef(new Animated.Value(songNow.index * width * 0.9)).current;
   const songSlider = useRef(null);
@@ -57,7 +58,7 @@ const MusicPlayerUI = ({ route, navigation }) => {
     }
   }, []);
   async function skipToNext() {
-
+    setIsBusy(true);
     await SoundObj.unloadAsync();
     songNow.title = song2[songNow.index + 1].title;
     songNow.artist = song2[songNow.index + 1].artist;
@@ -76,10 +77,12 @@ const MusicPlayerUI = ({ route, navigation }) => {
     songSlider.current.scrollToOffset({
       offset: (songNow.index + 1) * width * 0.9,
     });
+    setIsBusy(false);
   }
 
   async function skipToPrevious() {
     if (songNow.index !== 0) {
+      setIsBusy(true);
       await SoundObj.unloadAsync();
       songNow.title = song2[songNow.index - 1].title;
       songNow.artist = song2[songNow.index - 1].artist;
@@ -98,6 +101,7 @@ const MusicPlayerUI = ({ route, navigation }) => {
       songSlider.current.scrollToOffset({
         offset: (songNow.index - 1) * width * 0.9,
       });
+      setIsBusy(false);
     }
   }
 
@@ -249,7 +253,7 @@ const MusicPlayerUI = ({ route, navigation }) => {
             <Text style={styles.artist} numberOfLines={1}>{songNow.artist}</Text>
           </View>
           <View style={{ flex: 1 }}>
-            <TouchableOpacity onPress={heartclicked}>
+            <TouchableOpacity disabled={isBusy} onPress={heartclicked}>
 
               <Ionicons name="heart-outline" size={rem * 1.5} color={theme}></Ionicons>
             </TouchableOpacity>
@@ -279,13 +283,13 @@ const MusicPlayerUI = ({ route, navigation }) => {
 
         <View style={{ flex: 2, flexDirection: 'row' }}>
           <View style={styles.MusicControls}>
-            <TouchableOpacity onPress={skipToPrevious} style={{ padding: '10%' }}>
+            <TouchableOpacity disabled={isBusy} onPress={skipToPrevious} style={{ padding: '10%' }}>
               <Ionicons name="play-back" size={rem * 2} color={theme}></Ionicons>
             </TouchableOpacity>
-            <TouchableOpacity onPress={onAudioPress} style={{ padding: '10%' }} >
+            <TouchableOpacity disabled={isBusy} onPress={onAudioPress} style={{ padding: '10%' }} >
               <Ionicons name={canstop ? "pause" : "play"} size={rem * 2.8} color={theme}></Ionicons>
             </TouchableOpacity>
-            <TouchableOpacity onPress={skipToNext} style={{ padding: '10%' }}>
+            <TouchableOpacity disabled={isBusy} onPress={skipToNext} style={{ padding: '10%' }}>
               <Ionicons name="play-forward" size={rem * 2} color={theme}></Ionicons>
             </TouchableOpacity>
           </View>
