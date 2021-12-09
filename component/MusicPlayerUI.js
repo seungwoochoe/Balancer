@@ -122,7 +122,7 @@ const MusicPlayerUI = ({route, navigation}) => {
         alignItems: 'center',
       }}>
         <Image
-          source={item.image}
+          source={songNow.image}
           style={styles.arworkImage}
         />
       </Animated.View>
@@ -201,7 +201,7 @@ const MusicPlayerUI = ({route, navigation}) => {
 
 
   return (
-    <ImageBackground source={songs[songIndex].image} blurRadius={blurRadius} style={{ flex: 1, transform: [{ rotate: '180deg' }] }}>
+    <ImageBackground source={songNow.image} blurRadius={blurRadius} style={{ flex: 1, transform: [{ rotate: '180deg' }] }}>
       <StatusBar barStyle="light-content" animated="true" />
       <View style={{ flex: 1, transform: [{ rotate: '180deg' }], alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.4)' }}>
         <View style={styles.artworkWrapper}>
