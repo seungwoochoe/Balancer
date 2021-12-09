@@ -4,67 +4,67 @@ import { View, Text, StyleSheet, Dimensions, Image, Animated, ImageBackground, S
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import songs from '../models/data';
-import {Audio} from 'expo-av';
-import {shuffleSongList} from '../models/shuffledata';
-import {shuffleActionList} from '../models/shuffledata';
-import {createPlaylist, complementPlaylist, appendMorePlaylist} from '../containers/Shuffle';
+import { Audio } from 'expo-av';
+import { shuffleSongList } from '../models/shuffledata';
+import { shuffleActionList } from '../models/shuffledata';
+import { createPlaylist, complementPlaylist, appendMorePlaylist } from '../containers/Shuffle';
 import { song2 } from './MusicListUI';
 const { width, height } = Dimensions.get("window");
 const rem = width / 20;
 const theme = '#eee';
 
 let CurrentMusicState;
-let isPressProgBar =false;
+let isPressProgBar = false;
 import { SoundObj } from './MusicNow';
 import songNow from './MusicNow';
 import { set } from 'react-native-reanimated';
 import { _DEFAULT_INITIAL_PLAYBACK_STATUS } from 'expo-av/build/AV';
 
 
-const MusicPlayerUI = ({route, navigation}) => {
+const MusicPlayerUI = ({ route, navigation }) => {
   //const {selected1, musicUri, selected} = route.params;
   const [valval, setvalval] = useState(0);
   //const [songIndex, setSongIndex] = useState(selected);
-  const scrollX = useRef(new Animated.Value(songNow.index*width*0.9)).current;
+  const scrollX = useRef(new Animated.Value(songNow.index * width * 0.9)).current;
   const songSlider = useRef(null);
- // console.log(songNow.image);
-  const fileExtension  = Image.resolveAssetSource(songNow.image).uri.split('.').pop();
+  // console.log(songNow.image);
+  const fileExtension = Image.resolveAssetSource(songNow.image).uri.split('.').pop();
   let blurRadius;
   const [canstop, SetcanStop] = useState(songNow.isPlayin);
-  
+
   if (fileExtension === "jpeg") {
     blurRadius = 120000 / height;
   } else {
     blurRadius = 275;
   }
 
-  useEffect(async() => {
-   //'../assets/songs/2.mp3'
-   console.log(songNow);
+  useEffect(async () => {
+    //'../assets/songs/2.mp3'
+    console.log(songNow);
     await SoundObj.loadAsync(songNow.uri);
-    CurrentMusicState= await SoundObj.getStatusAsync();
+    CurrentMusicState = await SoundObj.getStatusAsync();
     console.log(CurrentMusicState);
     await SoundObj.playAsync();
 
     scrollX.addListener(({ value }) => {
-      
+
       const index = Math.round(value / (width * 0.9));
       //setSongIndex(index);
     });
     return () => {
       scrollX.removeAllListeners();
-      
+
     }
   }, []);
-  async function skipToNext (){
- 
+  async function skipToNext() {
+
     await SoundObj.unloadAsync();
-    songNow.title = song2[songNow.index +1].title;
-    songNow.artist = song2[songNow.index +1].artist;
-    songNow.image = song2[songNow.index +1].image;
-    songNow.id = song2[songNow.index +1].id;
-    songNow.uri = song2[songNow.index +1].uri;
-    songNow.duration = song2[songNow.index +1].duration;
+    songNow.title = song2[songNow.index + 1].title;
+    songNow.artist = song2[songNow.index + 1].artist;
+    songNow.image = song2[songNow.index + 1].image;
+    songNow.id = song2[songNow.index + 1].id;
+    songNow.uri = song2[songNow.index + 1].uri;
+    songNow.duration = song2[songNow.index + 1].duration;
     songNow.index += 1;
 
     await SoundObj.loadAsync(songNow.uri);
@@ -78,51 +78,50 @@ const MusicPlayerUI = ({route, navigation}) => {
     });
   }
 
-  async function skipToPrevious () {
-    
-    await SoundObj.unloadAsync();
-    songNow.title = song2[songNow.index -1].title;
-    songNow.artist = song2[songNow.index -1].artist;
-    songNow.image = song2[songNow.index -1].image;
-    songNow.id = song2[songNow.index -1].id;
-    songNow.uri = song2[songNow.index -1].uri;
-    songNow.duration = song2[songNow.index -1].duration;
-    songNow.index -= 1;
+  async function skipToPrevious() {
+    if (songNow.index !== 0) {
+      await SoundObj.unloadAsync();
+      songNow.title = song2[songNow.index - 1].title;
+      songNow.artist = song2[songNow.index - 1].artist;
+      songNow.image = song2[songNow.index - 1].image;
+      songNow.id = song2[songNow.index - 1].id;
+      songNow.uri = song2[songNow.index - 1].uri;
+      songNow.duration = song2[songNow.index - 1].duration;
+      songNow.index -= 1;
 
-    await SoundObj.loadAsync(songNow.uri);
-    await SoundObj.playAsync();
-    CurrentMusicState = await SoundObj.getStatusAsync();
-    SetcanStop(true);
-    songNow.isPlayin = canstop;
+      await SoundObj.loadAsync(songNow.uri);
+      await SoundObj.playAsync();
+      CurrentMusicState = await SoundObj.getStatusAsync();
+      SetcanStop(true);
+      songNow.isPlayin = canstop;
 
-    songSlider.current.scrollToOffset({
-      offset: (songNow.index - 1) * width * 0.9,
-    });
+      songSlider.current.scrollToOffset({
+        offset: (songNow.index - 1) * width * 0.9,
+      });
+    }
   }
 
-useEffect(()=>{
+  useEffect(() => {
 
-  try {
-    SoundObj.setOnPlaybackStatusUpdate(async (status) =>{
-      if (status.didJustFinish === true)
-      {
-        skipToNext();
+    try {
+      SoundObj.setOnPlaybackStatusUpdate(async (status) => {
+        if (status.didJustFinish === true) {
+          skipToNext();
 
-      }
-      if (!isPressProgBar && status.isLoaded )
-      {
-
-        
-        setvalval((status.positionMillis)/(status.durationMillis));
-      }
-    })
-  } catch (err ){
-
-  }
-}, []);
+        }
+        if (!isPressProgBar && status.isLoaded) {
 
 
-  
+          setvalval((status.positionMillis) / (status.durationMillis));
+        }
+      })
+    } catch (err) {
+
+    }
+  }, []);
+
+
+
   const renderSongs = ({ index, item }) => {
     return (
       <Animated.View style={{
@@ -136,21 +135,21 @@ useEffect(()=>{
       </Animated.View>
     );
   }
-  const slideStart=()=>{
+  const slideStart = () => {
     isPressProgBar = true;
     console.log('pressing bar');
   }
-  async function sliedEnd(value){
+  async function sliedEnd(value) {
     CurrentMusicState = await SoundObj.getStatusAsync();
     isPressProgBar = false;
     console.log('pressing bar ended');
-    await SoundObj.setPositionAsync(value*CurrentMusicState.durationMillis);
+    await SoundObj.setPositionAsync(value * CurrentMusicState.durationMillis);
   }
 
 
-  const heartclicked = ()=>{
+  const heartclicked = () => {
     shuffleActionList.push({
-      title:songNow.title,
+      title: songNow.title,
       action: "boost"
     });
     console.log(shuffleActionList);
@@ -158,26 +157,26 @@ useEffect(()=>{
   }
 
 
-  const endsec = ()=>{
-    
-    if(CurrentMusicState){
-      let min = parseInt(parseInt((CurrentMusicState.durationMillis)/1000)/60), sec = parseInt((CurrentMusicState.durationMillis)/1000)%60;
-      if(sec<10) sec = '0'+sec;
-      return(''+min+':'+sec);
-      
-    }else return 0;
+  const endsec = () => {
+
+    if (CurrentMusicState) {
+      let min = parseInt(parseInt((CurrentMusicState.durationMillis) / 1000) / 60), sec = parseInt((CurrentMusicState.durationMillis) / 1000) % 60;
+      if (sec < 10) sec = '0' + sec;
+      return ('' + min + ':' + sec);
+
+    } else return 0;
   }
 
-  const currentPosition = ()=>{
-    if(CurrentMusicState){
-    
-      let min = parseInt(parseInt((valval*CurrentMusicState.durationMillis)/1000)/60), sec = parseInt(parseInt((valval*CurrentMusicState.durationMillis)/1000))%60;
-      if(sec<10) sec = '0'+sec;
-      return(''+min+':'+sec);
-      
-    }else return 0;
+  const currentPosition = () => {
+    if (CurrentMusicState) {
+
+      let min = parseInt(parseInt((valval * CurrentMusicState.durationMillis) / 1000) / 60), sec = parseInt(parseInt((valval * CurrentMusicState.durationMillis) / 1000)) % 60;
+      if (sec < 10) sec = '0' + sec;
+      return ('' + min + ':' + sec);
+
+    } else return 0;
   }
-  
+
 
   // const fadeAnim = useRef(new Animated.Value(0)).current;
 
@@ -195,28 +194,26 @@ useEffect(()=>{
 
 
 
-  async function onAudioPress(){
-    CurrentMusicState= await SoundObj.getStatusAsync();
+  async function onAudioPress() {
+    CurrentMusicState = await SoundObj.getStatusAsync();
     console.log((CurrentMusicState.positionMillis));
-  //  console.log((CurrentMusicState.durationMillis));
-    setvalval((CurrentMusicState.positionMillis)/(CurrentMusicState.durationMillis));
+    //  console.log((CurrentMusicState.durationMillis));
+    setvalval((CurrentMusicState.positionMillis) / (CurrentMusicState.durationMillis));
 
-    if(canstop)
-    {
-     console.log('Pausing Sound');
-     await SoundObj.pauseAsync();
-     SetcanStop(false);
-     songNow.isPlayin = false;
-     console.log(songNow.isPlayin);
+    if (canstop) {
+      console.log('Pausing Sound');
+      await SoundObj.pauseAsync();
+      SetcanStop(false);
+      songNow.isPlayin = false;
+      console.log(songNow.isPlayin);
     }
-    else
-    {
-     console.log('Playing Sound');
-     await SoundObj.playAsync();
-     SetcanStop(true);
-     songNow.isPlayin = true;
+    else {
+      console.log('Playing Sound');
+      await SoundObj.playAsync();
+      SetcanStop(true);
+      songNow.isPlayin = true;
     }
-   }
+  }
 
 
   return (
@@ -231,10 +228,10 @@ useEffect(()=>{
             keyExtractor={(item) => item.id}
             horizontal
             pagingEnabled
-            scrollEnabled= {false}
+            scrollEnabled={false}
             showsHorizontalScrollIndicator={false}
             scrollEventThrottle={16}
-            contentOffset = {{x : songNow.index * width * 0.9}}
+            contentOffset={{ x: songNow.index * width * 0.9 }}
             onScroll={Animated.event(
               [{
                 nativeEvent: {
@@ -248,7 +245,7 @@ useEffect(()=>{
 
         <View style={{ flex: .8, width: '80%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
           <View style={{ flex: 7, paddingRight: '7%' }}>
-            <Text style={styles.title} numberOfLines={1}>{songNow.title }</Text>
+            <Text style={styles.title} numberOfLines={1}>{songNow.title}</Text>
             <Text style={styles.artist} numberOfLines={1}>{songNow.artist}</Text>
           </View>
           <View style={{ flex: 1 }}>
@@ -270,7 +267,7 @@ useEffect(()=>{
               minimumTrackTintColor={theme}
               maximumTrackTintColor='#aaa'
               onSlidingComplete={sliedEnd}
-              onSlidingStart={(value)=>slideStart(value)}
+              onSlidingStart={(value) => slideStart(value)}
             />
             <View style={styles.progressLabelContainer}>
               <Text style={{ color: '#bbb', fontSize: rem * 0.75 }}>{currentPosition()}</Text>
