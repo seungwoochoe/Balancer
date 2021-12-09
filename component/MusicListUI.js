@@ -1,15 +1,14 @@
-import React ,{ useEffect, useState }from 'react';
-import { SafeAreaView, View, Text, StyleSheet, Dimensions, Image, Animated, StatusBar, Platform } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import React, { useEffect, useState } from 'react';
+import { SafeAreaView, View, Text, StyleSheet, Dimensions, Image, Animated, StatusBar, Platform, TouchableOpacity } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { BlurView } from 'expo-blur';
 import songs from '../models/data';
 import songNow from './MusicNow';
 import { SoundObj } from './MusicNow';
 import { useIsFocused } from '@react-navigation/native';
-import {shuffleSongList} from '../models/shuffledata';
-import {shuffleActionList} from '../models/shuffledata';
-import {createPlaylist, complementPlaylist, appendMorePlaylist} from '../containers/Shuffle';
+import { shuffleSongList } from '../models/shuffledata';
+import { shuffleActionList } from '../models/shuffledata';
+import { createPlaylist, complementPlaylist, appendMorePlaylist } from '../containers/Shuffle';
 
 const { width, height } = Dimensions.get("window");
 const rem = width / 20;
@@ -27,43 +26,41 @@ export let song2 = songs;
 const MusicListUI = ({ navigation }) => {
   const isFocused = useIsFocused();
   const [dumm, setdumm] = useState(0);
-  async function onPausePress(){
-    if(songNow.isPlayin)
-    {
-     console.log('Pausing Sound');
-     await SoundObj.pauseAsync();
-     songNow.isPlayin = false;
-     setdumm(1-dumm);
+  async function onPausePress() {
+    if (songNow.isPlayin) {
+      console.log('Pausing Sound');
+      await SoundObj.pauseAsync();
+      songNow.isPlayin = false;
+      setdumm(1 - dumm);
     }
-    else
-    {
-     console.log('Playing Sound');
-     await SoundObj.playAsync();
-     songNow.isPlayin = true;
-     setdumm(1-dumm);
+    else {
+      console.log('Playing Sound');
+      await SoundObj.playAsync();
+      songNow.isPlayin = true;
+      setdumm(1 - dumm);
     }
-   }
+  }
 
-   async function skipToPrevious () {
-    
+  async function skipToPrevious() {
+
     await SoundObj.unloadAsync();
-    songNow.title = song2[songIndex-1].title;
-    songNow.artist = song2[songIndex-1].artist;
-    songNow.image = song2[songIndex-1].image;
-    songNow.id = song2[songIndex-1].id;
-    songNow.uri = song2[songIndex-1].uri;
-    songNow.duration = song2[songIndex-1].duration;
-    
+    songNow.title = song2[songIndex - 1].title;
+    songNow.artist = song2[songIndex - 1].artist;
+    songNow.image = song2[songIndex - 1].image;
+    songNow.id = song2[songIndex - 1].id;
+    songNow.uri = song2[songIndex - 1].uri;
+    songNow.duration = song2[songIndex - 1].duration;
+
 
     await SoundObj.loadAsync(songNow.uri);
     await SoundObj.playAsync();
     CurrentMusicState = await SoundObj.getStatusAsync();
 
   }
-  
-  async function shuffleButtonPressed(){
+
+  async function shuffleButtonPressed() {
     await SoundObj.unloadAsync();
-    shuffleSongList.length =0;
+    shuffleSongList.length = 0;
     console.log(shuffleSongList);
     console.log('shuffle-------------');
 
@@ -73,37 +70,37 @@ const MusicListUI = ({ navigation }) => {
     console.log(imsi);
     console.log('--------------------------imsi');
 
-    imsi.forEach(element =>shuffleSongList.push(element));
-    
+    imsi.forEach(element => shuffleSongList.push(element));
+
     console.log(shuffleSongList);
     song2 = shuffleSongList;
     //console.log(createPlaylist(song2, 10, shuffleActionList));
     await shuffledSongInput();
-    
+
   }
-  async function shuffledSongInput(){
-    
+  async function shuffledSongInput() {
 
-      await SoundObj.unloadAsync();
-      console.log(songNow);
-      console.log('------- MusicNow로 복사중 -----');
-      songNow.title = shuffleSongList[0].title;
-      songNow.artist = shuffleSongList[0].artist;
-      console.log(shuffleSongList[0].image);
 
-      
-      songNow.image = shuffleSongList[0].image;
-      songNow.uri = shuffleSongList[0].uri;
-      songNow.isPlayin =true;
-      songNow.index = 0;
-      console.log(songNow);
-      console.log('------- MusicNow로 복사 완료 -----');
-    
-    navigation.navigate('MusicPlayerUI',{})
+    await SoundObj.unloadAsync();
+    console.log(songNow);
+    console.log('------- MusicNow로 복사중 -----');
+    songNow.title = shuffleSongList[0].title;
+    songNow.artist = shuffleSongList[0].artist;
+    console.log(shuffleSongList[0].image);
+
+
+    songNow.image = shuffleSongList[0].image;
+    songNow.uri = shuffleSongList[0].uri;
+    songNow.isPlayin = true;
+    songNow.index = 0;
+    console.log(songNow);
+    console.log('------- MusicNow로 복사 완료 -----');
+
+    navigation.navigate('MusicPlayerUI', {})
   }
 
-  async function songInput(item){
-    if(songNow.id != item.id){
+  async function songInput(item) {
+    if (songNow.id != item.id) {
 
       await SoundObj.unloadAsync();
       console.log(songNow);
@@ -114,21 +111,21 @@ const MusicListUI = ({ navigation }) => {
       songNow.id = item.id;
       songNow.uri = item.uri;
       songNow.duration = item.duration;
-      songNow.isPlayin =true;
-      songNow.index = item.id -1;
+      songNow.isPlayin = true;
+      songNow.index = item.id - 1;
       console.log(songNow);
       console.log('------- MusicNow로 복사 완료 -----');
     }
-    
 
-    
-    navigation.navigate('MusicPlayerUI',{selected: item.id-1, selected1: item, musicUri: item.uri})
+
+
+    navigation.navigate('MusicPlayerUI', { selected: item.id - 1, selected1: item, musicUri: item.uri })
   }
   const RenderShuffleButon = () => {
     return (
       <TouchableOpacity
         style={styles.shuffleButton}
-        onPress={()=>shuffleButtonPressed()}
+        onPress={() => shuffleButtonPressed()}
       >
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <Ionicons name="shuffle" size={rem * 1.7} color={theme}></Ionicons>
@@ -192,27 +189,27 @@ const MusicListUI = ({ navigation }) => {
 
       <BlurView intensity={blurIntensity} tint={'light'} style={styles.bottomBarContainer}>
         <View style={{ flex: 13, alignItems: 'center', height: '100%', paddingTop: height * 0.0125 }}>
-        <TouchableOpacity
-          onPress={() => {navigation.navigate('MusicPlayerUI')}}
-  
-          style={styles.bottomMusic}>
-          <View style={{
-            width: listHeight,
-            shadowColor: 'black',
-            shadowRadius: width * 0.02,
-            shadowOpacity: 0.15,
-          }}>
-            <Image
-              source={songNow.image}
-              style={{ width: '87%', height: '87%', borderRadius: 4, }}
-            />
-          </View>
-          <View style={{ width: width - listHeight * 2 - width * 0.22, marginLeft: '2%' }}>
-            <Text style={{ fontSize: rem * 0.92, }} numberOfLines={1}>
-              {songNow.title}
-            </Text>
-          </View>
-        </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => { navigation.navigate('MusicPlayerUI') }}
+
+            style={styles.bottomMusic}>
+            <View style={{
+              width: listHeight,
+              shadowColor: 'black',
+              shadowRadius: width * 0.02,
+              shadowOpacity: 0.15,
+            }}>
+              <Image
+                source={songNow.image}
+                style={{ width: '87%', height: '87%', borderRadius: 4, }}
+              />
+            </View>
+            <View style={{ width: width - listHeight * 2 - width * 0.22, marginLeft: '2%' }}>
+              <Text style={{ fontSize: rem * 0.92, }} numberOfLines={1}>
+                {songNow.title}
+              </Text>
+            </View>
+          </TouchableOpacity>
         </View>
         <View style={{ flex: 6, alignItems: 'center', height: '100%', paddingTop: height * 0.022 }}>
           <View style={{ alignItems: 'center', flexDirection: 'row', }}>
