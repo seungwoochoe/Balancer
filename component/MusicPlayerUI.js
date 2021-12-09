@@ -4,45 +4,117 @@ import { View, Text, StyleSheet, Dimensions, Image, Animated, ImageBackground, S
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import songs from '../models/data';
+import {Audio} from 'expo-av';
 
 const { width, height } = Dimensions.get("window");
 const rem = width / 20;
 const theme = '#eee';
 
-const MusicPlayerUI = () => {
-  const [songIndex, setSongIndex] = useState(0);
-  const scrollX = useRef(new Animated.Value(0)).current;
+let CurrentMusicState;
+let isPressProgBar =false;
+import { SoundObj } from './MusicNow';
+import songNow from './MusicNow';
+import { set } from 'react-native-reanimated';
+import { _DEFAULT_INITIAL_PLAYBACK_STATUS } from 'expo-av/build/AV';
+
+
+const MusicPlayerUI = ({route, navigation}) => {
+  const {selected1, musicUri, selected} = route.params;
+  const [valval, setvalval] = useState(0);
+  const [songIndex, setSongIndex] = useState(selected);
+  const scrollX = useRef(new Animated.Value(selected*width*0.9)).current;
   const songSlider = useRef(null);
   const fileExtension = Image.resolveAssetSource(songs[songIndex].image).uri.split('.').pop();
   let blurRadius;
+  const [canstop, SetcanStop] = useState(songNow.isPlayin);
+  
   if (fileExtension === "jpeg") {
     blurRadius = 120000 / height;
   } else {
     blurRadius = 275;
   }
 
-  useEffect(() => {
+  useEffect(async() => {
+   //'../assets/songs/2.mp3'
+   console.log(songNow);
+    await SoundObj.loadAsync(songNow.uri);
+    CurrentMusicState= await SoundObj.getStatusAsync();
+    console.log(CurrentMusicState);
+    await SoundObj.playAsync();
+
     scrollX.addListener(({ value }) => {
+      
       const index = Math.round(value / (width * 0.9));
       setSongIndex(index);
     });
     return () => {
       scrollX.removeAllListeners();
+      
     }
   }, []);
+  async function skipToNext (){
+ 
+    await SoundObj.unloadAsync();
+    songNow.title = songs[songIndex+1].title;
+    songNow.artist = songs[songIndex+1].artist;
+    songNow.image = songs[songIndex+1].image;
+    songNow.id = songs[songIndex+1].id;
+    songNow.uri = songs[songIndex+1].uri;
+    songNow.duration = songs[songIndex+1].duration;
 
-  const skipToNext = () => {
+    await SoundObj.loadAsync(songNow.uri);
+    await SoundObj.playAsync();
+    CurrentMusicState = await SoundObj.getStatusAsync();
+    SetcanStop(true);
+    songNow.isPlayin = canstop;
+
     songSlider.current.scrollToOffset({
       offset: (songIndex + 1) * width * 0.9,
     });
   }
 
-  const skipToPrevious = () => {
+  async function skipToPrevious () {
+    
+    await SoundObj.unloadAsync();
+    songNow.title = songs[songIndex-1].title;
+    songNow.artist = songs[songIndex-1].artist;
+    songNow.image = songs[songIndex-1].image;
+    songNow.id = songs[songIndex-1].id;
+    songNow.uri = songs[songIndex-1].uri;
+    songNow.duration = songs[songIndex-1].duration;
+
+    await SoundObj.loadAsync(songNow.uri);
+    await SoundObj.playAsync();
+    CurrentMusicState = await SoundObj.getStatusAsync();
+    SetcanStop(true);
+    songNow.isPlayin = canstop;
+
     songSlider.current.scrollToOffset({
       offset: (songIndex - 1) * width * 0.9,
     });
   }
 
+
+  try {
+    SoundObj.setOnPlaybackStatusUpdate(async (status) =>{
+      if (status.didJustFinish === true)
+      {
+        skipToNext();
+
+      }
+      if (!isPressProgBar && status.isLoaded )
+      {
+
+        
+        setvalval((status.positionMillis)/(status.durationMillis));
+      }
+    })
+  } catch (err ){
+
+  }
+
+
+  
   const renderSongs = ({ index, item }) => {
     return (
       <Animated.View style={{
@@ -56,6 +128,37 @@ const MusicPlayerUI = () => {
       </Animated.View>
     );
   }
+  const slideStart=()=>{
+    isPressProgBar = true;
+    console.log('pressing bar');
+  }
+  async function sliedEnd(value){
+    CurrentMusicState = await SoundObj.getStatusAsync();
+    isPressProgBar = false;
+    console.log('pressing bar ended');
+    await SoundObj.setPositionAsync(value*CurrentMusicState.durationMillis);
+  }
+
+  const endsec = ()=>{
+    
+    if(CurrentMusicState){
+      let min = parseInt(parseInt((CurrentMusicState.durationMillis)/1000)/60), sec = parseInt((CurrentMusicState.durationMillis)/1000)%60;
+      if(sec<10) sec = '0'+sec;
+      return(''+min+':'+sec);
+      
+    }else return 0;
+  }
+
+  const currentPosition = ()=>{
+    if(CurrentMusicState){
+    
+      let min = parseInt(parseInt((valval*CurrentMusicState.durationMillis)/1000)/60), sec = parseInt(parseInt((valval*CurrentMusicState.durationMillis)/1000))%60;
+      if(sec<10) sec = '0'+sec;
+      return(''+min+':'+sec);
+      
+    }else return 0;
+  }
+  
 
   // const fadeAnim = useRef(new Animated.Value(0)).current;
 
@@ -73,6 +176,30 @@ const MusicPlayerUI = () => {
 
 
 
+  async function onAudioPress(){
+    CurrentMusicState= await SoundObj.getStatusAsync();
+    console.log((CurrentMusicState.positionMillis));
+  //  console.log((CurrentMusicState.durationMillis));
+    setvalval((CurrentMusicState.positionMillis)/(CurrentMusicState.durationMillis));
+
+    if(canstop)
+    {
+     console.log('Pausing Sound');
+     await SoundObj.pauseAsync();
+     SetcanStop(false);
+     songNow.isPlayin = false;
+     console.log(songNow.isPlayin);
+    }
+    else
+    {
+     console.log('Playing Sound');
+     await SoundObj.playAsync();
+     SetcanStop(true);
+     songNow.isPlayin = true;
+    }
+   }
+
+
   return (
     <ImageBackground source={songs[songIndex].image} blurRadius={blurRadius} style={{ flex: 1, transform: [{ rotate: '180deg' }] }}>
       <StatusBar barStyle="light-content" animated="true" />
@@ -85,8 +212,10 @@ const MusicPlayerUI = () => {
             keyExtractor={(item) => item.id}
             horizontal
             pagingEnabled
+            scrollEnabled= {false}
             showsHorizontalScrollIndicator={false}
             scrollEventThrottle={16}
+            contentOffset = {{x : selected * width * 0.9}}
             onScroll={Animated.event(
               [{
                 nativeEvent: {
@@ -100,7 +229,7 @@ const MusicPlayerUI = () => {
 
         <View style={{ flex: .8, width: '80%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
           <View style={{ flex: 7, paddingRight: '7%' }}>
-            <Text style={styles.title} numberOfLines={1}>{songs[songIndex].title}</Text>
+            <Text style={styles.title} numberOfLines={1}>{songNow.title }</Text>
             <Text style={styles.artist} numberOfLines={1}>{songs[songIndex].artist}</Text>
           </View>
           <View style={{ flex: 1 }}>
@@ -114,17 +243,18 @@ const MusicPlayerUI = () => {
           <View style={{ justifyContent: 'center' }}>
             <Slider
               style={styles.progressContainer}
-              value={18}
+              value={valval}
               minimumValue={0}
-              maximumValue={100}
+              maximumValue={1}
               thumbTintColor={theme}
               minimumTrackTintColor={theme}
               maximumTrackTintColor='#aaa'
-              onSlidingComplete={() => { }}
+              onSlidingComplete={sliedEnd}
+              onSlidingStart={(value)=>slideStart(value)}
             />
             <View style={styles.progressLabelContainer}>
-              <Text style={{ color: '#bbb', fontSize: rem * 0.75 }}>0:00</Text>
-              <Text style={{ color: '#bbb', fontSize: rem * 0.75 }}>4:00</Text>
+              <Text style={{ color: '#bbb', fontSize: rem * 0.75 }}>{currentPosition()}</Text>
+              <Text style={{ color: '#bbb', fontSize: rem * 0.75 }}>{endsec()}</Text>
             </View>
           </View>
         </View>
@@ -135,8 +265,8 @@ const MusicPlayerUI = () => {
             <TouchableOpacity onPress={skipToPrevious} style={{ padding: '10%' }}>
               <Ionicons name="play-back" size={rem * 2} color={theme}></Ionicons>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => { }} style={{ padding: '10%' }} >
-              <Ionicons name="pause" size={rem * 2.8} color={theme}></Ionicons>
+            <TouchableOpacity onPress={onAudioPress} style={{ padding: '10%' }} >
+              <Ionicons name={canstop ? "pause" : "play"} size={rem * 2.8} color={theme}></Ionicons>
             </TouchableOpacity>
             <TouchableOpacity onPress={skipToNext} style={{ padding: '10%' }}>
               <Ionicons name="play-forward" size={rem * 2} color={theme}></Ionicons>
