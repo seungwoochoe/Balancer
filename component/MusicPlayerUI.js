@@ -87,9 +87,10 @@ const MusicPlayerUI = ({ route, navigation }) => {
 
     if(song2 != songs){
 
-      let imsi = createPlaylist(songs, 10-song2.length+songNow.index, shuffleActionList);
-      imsi.forEach(element => song2.push(element));
+      let imsi = appendMorePlaylist(songs,song2,shuffleActionList, 10-song2.length+songNow.index);
+
       imsi.forEach(element => shuffleSongList.push(element));
+      imsi.forEach(element => song2.push(element));
       console.log('추가된 노래 리스트 --------');
       console.log(imsi);
       console.log('추가된 노래 리스트 끝 ----------');
