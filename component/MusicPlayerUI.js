@@ -87,7 +87,7 @@ const MusicPlayerUI = ({ route, navigation }) => {
 
       let imsi = createPlaylist(songs, 10-song2.length+songNow.index, shuffleActionList);
       imsi.forEach(element => shuffleSongList.push(element));
-      console.log(shuffleSongList);
+      console.log(imsi);
     }
   }
 
