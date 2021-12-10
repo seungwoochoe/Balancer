@@ -28,13 +28,13 @@ const MusicListUI = ({ navigation }) => {
   const [dumm, setdumm] = useState(0);
   async function onPausePress() {
     if (songNow.isPlayin) {
-      console.log('Pausing Sound');
+      // console.log('Pausing Sound');
       await SoundObj.pauseAsync();
       songNow.isPlayin = false;
       setdumm(1 - dumm);
     }
     else {
-      console.log('Playing Sound');
+      // console.log('Playing Sound');
       await SoundObj.playAsync();
       songNow.isPlayin = true;
       setdumm(1 - dumm);
@@ -85,9 +85,9 @@ const MusicListUI = ({ navigation }) => {
         })
       }
       );
-      console.log('추가된 노래 리스트 --------');
-      console.log(imsi);
-      console.log('추가된 노래 리스트 끝 ----------');
+      // console.log('추가된 노래 리스트 --------');
+      // console.log(imsi);
+      // console.log('추가된 노래 리스트 끝 ----------');
     }
   }
   }
@@ -95,14 +95,14 @@ const MusicListUI = ({ navigation }) => {
   async function shuffleButtonPressed() {
     await SoundObj.unloadAsync();
     shuffleSongList.length = 0;
-    console.log(shuffleSongList);
-    console.log('shuffle-------------');
+    // console.log(shuffleSongList);
+    // console.log('shuffle-------------');
 
     //console.log(shuffleActionList);
     let imsi = createPlaylist(songs, 10, shuffleActionList);
-    console.log('--------------------------imsi');
-    console.log(imsi);
-    console.log('--------------------------imsi');
+    // console.log('--------------------------imsi');
+    // console.log(imsi);
+    // console.log('--------------------------imsi');
 
     imsi.forEach(element => {
 
@@ -114,7 +114,7 @@ const MusicListUI = ({ navigation }) => {
       })
     }
     );
-    console.log(shuffleSongList);
+    // console.log(shuffleSongList);
     song2 = shuffleSongList;
     //console.log(createPlaylist(song2, 10, shuffleActionList));
     await shuffledSongInput();
@@ -124,19 +124,19 @@ const MusicListUI = ({ navigation }) => {
     
 
     await SoundObj.unloadAsync();
-    console.log(songNow);
-    console.log('------- MusicNow로 복사중 -----');
+    // console.log(songNow);
+    // console.log('------- MusicNow로 복사중 -----');
     songNow.title = shuffleSongList[0].title;
     songNow.artist = shuffleSongList[0].artist;
-    console.log(shuffleSongList[0].image);
+    // console.log(shuffleSongList[0].image);
 
 
     songNow.image = shuffleSongList[0].image;
     songNow.uri = shuffleSongList[0].uri;
     songNow.isPlayin = true;
     songNow.index = 0;
-    console.log(songNow);
-    console.log('------- MusicNow로 복사 완료 -----');
+    // console.log(songNow);
+    // console.log('------- MusicNow로 복사 완료 -----');
 
     navigation.navigate('MusicPlayerUI', {})
   }
@@ -148,8 +148,8 @@ const MusicListUI = ({ navigation }) => {
       if (songNow.title != item.title) {
         
         await SoundObj.unloadAsync();
-        console.log(songNow);
-        console.log('------- MusicNow로 복사중 -----');
+        // console.log(songNow);
+        // console.log('------- MusicNow로 복사중 -----');
         songNow.title = item.title;
         songNow.artist = item.artist;
         songNow.image = item.image;
@@ -158,8 +158,8 @@ const MusicListUI = ({ navigation }) => {
         songNow.duration = item.duration;
         songNow.isPlayin = true;
         songNow.index = item.id - 1;
-        console.log(songNow);
-        console.log('------- MusicNow로 복사 완료 -----');
+        // console.log(songNow);
+        // console.log('------- MusicNow로 복사 완료 -----');
       }
    
 

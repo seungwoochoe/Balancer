@@ -40,10 +40,10 @@ const MusicPlayerUI = ({ route, navigation }) => {
 
   useEffect(async () => {
     //'../assets/songs/2.mp3'
-    console.log(songNow);
+    // console.log(songNow);
     await SoundObj.loadAsync(songNow.uri);
     CurrentMusicState = await SoundObj.getStatusAsync();
-    console.log(CurrentMusicState);
+    // console.log(CurrentMusicState);
     await SoundObj.playAsync();
 
     scrollX.addListener(({ value }) => {
@@ -64,7 +64,7 @@ const MusicPlayerUI = ({ route, navigation }) => {
       title: songNow.title,
       action: "skip"
     });
-    console.log(shuffleActionList);
+    // console.log(shuffleActionList);
     setIsBusy(true);
     await SoundObj.unloadAsync();
     songNow.title = song2[songNow.index + 1].title;
@@ -100,9 +100,9 @@ const MusicPlayerUI = ({ route, navigation }) => {
         })
       }
       );
-      console.log('추가된 노래 리스트 --------');
-      console.log(imsi);
-      console.log('추가된 노래 리스트 끝 ----------');
+      // console.log('추가된 노래 리스트 --------');
+      // console.log(imsi);
+      // console.log('추가된 노래 리스트 끝 ----------');
     }
   }
   }
@@ -168,12 +168,12 @@ const MusicPlayerUI = ({ route, navigation }) => {
   }
   const slideStart = () => {
     isPressProgBar = true;
-    console.log('pressing bar');
+    // console.log('pressing bar');
   }
   async function sliedEnd(value) {
     CurrentMusicState = await SoundObj.getStatusAsync();
     isPressProgBar = false;
-    console.log('pressing bar ended');
+    // console.log('pressing bar ended');
     await SoundObj.setPositionAsync(value * CurrentMusicState.durationMillis);
   }
 
@@ -183,7 +183,7 @@ const MusicPlayerUI = ({ route, navigation }) => {
       title: songNow.title,
       action: "boost"
     });
-    console.log(shuffleActionList);
+    // console.log(shuffleActionList);
     //title: "A Day To Remember", action: "skip" 
   }
 
@@ -227,19 +227,19 @@ const MusicPlayerUI = ({ route, navigation }) => {
 
   async function onAudioPress() {
     CurrentMusicState = await SoundObj.getStatusAsync();
-    console.log((CurrentMusicState.positionMillis));
+    // console.log((CurrentMusicState.positionMillis));
     //  console.log((CurrentMusicState.durationMillis));
     setvalval((CurrentMusicState.positionMillis) / (CurrentMusicState.durationMillis));
 
     if (canstop) {
-      console.log('Pausing Sound');
+      // console.log('Pausing Sound');
       await SoundObj.pauseAsync();
       SetcanStop(false);
       songNow.isPlayin = false;
-      console.log(songNow.isPlayin);
+      // console.log(songNow.isPlayin);
     }
     else {
-      console.log('Playing Sound');
+      // console.log('Playing Sound');
       await SoundObj.playAsync();
       SetcanStop(true);
       songNow.isPlayin = true;
