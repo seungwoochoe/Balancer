@@ -6,9 +6,11 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Asset } from 'expo-asset';
 import data from './models/data';
+import { LogBox } from 'react-native';
 import * as Shuffle from './containers/Shuffle.js';
 
-
+LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+LogBox.ignoreAllLogs();//Ignore all log notifications
 
 const RootStack = createNativeStackNavigator();
 
