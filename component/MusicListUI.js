@@ -46,7 +46,7 @@ const MusicListUI = ({ navigation }) => {
       title: songNow.title,
       action: "skip"
     });
-    console.log(shuffleActionList);
+   // console.log(shuffleActionList);
 
     await SoundObj.unloadAsync();
     songNow.title = song2[songNow.index +1].title;
@@ -61,6 +61,12 @@ const MusicListUI = ({ navigation }) => {
     await SoundObj.playAsync();
     setdumm(1-dumm);
     CurrentMusicState = await SoundObj.getStatusAsync();
+    if(song2 != songs){
+
+      let imsi = createPlaylist(songs, 10-song2.length+songNow.index, shuffleActionList);
+      imsi.forEach(element => shuffleSongList.push(element));
+      console.log(shuffleSongList);
+    }
   }
 
   async function shuffleButtonPressed() {

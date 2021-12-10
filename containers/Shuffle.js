@@ -13,13 +13,13 @@ function complementPlaylist(musicList, currentPlaylist, userActionList) {
     return markIsTrigger(playlist);
 }
 
-function appendMorePlaylist(musicList, currentPlaylist, userActionList) {
-    let playlistToBeAdded = createPlaylist(musicList, PLAYLIST_SIZE / 2, userActionList);
+function appendMorePlaylist(musicList, currentPlaylist, userActionList, num) {
+    let playlistToBeAdded = createPlaylist(musicList, num, userActionList);
     while (currentPlaylist[currentPlaylist.length - 1].title === playlistToBeAdded[0].title) {
-        playlistToBeAdded = createPlaylist(musicList, PLAYLIST_SIZE / 2, userActionList);
+        playlistToBeAdded = createPlaylist(musicList, num, userActionList);
     }
     playlistToBeAdded = markIsTrigger(playlistToBeAdded)
-    return playlist = [...currentPlaylist, ...playlistToBeAdded];
+    return playlist = [...playlistToBeAdded];
 }
 
 // If there is no or only one music in storage, "createPlaylist" function should not be called.

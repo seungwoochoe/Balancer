@@ -82,6 +82,13 @@ const MusicPlayerUI = ({ route, navigation }) => {
       offset: (songNow.index + 1) * width * 0.9,
     });
     setIsBusy(false);
+
+    if(song2 != songs){
+
+      let imsi = createPlaylist(songs, 10-song2.length+songNow.index, shuffleActionList);
+      imsi.forEach(element => shuffleSongList.push(element));
+      console.log(shuffleSongList);
+    }
   }
 
   async function skipToPrevious() {
