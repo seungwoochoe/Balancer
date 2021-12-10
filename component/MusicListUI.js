@@ -42,6 +42,11 @@ const MusicListUI = ({ navigation }) => {
   }
 
   async function skipToNext() {
+    shuffleActionList.push({
+      title: songNow.title,
+      action: "skip"
+    });
+    console.log(shuffleActionList);
 
     await SoundObj.unloadAsync();
     songNow.title = song2[songNow.index +1].title;
