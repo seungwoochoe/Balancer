@@ -41,21 +41,21 @@ const MusicListUI = ({ navigation }) => {
     }
   }
 
-  async function skipToPrevious() {
+  async function skipToNext() {
 
     await SoundObj.unloadAsync();
-    songNow.title = song2[songIndex - 1].title;
-    songNow.artist = song2[songIndex - 1].artist;
-    songNow.image = song2[songIndex - 1].image;
-    songNow.id = song2[songIndex - 1].id;
-    songNow.uri = song2[songIndex - 1].uri;
-    songNow.duration = song2[songIndex - 1].duration;
-
+    songNow.title = song2[songNow.index +1].title;
+    songNow.artist = song2[songNow.index +1].artist;
+    songNow.image = song2[songNow.index +1].image;
+    songNow.id = song2[songNow.index +1].id;
+    songNow.uri = song2[songNow.index +1].uri;
+    songNow.duration = song2[songNow.index +1].duration;
+    songNow.index+=1;
 
     await SoundObj.loadAsync(songNow.uri);
     await SoundObj.playAsync();
     CurrentMusicState = await SoundObj.getStatusAsync();
-
+    navigation.navigate('MusicPlayerUI', { })
   }
 
   async function shuffleButtonPressed() {
@@ -79,7 +79,7 @@ const MusicListUI = ({ navigation }) => {
 
   }
   async function shuffledSongInput() {
-
+    
 
     await SoundObj.unloadAsync();
     console.log(songNow);
@@ -100,22 +100,26 @@ const MusicListUI = ({ navigation }) => {
   }
 
   async function songInput(item) {
-    if (songNow.title != item.title) {
-
-      await SoundObj.unloadAsync();
-      console.log(songNow);
-      console.log('------- MusicNow로 복사중 -----');
-      songNow.title = item.title;
-      songNow.artist = item.artist;
-      songNow.image = item.image;
-      songNow.id = item.id;
-      songNow.uri = item.uri;
-      songNow.duration = item.duration;
-      songNow.isPlayin = true;
-      songNow.index = item.id - 1;
-      console.log(songNow);
-      console.log('------- MusicNow로 복사 완료 -----');
-    }
+    
+    song2 = songs;
+      
+      if (songNow.title != item.title) {
+        
+        await SoundObj.unloadAsync();
+        console.log(songNow);
+        console.log('------- MusicNow로 복사중 -----');
+        songNow.title = item.title;
+        songNow.artist = item.artist;
+        songNow.image = item.image;
+        songNow.id = item.id;
+        songNow.uri = item.uri;
+        songNow.duration = item.duration;
+        songNow.isPlayin = true;
+        songNow.index = item.id - 1;
+        console.log(songNow);
+        console.log('------- MusicNow로 복사 완료 -----');
+      }
+   
 
 
 
@@ -216,7 +220,7 @@ const MusicListUI = ({ navigation }) => {
             <TouchableOpacity onPress={onPausePress} style={{  padding: songNow.isPlayin ? rem * 0.6 : rem * 0.775 }} >
               <Ionicons name={songNow.isPlayin ? "pause" : "play"} size={songNow.isPlayin ? rem * 2 : rem * 1.65} color={buttonTheme}></Ionicons>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => { }} style={{ padding: '7%' }}>
+            <TouchableOpacity onPress={skipToNext} style={{ padding: '7%' }}>
               <Ionicons name="play-forward" size={rem * 1.8} color={buttonTheme}></Ionicons>
             </TouchableOpacity>
           </View>
