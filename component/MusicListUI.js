@@ -51,11 +51,11 @@ const MusicListUI = ({ navigation }) => {
     songNow.uri = song2[songNow.index +1].uri;
     songNow.duration = song2[songNow.index +1].duration;
     songNow.index+=1;
-
-    // await SoundObj.loadAsync(songNow.uri);
-    // await SoundObj.playAsync();
+    songNow.isPlayin = true;
+    await SoundObj.loadAsync(songNow.uri);
+    await SoundObj.playAsync();
+    setdumm(1-dumm);
     CurrentMusicState = await SoundObj.getStatusAsync();
-    navigation.navigate('MusicPlayerUI', { })
   }
 
   async function shuffleButtonPressed() {
