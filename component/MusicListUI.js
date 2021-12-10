@@ -42,6 +42,7 @@ const MusicListUI = ({ navigation }) => {
   }
 
   async function skipToNext() {
+    if (songNow.index !== song2.length-1){
     shuffleActionList.push({
       title: songNow.title,
       action: "skip"
@@ -88,6 +89,7 @@ const MusicListUI = ({ navigation }) => {
       console.log(imsi);
       console.log('추가된 노래 리스트 끝 ----------');
     }
+  }
   }
 
   async function shuffleButtonPressed() {
