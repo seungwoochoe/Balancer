@@ -52,8 +52,6 @@ const MusicListUI = ({ navigation }) => {
     songNow.duration = song2[songNow.index +1].duration;
     songNow.index+=1;
 
-    await SoundObj.loadAsync(songNow.uri);
-    await SoundObj.playAsync();
     CurrentMusicState = await SoundObj.getStatusAsync();
     navigation.navigate('MusicPlayerUI', { })
   }
