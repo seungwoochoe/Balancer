@@ -64,7 +64,7 @@ const MusicListUI = ({ navigation }) => {
     CurrentMusicState = await SoundObj.getStatusAsync();
     if(song2 != songs){
 
-      let imsi = appendMorePlaylist(songs,song2,shuffleActionList, 10-song2.length+songNow.index);
+      let imsi = createPlaylist(songs,10-song2.length+songNow.index,shuffleActionList );
       imsi.forEach(element => {
 
         shuffleSongList.push({
