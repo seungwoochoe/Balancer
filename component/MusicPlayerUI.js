@@ -56,6 +56,8 @@ const MusicPlayerUI = ({ route, navigation }) => {
 
     }
   }, []);
+
+
   async function skipToNext() {
     shuffleActionList.push({
       title: songNow.title,
@@ -87,7 +89,10 @@ const MusicPlayerUI = ({ route, navigation }) => {
 
       let imsi = createPlaylist(songs, 10-song2.length+songNow.index, shuffleActionList);
       imsi.forEach(element => shuffleSongList.push(element));
+      song2 = shuffleSongList;
+      console.log('추가된 노래 리스트 --------');
       console.log(imsi);
+      console.log('추가된 노래 리스트 끝 ----------');
     }
   }
 
