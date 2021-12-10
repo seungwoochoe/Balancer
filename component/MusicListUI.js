@@ -22,7 +22,7 @@ if (Platform.OS === 'ios') {
 } else {
   blurIntensity = 200;
 }
-export let song2 = songs;
+export let song2 = songs.sort((a, b) => (a.title >= b.title) ? 1 : -1);
 const MusicListUI = ({ navigation }) => {
   const isFocused = useIsFocused();
   const [dumm, setdumm] = useState(0);
@@ -236,7 +236,7 @@ const MusicListUI = ({ navigation }) => {
       <BlurView intensity={blurIntensity} tint={'light'} style={styles.bottomBarContainer}>
         <View style={{ flex: 13, alignItems: 'center', height: '100%', paddingTop: height * 0.0125 }}>
           <TouchableOpacity
-            onPress={() => { navigation.navigate('MusicPlayerUI') }}
+            onPress={() => { navigation.navigate('MusicPlayerUI', {load: 'no'}) }}
 
             style={styles.bottomMusic}>
             <View style={{
