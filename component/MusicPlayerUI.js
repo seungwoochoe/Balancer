@@ -12,6 +12,8 @@ const { width, height } = Dimensions.get("window");
 const rem = width / 20;
 const theme = '#eee';
 
+const volume = 0.1;
+
 let CurrentMusicState;
 let isPressProgBar = false;
 import { SoundObj } from './MusicNow';
@@ -21,6 +23,7 @@ import { _DEFAULT_INITIAL_PLAYBACK_STATUS } from 'expo-av/build/AV';
 
 
 const MusicPlayerUI = ({ route, navigation }) => {
+  console.log(song2);
   //const {selected1, musicUri, selected} = route.params;
   const [valval, setvalval] = useState(0);
   const [isBusy, setIsBusy] = useState(false);
@@ -38,73 +41,81 @@ const MusicPlayerUI = ({ route, navigation }) => {
     blurRadius = 275;
   }
 
+  useEffect(()=> {
+    song2.forEach(element => {
+      element.id = Math.random().toString();
+    })
+  }, []);
+
   useEffect(async () => {
     //'../assets/songs/2.mp3'
     // console.log(songNow);
-    await SoundObj.loadAsync(songNow.uri);
-    CurrentMusicState = await SoundObj.getStatusAsync();
-    // console.log(CurrentMusicState);
-    await SoundObj.playAsync();
+    if (route.params.load !== "no") {
+      await SoundObj.loadAsync(songNow.uri, initialStatus = { volume: volume });
+      CurrentMusicState = await SoundObj.getStatusAsync();
+      // console.log(CurrentMusicState);
+      await SoundObj.playAsync();
 
-    scrollX.addListener(({ value }) => {
+      scrollX.addListener(({ value }) => {
+        const index = Math.round(value / (width * 0.9));
+        //setSongIndex(index);
+      });
 
-      const index = Math.round(value / (width * 0.9));
-      //setSongIndex(index);
-    });
-    return () => {
-      scrollX.removeAllListeners();
-
+      return () => {
+        scrollX.removeAllListeners();
+      }
     }
   }, []);
 
 
   async function skipToNext() {
-    if (songNow.index !== song2.length-1){
-    shuffleActionList.push({
-      title: songNow.title,
-      action: "skip"
-    });
-    // console.log(shuffleActionList);
-    setIsBusy(true);
-    await SoundObj.unloadAsync();
-    songNow.title = song2[songNow.index + 1].title;
-    songNow.artist = song2[songNow.index + 1].artist;
-    songNow.image = song2[songNow.index + 1].image;
-    songNow.id = song2[songNow.index + 1].id;
-    songNow.uri = song2[songNow.index + 1].uri;
-    songNow.duration = song2[songNow.index + 1].duration;
-    songNow.index += 1;
+    if (songNow.index !== song2.length - 1) {
+      shuffleActionList.push({
+        title: songNow.title,
+        action: "skip"
+      });
+      console.log(shuffleActionList);
+      // console.log(shuffleActionList);
+      setIsBusy(true);
+      await SoundObj.unloadAsync();
+      songNow.title = song2[songNow.index + 1].title;
+      songNow.artist = song2[songNow.index + 1].artist;
+      songNow.image = song2[songNow.index + 1].image;
+      songNow.id = song2[songNow.index + 1].id;
+      songNow.uri = song2[songNow.index + 1].uri;
+      songNow.duration = song2[songNow.index + 1].duration;
+      songNow.index += 1;
 
-    await SoundObj.loadAsync(songNow.uri);
-    await SoundObj.playAsync();
-    CurrentMusicState = await SoundObj.getStatusAsync();
-    SetcanStop(true);
-    songNow.isPlayin = canstop;
+      await SoundObj.loadAsync(songNow.uri, initialStatus = { volume: volume });
+      await SoundObj.playAsync();
+      CurrentMusicState = await SoundObj.getStatusAsync();
+      SetcanStop(true);
+      songNow.isPlayin = canstop;
 
-    songSlider.current.scrollToOffset({
-      offset: (songNow.index + 1) * width * 0.9,
-    });
-    setIsBusy(false);
+      songSlider.current.scrollToOffset({
+        offset: (songNow.index + 1) * width * 0.9,
+      });
+      setIsBusy(false);
 
-    if(song2 != songs){
+      if (song2 != songs) {
 
-      let imsi = createPlaylist(songs,10-song2.length+songNow.index,shuffleActionList );
+        let imsi = createPlaylist(songs, 10 - song2.length + songNow.index, shuffleActionList);
 
-      imsi.forEach(element => {
+        imsi.forEach(element => {
 
-        song2.push({
-          uri: element.uri,
-          title: element.title,
-          artist: element.artist,
-          image: element.image,
-        })
+          song2.push({
+            uri: element.uri,
+            title: element.title,
+            artist: element.artist,
+            image: element.image,
+          })
+        }
+        );
+        // console.log('추가된 노래 리스트 --------');
+        // console.log(imsi);
+        // console.log('추가된 노래 리스트 끝 ----------');
       }
-      );
-      // console.log('추가된 노래 리스트 --------');
-      // console.log(imsi);
-      // console.log('추가된 노래 리스트 끝 ----------');
     }
-  }
   }
 
   async function skipToPrevious() {
@@ -119,7 +130,7 @@ const MusicPlayerUI = ({ route, navigation }) => {
       songNow.duration = song2[songNow.index - 1].duration;
       songNow.index -= 1;
 
-      await SoundObj.loadAsync(songNow.uri);
+      await SoundObj.loadAsync(songNow.uri, initialStatus = { volume: volume });
       await SoundObj.playAsync();
       CurrentMusicState = await SoundObj.getStatusAsync();
       SetcanStop(true);
@@ -138,16 +149,12 @@ const MusicPlayerUI = ({ route, navigation }) => {
       SoundObj.setOnPlaybackStatusUpdate(async (status) => {
         if (status.didJustFinish === true) {
           skipToNext();
-
         }
         if (!isPressProgBar && status.isLoaded) {
-
-
           setvalval((status.positionMillis) / (status.durationMillis));
         }
       })
     } catch (err) {
-
     }
   }, []);
 
@@ -183,7 +190,7 @@ const MusicPlayerUI = ({ route, navigation }) => {
       title: songNow.title,
       action: "boost"
     });
-    // console.log(shuffleActionList);
+    console.log("\n\n⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️\n", shuffleActionList);
     //title: "A Day To Remember", action: "skip" 
   }
 
@@ -314,7 +321,7 @@ const MusicPlayerUI = ({ route, navigation }) => {
               <Ionicons name="play-back" size={rem * 2} color={theme}></Ionicons>
             </TouchableOpacity>
             <TouchableOpacity disabled={isBusy} onPress={onAudioPress} >
-              <Ionicons name={canstop ? "pause" : "play"} size={rem * 2.8} color={theme}></Ionicons>
+              <Ionicons name={canstop ? "pause" : "play"} size={canstop ? rem * 2.8 : rem * 2.4} color={theme}></Ionicons>
             </TouchableOpacity>
             <TouchableOpacity disabled={isBusy} onPress={skipToNext}>
               <Ionicons name="play-forward" size={rem * 2} color={theme}></Ionicons>
@@ -344,12 +351,12 @@ const styles = StyleSheet.create({
     borderRadius: 15,
   },
   title: {
-    fontSize: rem * 1.32,
+    fontSize: 12.5 * height / width,
     color: '#eee',
     fontWeight: '600',
   },
   artist: {
-    fontSize: rem * 1.05,
+    fontSize: 10.5 * height / width,
     color: '#cfcfcf',
     fontWeight: '300',
   },
