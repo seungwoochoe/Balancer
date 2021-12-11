@@ -74,7 +74,7 @@ const MusicPlayerUI = ({ route, navigation }) => {
         title: songNow.title,
         action: "skip"
       });
-      console.log(shuffleActionList);
+      console.log("\n\n⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️\n", shuffleActionList);
       // console.log(shuffleActionList);
       setIsBusy(true);
       await SoundObj.unloadAsync();
