@@ -1,11 +1,16 @@
-import React, { Component, useEffect, useRef, useState } from 'react';
-import { SafeAreaView, View, Text, StyleSheet, Dimensions, Image, Animated, StatusBar, Platform } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import React, { useEffect, useState } from 'react';
+import { SafeAreaView, View, Text, StyleSheet, Dimensions, Image, Animated, StatusBar, Platform, TouchableOpacity } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { BlurView } from 'expo-blur';
 import songs from '../models/data';
-const { width, height } = Dimensions.get("window");
+import songNow from './MusicNow';
+import { SoundObj } from './MusicNow';
+import { useIsFocused } from '@react-navigation/native';
+import { shuffleSongList } from '../models/shuffledata';
+import { shuffleActionList } from '../models/shuffledata';
+import { createPlaylist, complementPlaylist, appendMorePlaylist } from '../containers/Shuffle';
 
+const { width, height } = Dimensions.get("window");
 const rem = width / 20;
 const theme = '#107dac';
 const buttonTheme = '#333';
@@ -17,14 +22,156 @@ if (Platform.OS === 'ios') {
 } else {
   blurIntensity = 200;
 }
-
+export let song2 = songs.sort((a, b) => (a.title >= b.title) ? 1 : -1);
 const MusicListUI = ({ navigation }) => {
+  const isFocused = useIsFocused();
+  const [dumm, setdumm] = useState(0);
+  async function onPausePress() {
+    if (songNow.isPlayin) {
+      // console.log('Pausing Sound');
+      await SoundObj.pauseAsync();
+      songNow.isPlayin = false;
+      setdumm(1 - dumm);
+    }
+    else {
+      // console.log('Playing Sound');
+      await SoundObj.playAsync();
+      songNow.isPlayin = true;
+      setdumm(1 - dumm);
+    }
+  }
 
+  async function skipToNext() {
+    if (songNow.index !== song2.length-1){
+    shuffleActionList.push({
+      title: songNow.title,
+      action: "skip"
+    });
+   // console.log(shuffleActionList);
+
+    await SoundObj.unloadAsync();
+    songNow.title = song2[songNow.index +1].title;
+    songNow.artist = song2[songNow.index +1].artist;
+    songNow.image = song2[songNow.index +1].image;
+    songNow.id = song2[songNow.index +1].id;
+    songNow.uri = song2[songNow.index +1].uri;
+    songNow.duration = song2[songNow.index +1].duration;
+    songNow.index+=1;
+    songNow.isPlayin = true;
+    await SoundObj.loadAsync(songNow.uri);
+    await SoundObj.playAsync();
+    setdumm(1-dumm);
+    CurrentMusicState = await SoundObj.getStatusAsync();
+    if(song2 != songs){
+
+      let imsi = createPlaylist(songs,10-song2.length+songNow.index,shuffleActionList );
+      imsi.forEach(element => {
+
+        shuffleSongList.push({
+          uri: element.uri,
+          title: element.title,
+          artist: element.artist,
+          image: element.image,
+        })
+      }
+      );
+      imsi.forEach(element => {
+
+        song2.push({
+          uri: element.uri,
+          title: element.title,
+          artist: element.artist,
+          image: element.image,
+        })
+      }
+      );
+      // console.log('추가된 노래 리스트 --------');
+      // console.log(imsi);
+      // console.log('추가된 노래 리스트 끝 ----------');
+    }
+  }
+  }
+
+  async function shuffleButtonPressed() {
+    await SoundObj.unloadAsync();
+    shuffleSongList.length = 0;
+    // console.log(shuffleSongList);
+    // console.log('shuffle-------------');
+
+    //console.log(shuffleActionList);
+    let imsi = createPlaylist(songs, 10, shuffleActionList);
+    // console.log('--------------------------imsi');
+    // console.log(imsi);
+    // console.log('--------------------------imsi');
+
+    imsi.forEach(element => {
+
+      shuffleSongList.push({
+        uri: element.uri,
+        title: element.title,
+        artist: element.artist,
+        image: element.image,
+      })
+    }
+    );
+    // console.log(shuffleSongList);
+    song2 = shuffleSongList;
+    //console.log(createPlaylist(song2, 10, shuffleActionList));
+    await shuffledSongInput();
+
+  }
+  async function shuffledSongInput() {
+    
+
+    await SoundObj.unloadAsync();
+    // console.log(songNow);
+    // console.log('------- MusicNow로 복사중 -----');
+    songNow.title = shuffleSongList[0].title;
+    songNow.artist = shuffleSongList[0].artist;
+    // console.log(shuffleSongList[0].image);
+
+
+    songNow.image = shuffleSongList[0].image;
+    songNow.uri = shuffleSongList[0].uri;
+    songNow.isPlayin = true;
+    songNow.index = 0;
+    // console.log(songNow);
+    // console.log('------- MusicNow로 복사 완료 -----');
+
+    navigation.navigate('MusicPlayerUI', {})
+  }
+
+  async function songInput(item) {
+    
+    song2 = songs;
+      
+      if (songNow.title != item.title) {
+        
+        await SoundObj.unloadAsync();
+        // console.log(songNow);
+        // console.log('------- MusicNow로 복사중 -----');
+        songNow.title = item.title;
+        songNow.artist = item.artist;
+        songNow.image = item.image;
+        songNow.id = item.id;
+        songNow.uri = item.uri;
+        songNow.duration = item.duration;
+        songNow.isPlayin = true;
+        songNow.index = item.id - 1;
+        // console.log(songNow);
+        // console.log('------- MusicNow로 복사 완료 -----');
+      }
+   
+
+
+
+    navigation.navigate('MusicPlayerUI', { selected: item.id - 1, selected1: item, musicUri: item.uri })
+  }
   const RenderShuffleButon = () => {
     return (
       <TouchableOpacity
         style={styles.shuffleButton}
-        onPress={() => { }}
+        onPress={() => shuffleButtonPressed()}
       >
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <Ionicons name="shuffle" size={rem * 1.7} color={theme}></Ionicons>
@@ -37,7 +184,7 @@ const MusicListUI = ({ navigation }) => {
   const RenderSong = ({ item }) => {
     return (
       <TouchableOpacity
-        onPress={() => navigation.navigate('MusicPlayerUI')}
+        onPress={() => songInput(item)}
         style={styles.music}>
         <View style={{ width: listHeight }}>
           <Image
@@ -57,37 +204,12 @@ const MusicListUI = ({ navigation }) => {
     );
   }
 
-  const RenderSongForBottomBar = ({ item }) => {
-    return (
-      <TouchableOpacity
-        onPress={() => navigation.navigate('MusicPlayerUI')}
-        style={styles.bottomMusic}>
-        <View style={{
-          width: listHeight,
-          shadowColor: 'black',
-          shadowRadius: width * 0.02,
-          shadowOpacity: 0.15,
-        }}>
-          <Image
-            source={item.image}
-            style={{ width: '87%', height: '87%', borderRadius: 4, }}
-          />
-        </View>
-        <View style={{ width: width - listHeight * 2 - width * 0.22, marginLeft: '2%' }}>
-          <Text style={{ fontSize: rem * 0.92, }} numberOfLines={1}>
-            {item.title}
-          </Text>
-        </View>
-      </TouchableOpacity>
-    );
-  }
-
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="dark-content" animated="true" />
 
       <View style={{ height: width / 4, flexDirection: 'row', paddingTop: '5%', alignItems: 'center', justifyContent: 'space-between' }}>
-        <Text style={styles.titleText}>Songs</Text>
+        <Text style={styles.titleText}>songs</Text>
         <TouchableOpacity
           onPress={() => { navigation.navigate('About') }}
           style={{
@@ -113,14 +235,34 @@ const MusicListUI = ({ navigation }) => {
 
       <BlurView intensity={blurIntensity} tint={'light'} style={styles.bottomBarContainer}>
         <View style={{ flex: 13, alignItems: 'center', height: '100%', paddingTop: height * 0.0125 }}>
-          <RenderSongForBottomBar item={songs[3]} />
+          <TouchableOpacity
+            onPress={() => { navigation.navigate('MusicPlayerUI', {load: 'no'}) }}
+
+            style={styles.bottomMusic}>
+            <View style={{
+              width: listHeight,
+              shadowColor: 'black',
+              shadowRadius: width * 0.02,
+              shadowOpacity: 0.15,
+            }}>
+              <Image
+                source={songNow.image}
+                style={{ width: '87%', height: '87%', borderRadius: 4, }}
+              />
+            </View>
+            <View style={{ width: width - listHeight * 2 - width * 0.22, marginLeft: '2%' }}>
+              <Text style={{ fontSize: rem * 0.92, }} numberOfLines={1}>
+                {songNow.title}
+              </Text>
+            </View>
+          </TouchableOpacity>
         </View>
-        <View style={{ flex: 6, alignItems: 'center', height: '100%', paddingTop: height * 0.022 }}>
+        <View style={{ flex: 6, alignItems: 'center', height: '100%', flexDirection: 'row', justifyContent: 'space-between', paddingBottom: Math.pow(height, 3.3) * 0.000000002 }}>
           <View style={{ alignItems: 'center', flexDirection: 'row', }}>
-            <TouchableOpacity onPress={() => { }} style={{ padding: '10%' }} >
-              <Ionicons name="play" size={rem * 1.65} color={buttonTheme}></Ionicons>
+            <TouchableOpacity onPress={onPausePress} style={{  padding: songNow.isPlayin ? rem * 0.6 : rem * 0.775 }} >
+              <Ionicons name={songNow.isPlayin ? "pause" : "play"} size={songNow.isPlayin ? rem * 2 : rem * 1.65} color={buttonTheme}></Ionicons>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => { }} style={{ padding: '10%' }}>
+            <TouchableOpacity onPress={skipToNext} style={{ padding: '7%' }}>
               <Ionicons name="play-forward" size={rem * 1.8} color={buttonTheme}></Ionicons>
             </TouchableOpacity>
           </View>
