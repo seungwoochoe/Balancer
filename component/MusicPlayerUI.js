@@ -23,7 +23,7 @@ import { _DEFAULT_INITIAL_PLAYBACK_STATUS } from 'expo-av/build/AV';
 
 
 const MusicPlayerUI = ({ route, navigation }) => {
-  console.log(song2);
+  // console.log(song2);
   //const {selected1, musicUri, selected} = route.params;
   const [valval, setvalval] = useState(0);
   const [isBusy, setIsBusy] = useState(false);
